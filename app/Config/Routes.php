@@ -37,6 +37,15 @@ $routes->get('/application', 'Home::application');
 $routes->get('/man/tempat', 'Home::man_tempat');
 $routes->get('/man/user', 'Home::man_user');
 $routes->get('/man/siswa', 'Home::man_siswa');
+$routes->get('/man/keju', 'Home::man_keju');
+
+// group routes
+$routes->group('jurusan', function ($j)
+{
+    $j->post('store', 'Jurusan::store');
+    $j->post('update', 'Jurusan::update');
+    $j->delete('destroy/(:num)', 'Jurusan::destroy/$1');
+});
 
 /*
  * --------------------------------------------------------------------
