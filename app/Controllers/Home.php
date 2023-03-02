@@ -5,11 +5,11 @@ namespace App\Controllers;
 class Home extends BaseController
 {
 
-    protected $kelas;
+    protected $angkatan;
     protected $jurusan;
 
     public function __construct() {
-        $this->kelas        = new \App\Models\KelasModel();
+        $this->angkatan        = new \App\Models\AngkatanModel();
         $this->jurusan      = new \App\Models\JurusanModel();
     }
 
@@ -73,7 +73,7 @@ class Home extends BaseController
             "title"         => "Magang | Manajemen Kelas dan Jurusan",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['settings'],
-            "kelas"         => $this->kelas->findAll(),
+            "angkatan"      => $this->angkatan->findAll(),
             "jurusan"       => $this->jurusan->findAll()
         ]);
     }

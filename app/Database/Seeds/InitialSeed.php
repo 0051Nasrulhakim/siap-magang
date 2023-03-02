@@ -14,13 +14,12 @@ class InitialSeed extends Seeder
             ['id'=> 1, 'nama_jurusan' => 'RPL',],
             ['id'=> 2, 'nama_jurusan' => 'TKJ',]
         ]);
-
-
-        // kelas 
-        $kelas = new \App\Models\KelasModel();
-        $kelas->insertBatch([
-            ['kelas' => "XI", 'jurusan' => 1],
-            ['kelas' => "XI", 'jurusan' => 2],
+        
+        // angkatan
+        $angkatan = new \App\Models\AngkatanModel();
+        $angkatan->insertBatch([
+            ['tahun' => 2021],
+            ['tahun' => 2022],
         ]);
     }
 }

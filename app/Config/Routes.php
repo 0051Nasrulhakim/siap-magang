@@ -47,6 +47,12 @@ $routes->group('jurusan', function ($j)
     $j->delete('destroy/(:num)', 'Jurusan::destroy/$1');
 });
 
+$routes->group('angkatan', function ($j)
+{
+    $j->post('store', 'Angkatan::store');
+    $j->delete('destroy/(:num)', 'Angkatan::destroy/$1');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

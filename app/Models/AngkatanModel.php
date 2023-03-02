@@ -4,19 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class KelasModel extends Model
+class AngkatanModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'kelas';
+    protected $table            = 'angkatan';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $insertID         = 3621;
+    protected $insertID         = 0;
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'kelas',
-        'jurusan',
+        'tahun'
     ];
 
     // Dates
