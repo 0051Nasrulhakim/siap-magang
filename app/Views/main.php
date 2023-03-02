@@ -89,11 +89,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/man/keju">
+                    <a class="nav-link text-white" href="/settings">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">class</i>
+                            <i class="material-icons opacity-10">settings</i>
                         </div>
-                        <span class="nav-link-text ms-1">Kelas & Jurusan</span>
+                        <span class="nav-link-text ms-1">Pengaturan</span>
                     </a>
                 </li>
             </ul>

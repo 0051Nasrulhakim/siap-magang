@@ -37,7 +37,7 @@ $routes->get('/application', 'Home::application');
 $routes->get('/man/tempat', 'Home::man_tempat');
 $routes->get('/man/user', 'Home::man_user');
 $routes->get('/man/siswa', 'Home::man_siswa');
-$routes->get('/man/keju', 'Home::man_keju');
+$routes->get('/settings', 'Home::settings');
 
 // group routes
 $routes->group('jurusan', function ($j)

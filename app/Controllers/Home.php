@@ -67,12 +67,12 @@ class Home extends BaseController
         ]);
     }
 
-    public function man_keju()
+    public function settings()
     {
-        return view('admin/man_keju', [
+        return view('admin/settings', [
             "title"         => "Magang | Manajemen Kelas dan Jurusan",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['manajemen', 'Kelas dan Jurusan'],
+            "breadcrumb"    => ['settings'],
             "kelas"         => $this->kelas->findAll(),
             "jurusan"       => $this->jurusan->findAll()
         ]);
