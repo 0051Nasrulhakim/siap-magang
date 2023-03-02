@@ -12,10 +12,9 @@ class AlterUser extends Migration
             "nis" => ["type" => "varchar", "constraint" => 255, 'after' => 'id'],
             "nama" => ["type" => "varchar", "constraint" => 255, 'after' => 'username'],
             "kelas" => ["type" => "varchar", "constraint" => 255, 'after' => 'nama'],
-            "jurusan" => ["type" => "int", "constraint" => 11, 'after' => 'kelas'],
-            "no_hp" => ["type" => "varchar", "constraint" => 255, 'after' => 'jurusan'],
+            "angkatan" => ["type" => "int", "constraint" => 4, 'after' => 'kelas'],
+            "no_hp" => ["type" => "varchar", "constraint" => 255, 'after' => 'angkatan'],
             "alamat" => ["type" => "varchar", "constraint" => 255, 'after' => 'no_hp'],
-            "foto" => ["type" => "varchar", "constraint" => 255, 'after' => 'alamat'],
         ];
         
         $this->forge->addColumn('users', $fields);
@@ -26,9 +25,8 @@ class AlterUser extends Migration
         $this->forge->dropColumn('users', 'nis');
         $this->forge->dropColumn('users', 'nama');
         $this->forge->dropColumn('users', 'kelas');
-        $this->forge->dropColumn('users', 'jurusan');
+        $this->forge->dropColumn('users', 'angkatan');
         $this->forge->dropColumn('users', 'no_hp');
         $this->forge->dropColumn('users', 'alamat');
-        $this->forge->dropColumn('users', 'foto');
     }
 }

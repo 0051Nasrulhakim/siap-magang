@@ -116,6 +116,7 @@
                             </li>
                         <?php endforeach ?>
                     </ol>
+                    <h6 class="font-weight-bolder mb-0">Title Page</h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-5 right" id="navbar">
                     <div class="ms-auto pe-md-3 d-flex align-items-center">
@@ -232,7 +233,7 @@
         <!-- End Navbar -->
 
         <!-- Page-Content -->
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-2">
             <?= $this->renderSection('content') ;?>
         </div>
         
