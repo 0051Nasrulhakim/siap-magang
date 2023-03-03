@@ -116,7 +116,7 @@
                             </li>
                         <?php endforeach ?>
                     </ol>
-                    <h6 class="font-weight-bolder mb-0">Title Page</h6>
+                    <h6 class="font-weight-bolder mb-0"><?= isset($page_title) && $page_title != null ? $page_title : 'Page title belum di setting' ?></h6>
                 </nav>
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-5 right" id="navbar">
                     <div class="ms-auto pe-md-3 d-flex align-items-center">
@@ -254,9 +254,9 @@
 
     <!--   Core JS Files   -->
     <script src="/assets/js/jquery-3.6.3.min.js"></script>
+    <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
     <script src="/assets/js/material-dashboard.min.js?v=3.0.5"></script>
-    <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
 

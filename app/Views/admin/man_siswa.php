@@ -12,21 +12,38 @@
                     Siswa
                 </button>
             </div>
-            <table class="table table-hover table-stripped" id="tbsiswa">
-                <thead>
-                    <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NIS</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kelas</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jurusan</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-stripped" id="tbsiswa">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NIS</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kelas</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Angkatan</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1 ?>
+                        <?php foreach ($siswa as $s) : ?>
+                            <?php if (in_array('siswa', $s->getRoles())) : ?>
+                                <tr>
+                                    <td class="text-xs ps-4 font-weight-bold"><?= $no++; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->nis; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->nama; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->kelas; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->tahun; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold">
+                                        <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $s->id; ?>"><i class="fas fa-trash"></i></button>
+                                        <a href="/siswa/edit/<?= $s->nis ?>" class="badge border border-1 border-dark text-dark"><i class="fas fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -42,12 +59,12 @@
                         Tambah data siswa magang
                     </div>
                     <div class="card-body">
-                        <form role="form text-left" id="fejurusan">
+                        <form role="form text-left" id="fasiswa">
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="input-group input-group-outline mb-3">
+                                    <div class="input-group input-group-outline mb-3" data-bs-toggle="tooltip" title="NIS siswa akan terisi otomatis ketika memilih angkatan" data-container="body" data-animation="true">
                                         <label for="nis" class="form-label">NIS</label>
-                                        <input type="text" name="nis" id="nis" class="form-control">
+                                        <input type="text" name="nis" id="nis" class="form-control form-control-muted" value="0" readonly>
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
                                         <label for="email" class="form-label">Email</label>
@@ -67,19 +84,24 @@
                                         <label for="kelas" class="form-label">Kelas</label>
                                         <select name="kelas" id="kelas" class="form-control">
                                             <option value=""></option>
+                                            <?php foreach ($jurusan as $j) : ?>
+                                                <option value="<?= "XI " . $j->nama_jurusan ?>">XI <?= $j->nama_jurusan ?></option>
+                                            <?php endforeach ?>
                                         </select>
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
-                                    <label for="angkatan" class="form-label">Angkatan</label>
+                                        <label for="angkatan" class="form-label">Angkatan</label>
                                         <select name="angkatan" id="angkatan" class="form-control">
                                             <option value=""></option>
+                                            <?php foreach ($angkatan as $a) : ?>
+                                                <option data-tahun="<?= $a->tahun ?>" value="<?= $a->id ?>"><?= $a->tahun ?></option>
+                                            <?php endforeach ?>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="input-group input-group-outline mb-3">
-                                        <label for="alamat" class="form-label">Alamat</label>
-                                        <textarea name="alamat" id="alamat" rows="3" class="form-control"></textarea>
+                                        <textarea name="alamat" id="alamat" rows="3" class="form-control" placeholder="Alamat Lengkap"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -98,20 +120,100 @@
 
 <?= $this->section('bottomsc'); ?>
 <script src="/assets/js/plugins/datatables.js"></script>
+<script src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <script>
     $(document).ready(function() {
         const dataTableBasic = new simpleDatatables.DataTable("#tbsiswa", {
             searchable: false,
-            fixedHeight: true
+            fixedHeight: true,
         });
 
-        $('#kelas').on('change', function() {
+        $('#fasiswa #angkatan').on('change', function() {
             if ($(this).val() != "") {
-                $(this).siblings('label').addClass('d-none');
+                $(this).parent().addClass('is-filled');
+                $('#fasiswa #nis').parent().addClass('is-filled');
+                const year = $(this).find(':selected').data('tahun').toString().substr(2, 2);
+                const random = Math.floor(100000 + Math.random() * 900000);
+                
+                $('#fasiswa #nis').val(year + "." + random);
             } else {
-                $(this).siblings('label').removeClass('d-none');
+                $(this).parent().removeClass('is-filled');
+                $('#fasiswa #nis').val('');
+                $('#fasiswa #nis').parent().removeClass('is-filled');
             }
+        });
+
+        $('#fasiswa #kelas').on('change', function() {
+            if ($(this).val() != "") {
+                $(this).parent().addClass('is-filled');
+            } else {
+                $(this).parent().removeClass('is-filled');
+            }
+        });
+
+        // fasiswa submit
+        $("#fasiswa").on("submit", function(s) {
+            s.preventDefault(), $.ajax({
+                url: "/siswa/store",
+                type: "post",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(s) {
+                    s.success ? Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: s.message,
+                        showConfirmButton: !1,
+                        timer: 1500
+                    }).then(s => {
+                        $("#mtsiswa").modal("hide"), $("#fasiswa")[0].reset(), $("#kelas").siblings("label").removeClass("d-none"), $("#angkatan").siblings("label").removeClass("d-none"), location.reload()
+                    }) : Swal.fire({
+                        icon: "error",
+                        title: "Gagal",
+                        text: s.message,
+                        showConfirmButton: !0
+                    }).then(s => {
+                        s.isConfirmed && ($("#mtsiswa").modal("hide"), $("#fasiswa")[0].reset(), $("#kelas").siblings("label").removeClass("d-none"), $("#angkatan").siblings("label").removeClass("d-none"), location.reload())
+                    })
+                }
+            })
+        });
+
+        // tbsiswa btn-destroy
+        $("#tbsiswa tbody").on("click", ".btn-destroy", function() {
+            let t = $(this).data("item");
+            Swal.fire({
+                icon: "warning",
+                title: "Hapus Data",
+                text: "Apakah anda yakin ingin menghapus data ini?",
+                showCancelButton: !0,
+                confirmButtonText: "Ya, Hapus"
+            }).then(e => {
+                e.isConfirmed && $.ajax({
+                    url: "/siswa/destroy/" + t,
+                    type: "delete",
+                    dataType: "json",
+                    success: function(t) {
+                        t.success ? Swal.fire({
+                            icon: "success",
+                            title: "Berhasil",
+                            text: t.message,
+                            showConfirmButton: !1,
+                            timer: 1500
+                        }).then(t => {
+                            location.reload()
+                        }) : Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: t.message,
+                            showConfirmButton: !0
+                        }).then(t => {
+                            t.isConfirmed && location.reload()
+                        })
+                    }
+                })
+            })
         });
     });
 </script>

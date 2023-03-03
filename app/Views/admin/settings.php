@@ -22,7 +22,7 @@
     <div class="col-lg-9 mt-lg-0 mt-4">
         <div class="card card-body p-4 mb-4" id="jurusan">
             <div class="row">
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <h6>Manajemen Jurusan</h6>
                     <form role="form text-left" id="fajurusan">
                         <div class="">
@@ -36,7 +36,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-8">
+                <div class="col-12 col-md-8">
                     <div class="table-responsive">
                         <table id="tblJurusan" class="table table-hover align-items-center mb-0">
                             <thead>
@@ -54,7 +54,7 @@
                                         <td class="text-xs ps-4 font-weight-bold"><?= $j->nama_jurusan; ?></td>
                                         <td class="text-xs ps-4 font-weight-bold gap-1 d-flex justify-content-end">
                                             <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $j->id ?>"><i class="fa fa-trash"></i></button>
-                                            <button class="badge border border-1 border-info text-info btn-edit" data-item="<?= $j->id ?>" data-iname="<?= $j->nama_jurusan ?>" data-bs-toggle="modal" data-bs-target="#mejurusan"><i class="fa fa-pen"></i></button>
+                                            <button class="badge border border-1 border-dark text-dark btn-edit" data-item="<?= $j->id ?>" data-iname="<?= $j->nama_jurusan ?>" data-bs-toggle="modal" data-bs-target="#mejurusan"><i class="fa fa-pen"></i></button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -67,7 +67,7 @@
 
         <div class="card card-body p-4 mb-4" id="angkatan">
             <div class="row">
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <h6>Manajemen Angkatan</h6>
                     <form role="form text-left" id="faangkatan">
                         <div class="">
@@ -81,7 +81,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-8">
+                <div class="col-12 col-md-8">
                     <div class="table-responsive">
                         <table id="tblAngkatan" class="table table-hover align-items-center mb-0">
                             <thead>

@@ -9,7 +9,7 @@ class AngkatanMigrate extends Migration
     public function up()
     {
         $fields = [
-            "id" => ["type" => "int", "constraint" => 11, 'auto_increment' => true],
+            "id" => ["type" => "int", "constraint" => 11, 'unsigned' => true, 'auto_increment' => true],
             "tahun" => ["type" => "varchar", "constraint" => 255, 'after' => 'id'],
 
             'created_at' => ['type' => 'datetime', 'null' => true],

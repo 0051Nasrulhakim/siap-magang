@@ -29,6 +29,11 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
+// Custom Placeholder
+$routes->addPlaceholder('nis', '[0-9]{2}\.[0-9]{6}');
+
+// Routes
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
 $routes->get('/tempat', 'Home::tempat');
@@ -47,10 +52,18 @@ $routes->group('jurusan', function ($j)
     $j->delete('destroy/(:num)', 'Jurusan::destroy/$1');
 });
 
-$routes->group('angkatan', function ($j)
+$routes->group('angkatan', function ($a)
 {
-    $j->post('store', 'Angkatan::store');
-    $j->delete('destroy/(:num)', 'Angkatan::destroy/$1');
+    $a->post('store', 'Angkatan::store');
+    $a->delete('destroy/(:num)', 'Angkatan::destroy/$1');
+});
+
+$routes->group('siswa', function ($s)
+{
+    $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
+    $s->post('store', 'Siswa::store');
+    $s->post('update', 'Siswa::update');
+    $s->delete('destroy/(:num)', 'Siswa::destroy/$1');
 });
 
 /*

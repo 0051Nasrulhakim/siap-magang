@@ -15,11 +15,20 @@ class InitialSeed extends Seeder
             ['id'=> 2, 'nama_jurusan' => 'TKJ',]
         ]);
         
+        
         // angkatan
         $angkatan = new \App\Models\AngkatanModel();
         $angkatan->insertBatch([
             ['tahun' => 2021],
             ['tahun' => 2022],
+        ]);
+
+        
+        // group 
+        $this->db->table('auth_groups')->insertBatch([
+            ['name' => 'admin', 'description' => 'Site Administrator'],
+            ['name' => 'siswa', 'description' => 'Siswa'],
+            ['name' => 'pembimbing', 'description' => 'Pembimbing magang'],
         ]);
     }
 }
