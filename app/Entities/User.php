@@ -265,8 +265,7 @@ class User extends \Myth\Auth\Entities\User
         }
 
         if (empty($this->roles)) {
-            $groups = model(GroupModel::class)->getGroupsForUser($this->id);
-
+            $groups = model(\Myth\Auth\Models\GroupModel::class)->getGroupsForUser($this->id);
             foreach ($groups as $group) {
                 $this->roles[$group['group_id']] = strtolower($group['name']);
             }

@@ -11,8 +11,18 @@ class CreateAuthTables extends Migration
         // Users
         $this->forge->addField([
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            
+            "nis"              => ["type" => "varchar", "constraint" => 255],
+            
             'email'            => ['type' => 'varchar', 'constraint' => 255],
             'username'         => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
+            
+            "nama"             => ["type" => "varchar", "constraint" => 255],
+            "kelas"            => ["type" => "varchar", "constraint" => 255],
+            "angkatan"         => ["type" => "int", "constraint" => 11, 'unsigned' => true],
+            "no_hp"            => ["type" => "varchar", "constraint" => 255],
+            "alamat"           => ["type" => "varchar", "constraint" => 255],
+
             'password_hash'    => ['type' => 'varchar', 'constraint' => 255],
             'reset_hash'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'reset_at'         => ['type' => 'datetime', 'null' => true],
@@ -30,7 +40,9 @@ class CreateAuthTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey('email');
         $this->forge->addUniqueKey('username');
-
+        $this->forge->addUniqueKey('nis');
+        $this->forge->addKey('angkatan');
+        $this->forge->addForeignKey('angkatan', 'angkatan', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('users', true);
 
         // Auth Login Attempts
