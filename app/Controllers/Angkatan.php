@@ -45,7 +45,7 @@ class Angkatan extends BaseController
             return $this->response->setJSON([
                 'status'    => 500,
                 'success'   => false,
-                'message'   => 'Tahun angkatan gagal dihapus'
+                'message'   => implode(", ", $this->angkatan->errors())
             ]);
         }
     }
