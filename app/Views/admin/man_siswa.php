@@ -33,7 +33,7 @@
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->nis; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->nama; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->kelas; ?></td>
-                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->tahun; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->angkatan; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold">
                                         <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $s->id; ?>"><i class="fas fa-trash"></i></button>
                                         <a href="/siswa/edit/<?= $s->username ?>" class="badge border border-1 border-dark text-dark"><i class="fas fa-edit"></i></a>
