@@ -61,7 +61,21 @@ class Home extends BaseController
             "title"         => "Magang | Manajemen User",
             "page_title"    => "Manajejemen Data Pengelola dan Guru",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Manajemen', 'User']
+            "breadcrumb"    => ['Manajemen', 'User'],
+            "user"          => $this->user->findAll()
+        ]);
+    }
+
+    public function user_edit($uname)
+    {
+        return view('admin/siswa_edit', [
+            "title"         => "Magang | Edit Data siswa",
+            "page_title"    => "Edit Data User $uname",
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => ['Siswa','Edit', $uname],
+            "siswa"         => $this->user->where('username', $uname)->join('angkatan', 'angkatan.id = users.angkatan')->first(),
+            "angkatan"      => $this->angkatan->findAll(),
+            "jurusan"       => $this->jurusan->findAll()
         ]);
     }
 
@@ -80,6 +94,8 @@ class Home extends BaseController
 
     public function siswa_edit($nis)
     {
+        $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
+
         return view('admin/siswa_edit', [
             "title"         => "Magang | Edit Data siswa",
             "page_title"    => "Edit Data Siswa $nis",
