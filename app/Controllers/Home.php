@@ -8,11 +8,13 @@ class Home extends BaseController
     protected $angkatan;
     protected $jurusan;
     protected $user;
+    protected $siswa;
 
     public function __construct() {
         $this->angkatan     = new \App\Models\AngkatanModel();
         $this->jurusan      = new \App\Models\JurusanModel();
         $this->user         = new \App\Models\UserModel();
+        $this->siswa        = new \App\Models\SiswaModel();
     }
 
     public function index()
@@ -81,6 +83,11 @@ class Home extends BaseController
 
     public function man_siswa()
     {
+        $dsiswa = $this->user
+            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
+            ->join('siswa', 'siswa.user_id = users.id', 'inner')->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
+            ->findAll();
+
         return view('admin/man_siswa', [
             "title"         => "Magang | Manajemen Siswa",
             "page_title"    => "Manajemen Data Siswa",
@@ -88,20 +95,25 @@ class Home extends BaseController
             "breadcrumb"    => ['Manajemen', 'Siswa'],
             "angkatan"      => $this->angkatan->findAll(),
             "jurusan"       => $this->jurusan->findAll(),
-            "siswa"         => $this->user->select('users.*, angkatan.tahun')->join('angkatan', 'angkatan.id = users.angkatan')->orderBy('tahun', 'DESC')->findAll(),
+            "siswa"         => $dsiswa
         ]);
     }
 
     public function siswa_edit($nis)
     {
         $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
+        $dsiswa = $this->user
+            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
+            ->join('siswa', 'siswa.user_id = users.id', 'inner')->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
+            ->where('siswa.nis', $nis)
+            ->first();
 
         return view('admin/siswa_edit', [
             "title"         => "Magang | Edit Data siswa",
             "page_title"    => "Edit Data Siswa $nis",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Siswa','Edit', $nis],
-            "siswa"         => $this->user->select('users.*, angkatan.tahun')->where('nis', $nis)->join('angkatan', 'angkatan.id = users.angkatan')->first(),
+            "siswa"         => $dsiswa,
             "angkatan"      => $this->angkatan->findAll(),
             "jurusan"       => $this->jurusan->findAll()
         ]);

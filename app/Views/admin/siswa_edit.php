@@ -4,8 +4,8 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header pb-0">
-                <span class="h5">Tambah Siswa</span><br>
-                Tambah data siswa magang
+                <span class="h5">Edit Data Siswa</span><br>
+                Edut data siswa magang
             </div>
             <div class="card-body">
                 <form role="form text-left" id="fesiswa">
@@ -46,7 +46,7 @@
                                 <select name="angkatan" id="angkatan" class="form-control">
                                     <option value=""></option>
                                     <?php foreach ($angkatan as $a) : ?>
-                                        <option <?= $siswa->tahun == $a->tahun ? 'selected' : '' ?> data-tahun="<?= $a->tahun ?>" value="<?= $a->id ?>"><?= $a->tahun ?></option>
+                                        <option <?= $siswa->angkatan == $a->tahun ? 'selected' : '' ?> data-tahun="<?= $a->tahun ?>" value="<?= $a->id ?>"><?= $a->tahun ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -98,8 +98,6 @@
                     const random = Math.floor(100000 + Math.random() * 900000);
                     $('#fesiswa #nis').val(thnBaru + "." + random);
                 }
-
-                // $('#fesiswa #nis').val(year + "." + random);
             } else {
                 $(this).parent().removeClass('is-filled');
                 $('#fesiswa #nis').val('');
@@ -115,7 +113,6 @@
                 data: $(this).serialize(),
                 dataType: "json",
                 success: function(s) {
-                    console.log(s.data);
                     s.success ? Swal.fire({
                         icon: "success",
                         title: "Berhasil",

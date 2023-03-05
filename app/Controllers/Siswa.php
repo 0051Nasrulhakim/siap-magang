@@ -8,86 +8,132 @@ use App\Entities\User as UserEntity;
 class Siswa extends BaseController
 {
     protected $user;
+    protected $siswa;
 
     public function __construct() {
         $this->user = new \App\Models\UserModel();
+        $this->siswa = new \App\Models\SiswaModel();
     }
 
     public function store()
     {
         $nis = str_replace(".", "", $this->request->getPost("nis"));
 
-        $data = [
-            "nis" => $this->request->getPost("nis"),
+        $siswa_user = new UserEntity([
             "email" => $this->request->getPost("email"),
             "username" => $nis,
-            "nama" => $this->request->getPost("nama"),
-            "kelas" => $this->request->getPost("kelas"),
-            "angkatan" => $this->request->getPost("angkatan"),
-            "no_hp" => $this->request->getPost("hp"),
-            "alamat" => $this->request->getPost("alamat"),
             "password" => $nis,
-            "active" => 1,
-        ];
-
-        $data = new UserEntity($data);
-
-        if ($this->user->withGroup('siswa')->save($data)) {
-            return $this->response->setJSON([
-                'status'    => 200,
-                'success'   => true,
-                'message'   => 'Siswa berhasil ditambahkan'
-            ]);
-        } else {
-            return $this->response->setJSON([
-                'status'    => 500,
-                'success'   => false,
-                'message'   => 'Siswa gagal ditambahkan'
-            ]);
-        }
-    }
-    
-    public function update()
-    {
-        $nis = str_replace(".", "", $this->request->getPost("nis"));
-        $old_nis = $this->request->getPost("old_nis");  
-        $old_email = $this->request->getPost("old_email");  
-
-        $data = [
-            "id" => $this->request->getPost("items"),
+            "active" => 1
+        ]);
+        
+        $siswa_detail = [
             "nis" => $this->request->getPost("nis"),
             "nama" => $this->request->getPost("nama"),
             "kelas" => $this->request->getPost("kelas"),
             "angkatan" => $this->request->getPost("angkatan"),
             "no_hp" => $this->request->getPost("hp"),
-            "alamat" => $this->request->getPost("alamat"),
+            "alamat" => $this->request->getPost("alamat")
         ];
+    
+        if ($this->user->withGroup('siswa')->save($siswa_user)) {
+            $siswa_detail["user_id"] = $this->user->getInsertID();
+            $siswa = new UserEntity($siswa_detail);
 
-        if ($this->request->getPost("nis") != $old_nis) {
-            $data["username"] = $nis;
-            $data["password"] = $nis;
-            $data["active"] = 1;
-        }
-
-        if ($this->request->getPost("email") != $old_email) {
-            $data["email"] = $this->request->getPost("email");
-        }
-
-        $data = new UserEntity($data);
-
-        if ($this->user->save($data)) {
-            return $this->response->setJSON([
-                'status'    => 200,
-                'success'   => true,
-                'message'   => 'Siswa berhasil diperbarui',
-                'data'      => $data
-            ]);
+            if ($this->siswa->save($siswa)) {
+                return $this->response->setJSON([
+                    'status'    => 200,
+                    'success'   => true,
+                    'message'   => 'Siswa berhasil ditambahkan',
+                    'data'      => $siswa
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status'    => 500,
+                    'success'   => false,
+                    'message'   => implode(", ", $this->siswa->errors())
+                ]);
+            }
         } else {
             return $this->response->setJSON([
                 'status'    => 500,
                 'success'   => false,
                 'message'   => implode(", ", $this->user->errors())
             ]);
+        }
+    }
+
+    public function update()
+    {
+        $siswa_user = [];
+
+        $nis = str_replace(".", "", $this->request->getPost("nis"));
+        $old_nis = $this->request->getPost("old_nis");  
+        $old_email = $this->request->getPost("old_email");  
+
+        $siswa_detail = [
+            "nis" => $this->request->getPost("nis"),
+            "nama" => $this->request->getPost("nama"),
+            "kelas" => $this->request->getPost("kelas"),
+            "angkatan" => $this->request->getPost("angkatan"),
+            "no_hp" => $this->request->getPost("hp"),
+            "alamat" => $this->request->getPost("alamat")
+        ];
+
+
+        if ($this->request->getPost("nis") != $old_nis) {
+            $siswa_user["username"] = $nis;
+            $siswa_user["password"] = $nis;
+            $siswa_user["active"] = 1;
+        }
+
+        if ($this->request->getPost("email") != $old_email) {
+            $siswa_user["email"] = $this->request->getPost("email");
+        }
+        
+        // if siswa_user not empty
+        if (!empty($siswa_user)) {
+            $siswa_user = new UserEntity($siswa_user);
+            if($this->user->update($this->request->getPost("items"), $siswa_user)) {
+                $id = $this->siswa->where("nis", $old_nis)->first()->id;
+
+                if ($this->siswa->update($id, $siswa_detail)) {
+                    return $this->response->setJSON([
+                        'status'    => 200,
+                        'success'   => true,
+                        'message'   => 'Siswa berhasil diperbarui',
+                        'data'      => $siswa_detail
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status'    => 500,
+                        'success'   => false,
+                        'message'   => implode(", ", $this->siswa->errors())
+                    ]);
+                }
+            } else {
+                return $this->response->setJSON([
+                    'status'    => 500,
+                    'success'   => false,
+                    'message'   => implode(", ", $this->user->errors())
+                ]);
+            }
+        } else {
+            $id = $this->siswa->where("nis", $old_nis)->first()->id;
+
+            if ($this->siswa->update($id, $siswa_detail)) {
+                return $this->response->setJSON([
+                    'status'    => 200,
+                    'success'   => true,
+                    'message'   => 'Siswa berhasil diperbarui',
+                    'data'      => $siswa_detail
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status'    => 500,
+                    'success'   => false,
+                    'message'   => implode(", ", $this->siswa->errors())
+                ]);
+            }
         }
     }
 
