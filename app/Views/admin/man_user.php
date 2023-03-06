@@ -7,26 +7,45 @@
                 <h6>
                     Table Pengelola
                 </h6>
-                <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#mtPengelola">
+                <button class="btn btn-sm btn-dark" id="btnAddPengelola" data-bs-toggle="modal" data-bs-target="#mtPengelola">
                     <i class="fas fa-plus me-1"></i>
                     Pengelola
                 </button>
             </div>
-            <table class="table table-hover table-stripped" id="tbPengelola">
-                <thead>
-                    <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Username</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Group</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-stripped" id="tbPengelola">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Username</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hp</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Group</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1; ?>
+                        <?php foreach ($user as $u) : ?>
+                            <tr>
+                                <td class="text-xs ps-4 font-weight-bold"><?= $i++ ?></td>
+                                <td class="text-xs ps-4 font-weight-bold"><?= $u->nama ?></td>
+                                <td class="text-xs ps-4 font-weight-bold"><?= $u->username ?></td>
+                                <td class="text-xs ps-4 font-weight-bold"><?= $u->no_hp ?></td>
+                                <td class="text-xs ps-4 font-weight-bold">
+                                    <a class="opacity-7" href="mailto:<?= $u->email ?>"><?= $u->email ?> <i class="ps-1 far fa-envelope"></i></a>
+                                </td>
+                                <td class="text-xs ps-4 font-weight-bold"><?= implode(", ", $u->getRoles()) ?></td>
+                                <td class="text-xs ps-4 font-weight-bold">
+                                    <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $u->id; ?>"><i class="fas fa-trash"></i></button>
+                                    <button class="badge border border-1 border-dark text-dark btn-edit" data-item="<?= $u->id; ?>"><i class="fas fa-edit"></i></button>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -38,11 +57,11 @@
             <div class="modal-body p-0">
                 <div class="card card-plain">
                     <div class="card-header pb-0">
-                        <span class="h5">Tambah Pengelola</span><br>
-                        Tambah data Pengelola magang
+                        <span class="h5" id="modalTitle">Tambah Pengelola</span><br>
+                        <span id="modalSubTitle">Tambah data Pengelola magang</span>
                     </div>
                     <div class="card-body">
-                        <form role="form text-left" id="fejurusan">
+                        <form role="form text-left" data-action="" id="fauser">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="input-group input-group-outline mb-3">
@@ -80,12 +99,119 @@
 
 <?= $this->section('bottomsc'); ?>
 <script src="/assets/js/plugins/datatables.js"></script>
+<script src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <script>
     $(document).ready(function() {
         const dataTableBasic = new simpleDatatables.DataTable("#tbPengelola", {
             searchable: false,
             fixedHeight: true
+        });
+
+        // btnAddPengelola click edit title and subtitle
+        $("#btnAddPengelola").on('click', function() {
+            $("#modalTitle").text("Tambah Pengelola");
+            $("#modalSubTitle").text("Tambah data Pengelola magang");
+
+            $("#fauser")[0].reset();
+            $("#fauser").find('.form-control').each(function() {
+                $(this).parent().removeClass('is-filled');
+            })
+
+            $("#fauser").data('action', 'store');
+        })
+
+        // fauser submit
+        $("#fauser").on('submit', function(s) {
+            s.preventDefault(),
+            $.ajax({
+                url: $(this).data('action') == 'store' ? "/user/store" : $(this).data('action') == 'update' ? "/user/update" : "",
+                type: "post",
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function(s) {
+                    console.log(s);
+                    s.success ? Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: s.message,
+                        showConfirmButton: !1,
+                        timer: 1500
+                    }).then(s => {
+                        location.reload()
+                    }) : Swal.fire({
+                        icon: "error",
+                        title: "Gagal",
+                        text: s.message,
+                        showConfirmButton: !1,
+                        timer: 1500
+                    })
+                }
+            })
+        })
+
+        $("#tbPengelola tbody").on('click', '.btn-edit', function() {
+            $("#fauser").data('action', 'update');
+
+            const item = $(this).data('item');
+            const nama = $(this).parent().parent().find('td:eq(1)').text();
+            const user = $(this).parent().parent().find('td:eq(2)').text();
+            const hp = $(this).parent().parent().find('td:eq(3)').text();
+            const email = $(this).parent().parent().find('td:eq(4)').text();
+
+            // Modal
+            $("#modalTitle").text("Edit Pengelola");
+            $("#modalSubTitle").text("Edit data Pengelola magang");
+            $("#mtPengelola").modal('show');
+            
+            // Form
+            $("#fauser input[name='nama']").val(nama);
+            $("#fauser input[name='nama']").parent().addClass('is-filled');
+            $("#fauser input[name='username']").val(user);
+            $("#fauser input[name='username']").parent().addClass('is-filled');
+            $("#fauser input[name='username']").attr('readonly', true);
+            $("#fauser input[name='hp']").val(hp);
+            $("#fauser input[name='hp']").parent().addClass('is-filled');
+            $("#fauser input[name='email']").val(email);
+            $("#fauser input[name='email']").parent().addClass('is-filled');
+            $("#fauser").append(`<input type="hidden" name="item" value="${item}">`);
+            $("#fauser").append(`<input type="hidden" name="old_email" value="${email}">`);
+        })
+
+        // tbPengelola btn-destroy
+        $("#tbPengelola tbody").on("click", ".btn-destroy", function() {
+            let t = $(this).data("item");
+            Swal.fire({
+                icon: "warning",
+                title: "Hapus Data",
+                text: "Apakah anda yakin ingin menghapus data ini?",
+                showCancelButton: !0,
+                confirmButtonText: "Ya, Hapus"
+            }).then(e => {
+                e.isConfirmed && $.ajax({
+                    url: "/user/destroy/" + t,
+                    type: "delete",
+                    dataType: "json",
+                    success: function(t) {
+                        t.success ? Swal.fire({
+                            icon: "success",
+                            title: "Berhasil",
+                            text: t.message,
+                            showConfirmButton: !1,
+                            timer: 1500
+                        }).then(t => {
+                            location.reload()
+                        }) : Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: t.message,
+                            showConfirmButton: !0
+                        }).then(t => {
+                            t.isConfirmed && location.reload()
+                        })
+                    }
+                })
+            })
         });
     });
 </script>

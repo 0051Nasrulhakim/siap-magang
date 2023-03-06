@@ -11,7 +11,7 @@ class PembimbingMigrate extends Migration
         // Pembimbing field: id, users_id, nama, no_hp, email, 
         $this->forge->addField([
             "id"        => ["type" => "int", "constraint" => 11, "unsigned" => true, "auto_increment" => true],
-            "users_id"     => ["type" => "int", "constraint" => 11, "unsigned" => true],
+            "user_id"   => ["type" => "int", "constraint" => 11, "unsigned" => true],
             "nama"      => ["type" => "varchar", "constraint" => 255],
             "no_hp"     => ["type" => "varchar", "constraint" => 255],
             "email"     => ["type" => "varchar", "constraint" => 255],
@@ -22,7 +22,7 @@ class PembimbingMigrate extends Migration
         ]);
 
         $this->forge->addKey("id", true);
-        $this->forge->addForeignKey("users_id", "users", "id", "", "CASCADE");
+        $this->forge->addForeignKey("user_id", "users", "id", "", "CASCADE");
         $this->forge->createTable("pembimbing", true);
     }
 

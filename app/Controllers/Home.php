@@ -59,12 +59,18 @@ class Home extends BaseController
 
     public function man_user()
     {
+        $duser = $this->user
+            ->select('users.id, users.username, users.email')
+            ->select('pembimbing.id as pid, pembimbing.nama, pembimbing.no_hp')
+            ->join('pembimbing', 'pembimbing.user_id = users.id')
+            ->findAll();
+
         return view('admin/man_user', [
             "title"         => "Magang | Manajemen User",
             "page_title"    => "Manajejemen Data Pengelola dan Guru",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Manajemen', 'User'],
-            "user"          => $this->user->findAll()
+            "user"          => $duser
         ]);
     }
 
@@ -85,7 +91,8 @@ class Home extends BaseController
     {
         $dsiswa = $this->user
             ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
-            ->join('siswa', 'siswa.user_id = users.id', 'inner')->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
+            ->join('siswa', 'siswa.user_id = users.id', 'inner')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->findAll();
 
         return view('admin/man_siswa', [
@@ -104,7 +111,8 @@ class Home extends BaseController
         $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
         $dsiswa = $this->user
             ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
-            ->join('siswa', 'siswa.user_id = users.id', 'inner')->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
+            ->join('siswa', 'siswa.user_id = users.id', 'inner')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->where('siswa.nis', $nis)
             ->first();
 

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PembimingModel extends Model
+class PembimbingModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'pembimings';
+    protected $table            = 'pembimbing';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 7589;
@@ -15,7 +15,7 @@ class PembimingModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id', 'users_id', 'nama', 'no_hp', 'email'
+        'id', 'user_id', 'nama', 'no_hp', 'email'
     ];
 
     // Dates
