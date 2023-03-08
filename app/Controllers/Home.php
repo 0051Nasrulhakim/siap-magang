@@ -9,12 +9,14 @@ class Home extends BaseController
     protected $jurusan;
     protected $user;
     protected $siswa;
+    protected $tempat;
 
     public function __construct() {
         $this->angkatan     = new \App\Models\AngkatanModel();
         $this->jurusan      = new \App\Models\JurusanModel();
         $this->user         = new \App\Models\UserModel();
         $this->siswa        = new \App\Models\SiswaModel();
+        $this->tempat       = new \App\Models\TempatModel();
     }
 
     public function index()
@@ -53,7 +55,19 @@ class Home extends BaseController
             "title"         => "Magang | Manajemen Tempat",
             "page_title"    => "Manejemen Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Manajemen', 'Tempat']
+            "breadcrumb"    => ['Manajemen', 'Tempat'],
+            "tempat"        => $this->tempat->findAll()
+        ]);
+    }
+
+    public function tempat_edit($id)
+    {
+        return view('admin/edit_tempat', [
+            'title'         => 'Magang | Edit Tempat Magang',
+            'page_title'    => 'Edit Tempat Magang',
+            'segment'       => $this->request->getUri()->getSegments(),
+            'breadcrumb'    => ['Manajemen', 'Tempat', 'Edit'],
+            'tempat'        => $this->tempat->find($id)
         ]);
     }
 
@@ -71,19 +85,6 @@ class Home extends BaseController
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Manajemen', 'User'],
             "user"          => $duser
-        ]);
-    }
-
-    public function user_edit($uname)
-    {
-        return view('admin/siswa_edit', [
-            "title"         => "Magang | Edit Data siswa",
-            "page_title"    => "Edit Data User $uname",
-            "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Siswa','Edit', $uname],
-            "siswa"         => $this->user->where('username', $uname)->join('angkatan', 'angkatan.id = users.angkatan')->first(),
-            "angkatan"      => $this->angkatan->findAll(),
-            "jurusan"       => $this->jurusan->findAll()
         ]);
     }
 
@@ -116,7 +117,7 @@ class Home extends BaseController
             ->where('siswa.nis', $nis)
             ->first();
 
-        return view('admin/siswa_edit', [
+        return view('admin/edit_siswa', [
             "title"         => "Magang | Edit Data siswa",
             "page_title"    => "Edit Data Siswa $nis",
             "segment"       => $this->request->getUri()->getSegments(),

@@ -68,10 +68,18 @@ $routes->group('siswa', function ($s)
 
 $routes->group('user', function ($u)
 {
-    $u->get('edit/(:username)', 'Home::user_edit/$1');
     $u->post('store', 'User::store');
     $u->post('update', 'User::update');
     $u->delete('destroy/(:num)', 'User::destroy/$1');
+});
+
+$routes->group('tempat', function ($t)
+{
+    $t->get('edit/(:num)', 'Home::tempat_edit/$1');
+    $t->post('store', 'TempatMagang::store');
+    $t->post('update', 'TempatMagang::update');
+    $t->post('status/update', 'TempatMagang::status_update');
+    $t->delete('destroy/(:num)', 'TempatMagang::destroy/$1');
 });
 
 /*
