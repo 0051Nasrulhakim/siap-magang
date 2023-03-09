@@ -104,12 +104,13 @@
         <!-- Navbar -->
         <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky" id="navbarBlur" data-scroll="true">
             <div class="container-fluid py-1 px-3">
-                <nav aria-label="breadcrumb">
+                <nav aria-label="breadcrumb" class="d-none d-sm-block">
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                         <li class="breadcrumb-item text-sm">
                             <a class="opacity-5 text-dark" href="<?= base_url() ?>">Home</a>
                         </li>
-                        <?php $ak = array_keys($breadcrumb); $last_key = end($ak); ?>
+                        <?php $ak = array_keys($breadcrumb);
+                        $last_key = end($ak); ?>
                         <?php foreach ($breadcrumb as $k => $b) : ?>
                             <li class="breadcrumb-item text-sm <?= $k == $last_key ? 'text-dark active' : '' ?>" aria-current="page">
                                 <a class="<?= $k == $last_key ? '' : 'opacity-5 text-dark' ?>"><?= $b ?></a>
@@ -121,6 +122,13 @@
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-5 right" id="navbar">
                     <div class="ms-auto pe-md-3 d-flex align-items-center">
                         <ul class="navbar-nav  justify-content-end">
+                            <!-- <li class="nav-item mt-1 pe-3 d-none d-sm-block">
+                                <a href="javascript:;" class="nav-link text-body p-0 position-relative">
+                                    <i class="material-icons cursor-pointer">
+                                        info
+                                    </i>
+                                </a>
+                            </li> -->
                             <li class="nav-item dropdown pe-2 mt-1">
                                 <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="material-icons cursor-pointer">
@@ -234,9 +242,31 @@
 
         <!-- Page-Content -->
         <div class="container-fluid py-2">
-            <?= $this->renderSection('content') ;?>
+            <div class="card card-body mb-4 d-block d-sm-none">
+                <div class="d-flex flex-row align-items-center justify-content-between">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                            <li class="breadcrumb-item text-sm">
+                                <a class="opacity-5 text-dark" href="<?= base_url() ?>">Home</a>
+                            </li>
+                            <?php $ak = array_keys($breadcrumb);
+                            $last_key = end($ak); ?>
+                            <?php foreach ($breadcrumb as $k => $b) : ?>
+                                <li class="breadcrumb-item text-sm <?= $k == $last_key ? 'text-dark active' : '' ?>" aria-current="page">
+                                    <a class="<?= $k == $last_key ? '' : 'opacity-5 text-dark' ?>"><?= $b ?></a>
+                                </li>
+                            <?php endforeach ?>
+                        </ol>
+                        <h6 class="font-weight-bolder mb-0"><?= isset($page_title) && $page_title != null ? $page_title : 'Page title belum di setting' ?></h6>
+                    </nav>
+                    <div>
+                        <button class="badge border border-1 border-dark text-dark"><i class="fa fa-info"></i></button>
+                    </div>
+                </div>
+            </div>
+            <?= $this->renderSection('content'); ?>
         </div>
-        
+
         <footer class="footer py-4">
             <div class="container">
                 <div class="row align-items-center justify-content-lg-between">
@@ -260,7 +290,7 @@
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
 
-    <?= $this->renderSection('bottomsc') ;?>
+    <?= $this->renderSection('bottomsc'); ?>
 </body>
 
 </html>

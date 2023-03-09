@@ -35,7 +35,8 @@ class Home extends BaseController
             "title"         => "Magang | Tempat Magang",
             "page_title"    => "Daftar Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Tempat Magang']
+            "breadcrumb"    => ['Tempat Magang'],
+            "tempat"        => $this->tempat->orderBy("status", "ASC")->findAll()
         ]);
     }
 

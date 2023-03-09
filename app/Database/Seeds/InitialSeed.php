@@ -104,7 +104,7 @@ class InitialSeed extends Seeder
                 'hp'            => $fake->e164PhoneNumber(),
                 'email'         => $fake->companyEmail(),
                 'alamat'        => $fake->address(),
-                'deskripsi'     => $fake->paragraph(),
+                'deskripsi'     => $fake->paragraph(2),
                 'foto'          => 'https://source.unsplash.com/random/800x600?sig='.$fake->randomNumber(5, true),
             ]);
         }

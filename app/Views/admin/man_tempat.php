@@ -139,9 +139,14 @@
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <div class="input-group input-group-outline mb-3">
-                                                <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control" placeholder="Deskripsi"></textarea>
+                                                <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control" placeholder="Deskripsi Singkat"></textarea>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="input-group input-group-outline mb-3">
+                                        <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control" placeholder="Deskripsi Lengkap (Jobdesk, gaji, dll ...)"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -207,8 +212,8 @@
             });
         });
 
-        $("#tbTempatMagang tbody").on('click', '.btn-destroy', function () {
-             Swal.fire({
+        $("#tbTempatMagang tbody").on('click', '.btn-destroy', function() {
+            Swal.fire({
                 title: 'Apakah anda yakin?',
                 html: `Anda akan menghapus data tempat magang <code>${$(this).parents('tr').find('td').eq(1).text()}</code>`,
                 icon: 'warning',
@@ -250,7 +255,7 @@
             })
         })
 
-        $("#tbTempatMagang tbody").on('click', '.btn-edit-status', function () {
+        $("#tbTempatMagang tbody").on('click', '.btn-edit-status', function() {
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 html: `Anda akan merubah status tempat magang <code>${$(this).parents('tr').find('td').eq(1).text()}</code> menjadi <b>${$(this).data('stts')}</b>`,
