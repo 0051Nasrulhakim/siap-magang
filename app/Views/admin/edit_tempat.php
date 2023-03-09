@@ -1,7 +1,17 @@
 <?= $this->extend('main'); ?>
 <?= $this->section('content'); ?>
+
+<?php 
+    // if foto is url
+    if (filter_var($tempat->foto, FILTER_VALIDATE_URL)) {
+        $foto = $tempat->foto;
+    } else {
+        $foto = '/assets/img/tempat_magang/'.$tempat->foto;
+    }
+?>
+
 <div class="mt-2">
-    <div class="page-header min-height-300 border-radius-xl" style="background-image: url('/assets/img/tempat_magang/<?= $tempat->foto ?>');">
+    <div class="page-header min-height-300 border-radius-xl" style="background-image: url('<?= $foto ?>'); background-position: center; background-repeat: no-repeat; background-size: cover;">
         <span class="mask bg-gradient-dark opacity-6"></span>
     </div>
     <div class="card card-body mx-3 mx-md-4 mt-n6 p-4">
