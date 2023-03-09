@@ -30,7 +30,7 @@
                             <?php if (in_array('siswa', $s->getRoles())) : ?>
                                 <tr>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $no++; ?></td>
-                                    <td class="text-xs ps-4 font-weight-bold"><?= $s->nis; ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><div class="badge badge-dark"><?= $s->nis; ?></div></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->nama; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->kelas; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->angkatan; ?></td>
