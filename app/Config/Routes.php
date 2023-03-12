@@ -31,7 +31,9 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 
 // Custom Placeholder
+$routes->addPlaceholder('nis', '[0-9]{8}');
 $routes->addPlaceholder('username', '[0-9]{8}');
+$routes->addPlaceholder('dotnis', '[0-9]{2}\.[0-9]{5}');
 
 // Routes
 $routes->get('/', 'Home::index');
@@ -60,7 +62,7 @@ $routes->group('angkatan', function ($a)
 
 $routes->group('siswa', function ($s)
 {
-    $s->get('edit/(:username)', 'Home::siswa_edit/$1');
+    $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
     $s->post('store', 'Siswa::store');
     $s->post('update', 'Siswa::update');
     $s->delete('destroy/(:num)', 'Siswa::destroy/$1');
@@ -81,6 +83,13 @@ $routes->group('tempat', function ($t)
     $t->post('status/update', 'TempatMagang::status_update');
     $t->delete('destroy/(:num)', 'TempatMagang::destroy/$1');
 });
+
+$routes->group('application', function ($app)
+{
+    $app->delete('destroy/(:num)', 'Application::destroy/$1');    
+    $app->post('status/update', 'Application::update');
+});
+
 
 /*
  * --------------------------------------------------------------------

@@ -10,6 +10,7 @@ class Home extends BaseController
     protected $user;
     protected $siswa;
     protected $tempat;
+    protected $application;
 
     public function __construct() {
         $this->angkatan     = new \App\Models\AngkatanModel();
@@ -17,6 +18,7 @@ class Home extends BaseController
         $this->user         = new \App\Models\UserModel();
         $this->siswa        = new \App\Models\SiswaModel();
         $this->tempat       = new \App\Models\TempatModel();
+        $this->application  = new \App\Models\ApplicationModel();
     }
 
     public function index()
@@ -42,11 +44,19 @@ class Home extends BaseController
 
     public function application()
     {
+        $dapp = $this->application->select('applications.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+            ->join('siswa', 'siswa.id = applications.id_siswa')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->orderBy('applications.created_at', "DESC")
+            ->findAll();
+        // dd($dapp);
+
         return view('admin/application', [
             "title"         => "Magang | Application Siswa",
             "page_title"    => "Lamaran Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Application']
+            "breadcrumb"    => ['Application'],
+            "applications"  => $dapp
         ]);
     }
 
