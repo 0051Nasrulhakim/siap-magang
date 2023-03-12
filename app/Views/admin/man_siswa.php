@@ -30,13 +30,13 @@
                             <?php if (in_array('siswa', $s->getRoles())) : ?>
                                 <tr>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $no++; ?></td>
-                                    <td class="text-xs ps-4 font-weight-bold"><div class="badge badge-dark"><?= $s->nis; ?></div></td>
+                                    <td class="text-xs ps-4 font-weight-bold"><div class="badge badge-secondary"><?= $s->nis; ?></div></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->nama; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->kelas; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->angkatan; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold">
                                         <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $s->id; ?>"><i class="fas fa-trash"></i></button>
-                                        <a href="/siswa/edit/<?= $s->username ?>" class="badge border border-1 border-dark text-dark"><i class="fas fa-edit"></i></a>
+                                        <a href="/siswa/edit/<?= str_replace(".", "", $s->nis) ?>" class="badge border border-1 border-dark text-dark"><i class="fas fa-edit"></i></a>
                                     </td>
                                 </tr>
                             <?php endif ?>
