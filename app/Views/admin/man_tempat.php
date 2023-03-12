@@ -115,18 +115,29 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-6 col-md-3">
                                             <div class="input-group input-group-outline mb-3">
                                                 <label for="kuota" class="form-label">Kuota</label>
-                                                <input type="number" min="0" max="100" name="kuota" id="kuota" class="form-control">
+                                                <input type="number" value="0" min="0" max="100" name="kuota" id="kuota" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-6 col-md-3">
                                             <div class="input-group input-group-outline mb-3 is-filled">
                                                 <label for="status" class="form-label">Status</label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value="buka">Buka</option>
                                                     <option value="tutup">Tutup</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group input-group-outline mb-3 is-filled">
+                                                <label for="pembimbing" class="form-label">Pembimbing</label>
+                                                <select name="pembimbing" id="pembimbing" class="form-control">
+                                                    <option value=""> -- PILIH PEMBIMBING -- </option>
+                                                    <?php foreach ($pembimbing as $p) : ?>
+                                                        <option value="<?= $p->id ?>"><?= $p->nama ?></option>
+                                                    <?php endforeach ?>
                                                 </select>
                                             </div>
                                         </div>

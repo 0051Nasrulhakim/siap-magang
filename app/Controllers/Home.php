@@ -11,6 +11,7 @@ class Home extends BaseController
     protected $siswa;
     protected $tempat;
     protected $application;
+    protected $pembimbing;
 
     public function __construct() {
         $this->angkatan     = new \App\Models\AngkatanModel();
@@ -19,6 +20,7 @@ class Home extends BaseController
         $this->siswa        = new \App\Models\SiswaModel();
         $this->tempat       = new \App\Models\TempatModel();
         $this->application  = new \App\Models\ApplicationModel();
+        $this->pembimbing   = new \App\Models\PembimbingModel();
     }
 
     public function index()
@@ -67,7 +69,8 @@ class Home extends BaseController
             "page_title"    => "Manejemen Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Manajemen', 'Tempat'],
-            "tempat"        => $this->tempat->findAll()
+            "tempat"        => $this->tempat->findAll(),
+            "pembimbing"    => $this->pembimbing->findAll()
         ]);
     }
 
@@ -78,7 +81,8 @@ class Home extends BaseController
             'page_title'    => 'Edit Tempat Magang',
             'segment'       => $this->request->getUri()->getSegments(),
             'breadcrumb'    => ['Manajemen', 'Tempat', 'Edit'],
-            'tempat'        => $this->tempat->find($id)
+            'tempat'        => $this->tempat->find($id),
+            'pembimbing'    => $this->pembimbing->findAll()
         ]);
     }
 

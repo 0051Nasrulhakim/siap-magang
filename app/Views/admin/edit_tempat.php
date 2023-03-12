@@ -1,13 +1,13 @@
 <?= $this->extend('main'); ?>
 <?= $this->section('content'); ?>
 
-<?php 
-    // if foto is url
-    if (filter_var($tempat->foto, FILTER_VALIDATE_URL)) {
-        $foto = $tempat->foto;
-    } else {
-        $foto = '/assets/img/tempat_magang/'.$tempat->foto;
-    }
+<?php
+// if foto is url
+if (filter_var($tempat->foto, FILTER_VALIDATE_URL)) {
+    $foto = $tempat->foto;
+} else {
+    $foto = '/assets/img/tempat_magang/' . $tempat->foto;
+}
 ?>
 
 <div class="mt-2">
@@ -45,18 +45,29 @@
                 </div>
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 col-md-3">
                             <div class="input-group input-group-outline mb-3">
                                 <label for="kuota" class="form-label">Kuota</label>
                                 <input type="number" min="0" max="100" name="kuota" id="kuota" class="form-control" value="<?= $tempat->kuota ?>">
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 col-md-3">
                             <div class="input-group input-group-outline mb-3 is-filled">
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-control">
                                     <option <?= $tempat->status == 'buka' ? 'selected' : ''  ?> value="buka">Buka</option>
                                     <option <?= $tempat->status == 'tutup' ? 'selected' : ''  ?> value="tutup">Tutup</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input-group input-group-outline mb-3 is-filled">
+                                <label for="pembimbing" class="form-label">Pembimbing</label>
+                                <select name="pembimbing" id="pembimbing" class="form-control">
+                                    <option value=""> -- PILIH PEMBIMBING -- </option>
+                                    <?php foreach ($pembimbing as $p) : ?>
+                                        <option <?= $p->id == $tempat->pid ? 'selected' : '' ?> value="<?= $p->id ?>"><?= $p->nama ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>

@@ -18,6 +18,7 @@ class TempatMagang extends BaseController
         $file_name = $file->getRandomName();
         $data = [
             'status'        => $this->request->getPost('status'),
+            'pid'           => $this->request->getPost('pembimbing'),
             'kuota'         => $this->request->getPost('kuota'),
             'nama'          => $this->request->getPost('nama'),
             'hp'            => $this->request->getPost('kontak'),
@@ -69,6 +70,7 @@ class TempatMagang extends BaseController
         if ($file->getError() !== 0 || $file->getError() == 4) {
             $data = [
                 'id'            => $this->request->getPost('item'),
+                'pid'           => $this->request->getPost('pembimbing'),
                 'nama'          => $this->request->getPost('nama'),
                 'hp'            => $this->request->getPost('kontak'),
                 'email'         => $this->request->getPost('email'),
@@ -81,6 +83,7 @@ class TempatMagang extends BaseController
             $file_name = $file->getRandomName();
             $data = [
                 'id'            => $this->request->getPost('item'),
+                'pid'           => $this->request->getPost('pembimbing'),
                 'status'        => $this->request->getPost('status'),
                 'kuota'         => $this->request->getPost('kuota'),
                 'nama'          => $this->request->getPost('nama'),
