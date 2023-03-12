@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class ApplicationModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'applications';
+    protected $table            = 'lamaran';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 5348;

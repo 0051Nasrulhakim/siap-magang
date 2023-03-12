@@ -15,13 +15,13 @@ class PembimbingMigrate extends Migration
             "nama"      => ["type" => "varchar", "constraint" => 255],
             "no_hp"     => ["type" => "varchar", "constraint" => 255],
             "email"     => ["type" => "varchar", "constraint" => 255],
-
             'created_at' => ['type' => 'datetime', 'null' => true],
             'updated_at' => ['type' => 'datetime', 'null' => true],
             'deleted_at' => ['type' => 'datetime', 'null' => true],
         ]);
 
         $this->forge->addKey("id", true);
+        $this->forge->addKey("user_id");
         $this->forge->addForeignKey("user_id", "users", "id", "", "CASCADE");
         $this->forge->createTable("pembimbing", true);
     }

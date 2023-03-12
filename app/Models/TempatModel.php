@@ -15,7 +15,7 @@ class TempatModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [ 
-        'status', 'kuota', 'nama', 'hp', 'email', 'alamat', 'deskripsi', 'foto'
+        'pid', 'status', 'kuota', 'nama', 'hp', 'email', 'alamat', 'deskripsi', 'foto'
     ];
 
     // Dates

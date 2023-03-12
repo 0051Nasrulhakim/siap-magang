@@ -44,10 +44,10 @@ class Home extends BaseController
 
     public function application()
     {
-        $dapp = $this->application->select('applications.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
-            ->join('siswa', 'siswa.id = applications.id_siswa')
+        $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+            ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
-            ->orderBy('applications.created_at', "DESC")
+            ->orderBy('lamaran.created_at', "DESC")
             ->findAll();
         // dd($dapp);
 
