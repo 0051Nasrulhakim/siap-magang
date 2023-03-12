@@ -39,6 +39,7 @@ class InitialSeed extends Seeder
         // Pembimbing 
         $pembimbing = new \App\Models\PembimbingModel();
         $user       = new \App\Models\UserModel();
+        $idPembimbing = [];
         for ($i = 0; $i < $fake->numberBetween(10, 15); $i++) {
             $fakeEmail = $fake->freeEmail();
             if ($user->withGroup('pembimbing')->save(new \App\Entities\User([
@@ -54,6 +55,7 @@ class InitialSeed extends Seeder
                     'no_hp'     => $fake->phoneNumber(),
                     'email'     => $fakeEmail,
                 ]);
+                $idPembimbing[] = $pembimbing->getInsertID();
             } else {
                 $user->delete($user->getInsertID());
                 echo implode(", ", $user->errors()) . "\n";
@@ -101,6 +103,7 @@ class InitialSeed extends Seeder
         $tempat = new \App\Models\TempatModel();
         for ($i = 0; $i < $fake->numberBetween(13, 25); $i++) {
             $tempat->save([
+                'pid'           => $fake->randomElement($idPembimbing),
                 'status'        => $fake->randomElement(['buka', 'tutup']),
                 'kuota'         => $fake->randomDigitNot(0),
                 'nama'          => $fake->company(),
