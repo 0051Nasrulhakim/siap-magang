@@ -63,6 +63,21 @@ class InitialSeed extends Seeder
         }
 
 
+        // Admin
+        $user->withGroup('admin')->insert(new \App\Entities\User([
+            "email"     => 'admin@gmail.com',
+            "username"  => 'admin',
+            "password"  => '12345678',
+            "active"    => 1,
+        ]));
+        $pembimbing->save([
+            'user_id'   => $user->getInsertID(),
+            'nama'      => $fake->firstName(),
+            'no_hp'     => $fake->e164PhoneNumber(),
+            'email'     => $fake->email(),
+        ]);
+
+
         // id angkatan
         $idAngkatan = [];
         foreach ($angkatan->select('id')->findAll() as $key => $value) {
@@ -118,7 +133,7 @@ class InitialSeed extends Seeder
 
 
         // Application
-        $application = new \App\Models\ApplicationModel();     
+        $application = new \App\Models\ApplicationModel();
         for ($i = 0; $i <= count($idSiswa); $i++) {
             $ids = $fake->randomElement($idSiswa);
             $idSiswa = array_diff($idSiswa, [$ids]);
