@@ -58,7 +58,7 @@
 								<?php endif; ?>
 
 								<div class="text-center">
-									<button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2"><?= lang('Auth.loginAction') ?></button>
+									<button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2"><?= lang('Auth.loginAction') ?></button>
 								</div>
 							</form>
 							<hr class="horizontal dark mt-4 mb-3">
