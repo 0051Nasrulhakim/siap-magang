@@ -44,6 +44,26 @@ class Home extends BaseController
         ]);
     }
 
+    public function nilai()
+    {
+        return view('nilai', [
+            "title"         => "Magang | Nilai Siswa",
+            "page_title"    => "Nilai Magang Siswa",
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => ['Nilai']
+        ]);
+    }
+
+    public function daftarHadir()
+    {
+        return view('daftar-hadir', [
+            "title"         => "Magang | Daftar Hadir Siswa",
+            "page_title"    => "Daftar Hadir Siswa Magang",
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => ['Daftar Hadir']
+        ]);
+    }
+    
     public function application()
     {
         $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')

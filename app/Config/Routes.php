@@ -38,45 +38,42 @@ $routes->addPlaceholder('dotnis', '[0-9]{2}\.[0-9]{5}');
 // Routes
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
+$routes->get('/nilai', 'Home::nilai');
+$routes->get('/daftar-hadir', 'Home::daftarHadir');
 $routes->get('/tempat', 'Home::tempat');
 $routes->get('/application', 'Home::application');
 
-$routes->get('/man/tempat', 'Home::man_tempat');
-$routes->get('/man/user', 'Home::man_user');
-$routes->get('/man/siswa', 'Home::man_siswa');
-$routes->get('/settings', 'Home::settings');
+$routes->get('/man/tempat', 'Home::man_tempat', ['filter' => 'role:admin']);
+$routes->get('/man/user', 'Home::man_user', ['filter' => 'role:admin']);
+$routes->get('/man/siswa', 'Home::man_siswa', ['filter' => 'role:admin']);
+$routes->get('/settings', 'Home::settings', ['filter' => 'role:admin']);
 
 // group routes
-$routes->group('jurusan', function ($j)
-{
+$routes->group('jurusan', function ($j) {
     $j->post('store', 'Jurusan::store');
     $j->post('update', 'Jurusan::update');
     $j->delete('destroy/(:num)', 'Jurusan::destroy/$1');
 });
 
-$routes->group('angkatan', function ($a)
-{
+$routes->group('angkatan', function ($a) {
     $a->post('store', 'Angkatan::store');
     $a->delete('destroy/(:num)', 'Angkatan::destroy/$1');
 });
 
-$routes->group('siswa', function ($s)
-{
+$routes->group('siswa', function ($s) {
     $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
     $s->post('store', 'Siswa::store');
     $s->post('update', 'Siswa::update');
     $s->delete('destroy/(:num)', 'Siswa::destroy/$1');
 });
 
-$routes->group('user', function ($u)
-{
+$routes->group('user', function ($u) {
     $u->post('store', 'User::store');
     $u->post('update', 'User::update');
     $u->delete('destroy/(:num)', 'User::destroy/$1');
 });
 
-$routes->group('tempat', function ($t)
-{
+$routes->group('tempat', function ($t) {
     $t->get('edit/(:num)', 'Home::tempat_edit/$1');
     $t->post('store', 'TempatMagang::store');
     $t->post('update', 'TempatMagang::update');
@@ -84,9 +81,8 @@ $routes->group('tempat', function ($t)
     $t->delete('destroy/(:num)', 'TempatMagang::destroy/$1');
 });
 
-$routes->group('application', function ($app)
-{
-    $app->delete('destroy/(:num)', 'Application::destroy/$1');    
+$routes->group('application', function ($app) {
+    $app->delete('destroy/(:num)', 'Application::destroy/$1');
     $app->post('status/update', 'Application::update');
 });
 
