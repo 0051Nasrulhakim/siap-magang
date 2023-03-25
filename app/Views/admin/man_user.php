@@ -168,7 +168,7 @@
             $("#fauser input[name='nama']").val(nama);
             $("#fauser input[name='nama']").parent().addClass('is-filled');
             $("#fauser input[name='username']").val(user);
-            $("#fauser input[name='username']").parent().addClass('is-filled');
+            $("#fauser input[name='username']").parent().addClass('is-filled bg-gray-300');
             $("#fauser input[name='username']").attr('readonly', true);
             $("#fauser input[name='hp']").val(hp);
             $("#fauser input[name='hp']").parent().addClass('is-filled');

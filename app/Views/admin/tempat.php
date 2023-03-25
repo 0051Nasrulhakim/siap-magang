@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-body text-center">
                     <div class="mt-n6 mx-auto">
-                        <button class="btn bg-gradient-primary btn-sm mb-0 me-2" type="button" name="button">Daftar</button>
+                        <button class="btn bg-gradient-primary btn-sm mb-0 me-2" type="button" name="button" <?= $t->status == 'tutup' ? 'disabled' : '' ?>>Daftar</button>
                     </div>
                     <h6 class="font-weight-normal mt-4"><?= $t->nama ?></h6>
                     <p class="mb-0"><?= $t->deskripsi ?></p>

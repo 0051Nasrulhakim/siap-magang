@@ -64,7 +64,7 @@
                                 <div class="col-6">
                                     <div class="input-group input-group-outline mb-3" data-bs-toggle="tooltip" title="NIS siswa akan terisi otomatis ketika memilih angkatan" data-container="body" data-animation="true">
                                         <label for="nis" class="form-label">NIS</label>
-                                        <input type="text" name="nis" id="nis" class="form-control form-control-muted" value="0" readonly>
+                                        <input type="text" name="nis" id="nis" class="form-control bg-gray-300" value="0" readonly>
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
                                         <label for="email" class="form-label">Email</label>

@@ -44,58 +44,105 @@
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/tempat">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">apartment</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Tempat Magang</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/application">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">note_add</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Pendaftaran Siswa</span>
-                    </a>
-                </li>
+
+                <?php if (in_groups('siswa')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/tempat">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">apartment</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Tempat Magang</span>
+                        </a>
+                    </li>
+                <?php endif ?>
+
+                <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/application">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">note_add</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Pendaftaran Siswa</span>
+                        </a>
+                    </li>
+                <?php endif ?>
+
+                <?php if (in_groups('siswa')) : ?>
+                    <hr class="horizontal light">
+                    <li class="nav-item">
+                        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Kegiatanku</h6>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/nilai">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">confirmation_number</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Nilai</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/daftar-hadir">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">format_list_numbered</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Daftar Hadir</span>
+                        </a>
+                    </li>
+                <?php endif ?>
+
                 <hr class="horizontal light">
                 <li class="nav-item">
-                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Admin</h6>
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                        <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
+                            Data Manajemen
+                        <?php else : ?>
+                            Pengguna
+                        <?php endif ?>
+                    </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/man/tempat">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">corporate_fare</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Manjemen Tempat</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/man/user">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">supervisor_account</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Manjemen Pengelola</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/man/siswa">
+                    <a class="nav-link text-white" href="/profil">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
-                        <span class="nav-link-text ms-1">Manjemen Siswa</span>
+                        <span class="nav-link-text ms-1">Profil</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/settings">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">settings</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Pengaturan</span>
-                    </a>
-                </li>
+
+                <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/man/tempat">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">corporate_fare</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Manjemen Tempat</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/man/user">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">supervisor_account</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Manjemen Pengelola</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/man/siswa">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">person</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Manjemen Siswa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/settings">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">settings</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Pengaturan</span>
+                        </a>
+                    </li>
+                <?php endif ?>
             </ul>
         </div>
     </aside>
@@ -198,7 +245,7 @@
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a class="dropdown-item border-radius-md" href="/password">
+                                        <a class="dropdown-item border-radius-md" href="/profile">
                                             <div class="d-flex align-items-center py-1">
                                                 <span class="material-icons">key</span>
                                                 <div class="ms-2">
