@@ -12,6 +12,7 @@ class Home extends BaseController
     protected $tempat;
     protected $application;
     protected $pembimbing;
+    protected $logbooks;
 
     public function __construct()
     {
@@ -22,6 +23,7 @@ class Home extends BaseController
         $this->tempat       = new \App\Models\TempatModel();
         $this->application  = new \App\Models\ApplicationModel();
         $this->pembimbing   = new \App\Models\PembimbingModel();
+        $this->logbooks     = new \App\Models\LogBookModel();
     }
 
     public function index()
@@ -61,11 +63,19 @@ class Home extends BaseController
 
     public function daftarHadir()
     {
-        return view('daftar-hadir', [
+        $tempat = $this->application->select('lamaran.id_siswa as sid, tempat_magang.nama as instansi, tempat_magang.id as tid, tempat_magang.pid, tempat_magang.alamat, tempat_magang.hp, tempat_magang.email')
+            ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')
+            ->where('lamaran.id_siswa', getSid(user_id()))
+            ->orderBy('lamaran.created_at', "DESC")
+            ->first();
+
+        return view('kehadiran', [
             "title"         => "Magang | Daftar Hadir Siswa",
             "page_title"    => "Daftar Hadir Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Daftar Hadir']
+            "breadcrumb"    => ['Daftar Hadir', user()->username],
+            "tempat"        => $tempat,
+            "logbooks"      => $this->logbooks->where('id_siswa', getSid(user_id()))->findAll()
         ]);
     }
 
@@ -91,19 +101,51 @@ class Home extends BaseController
             "title"         => "Magang | Application Siswa",
             "page_title"    => "Lamaran Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Application'],
+            "breadcrumb"    => ['Application', user()->username],
             "applications"  => $dapp
         ]);
     }
 
-    public function bimbingan()
+    public function bimbingan($idt)
     {
+        $tempat = $this->tempat->find($idt);
+        $siswa = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+            ->join('siswa', 'siswa.id = lamaran.id_siswa')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->where('lamaran.id_tempat', $idt)
+            ->where('lamaran.status', 'accepted')
+            ->findAll();
+
         return view('bimbingan', [
             "title"         => "Magang | Bimbingan Siswa",
             "page_title"    => "Bimbingan Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Bimbingan', user()->username],
-            "tempat_magang" => $this->tempat->where("pid", user()->id)->findAll()
+            "breadcrumb"    => ['Bimbingan', user()->username, $tempat->nama],
+            "siswa"         => $siswa,
+            "idt"           => $idt,
+        ]);
+    }
+
+    public function bimbingan_siswa($idt, $nis)
+    {
+        $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
+        $tempat = $this->tempat->find($idt);
+        $siswa = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+            ->join('siswa', 'siswa.id = lamaran.id_siswa')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->where('lamaran.id_tempat', $idt)
+            ->where('lamaran.status', 'accepted')
+            ->findAll();
+
+        return view('bimbingan_siswa', [
+            "title"         => "Magang | Bimbingan Siswa",
+            "page_title"    => "Bimbingan Siswa Magang",
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => ['Bimbingan', user()->username, $tempat->nama, $nis],
+            "selected"      => $this->siswa->where('nis', $nis)->first(),
+            "siswa"         => $siswa,
+            "idt"           => $idt,
+            "logbooks"      => $this->logbooks->where(['id_siswa' => $this->siswa->where('nis', $nis)->first()->id, 'id_pembimbing' => user_id()])->findAll()
         ]);
     }
 

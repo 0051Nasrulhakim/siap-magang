@@ -33,19 +33,23 @@ $routes->set404Override();
 // Custom Placeholder
 $routes->addPlaceholder('nis', '[0-9]{8}');
 $routes->addPlaceholder('username', '[0-9]{8}');
-$routes->addPlaceholder('dotnis', '[0-9]{2}\.[0-9]{5}');
+$routes->addPlaceholder('dotnis', '[0-9]{2}\.[0-9]{6}');
 
 // Routes
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
 $routes->get('/nilai', 'Home::nilai');
-$routes->get('/daftar-hadir', 'Home::daftarHadir');
+
+$routes->get('/application', 'Home::application');
+
+$routes->get('/kehadiran', 'Home::daftarHadir', ['filter' => 'role:siswa']);
+$routes->post('/kehadiran/store', 'LogBook::store', ['filter' => 'role:siswa']);
 
 $routes->get('/tempat', 'Home::tempat', ['filter' => 'role:siswa']);
 $routes->post('/tempat/daftar', 'Application::daftar', ['filter' => 'role:siswa']);
 
-$routes->get('/application', 'Home::application');
-$routes->get('/bimbingan', 'Home::bimbingan', ['filter' => 'role:pembimbing']);
+$routes->get('/bimbingan/(:num)', 'Home::bimbingan/$1', ['filter' => 'role:pembimbing']);
+$routes->get('/bimbingan/(:num)/(:nis)', 'Home::bimbingan_siswa/$1/$2', ['filter' => 'role:pembimbing']);
 
 $routes->get('/man/tempat', 'Home::man_tempat', ['filter' => 'role:admin']);
 $routes->get('/man/user', 'Home::man_user', ['filter' => 'role:admin']);

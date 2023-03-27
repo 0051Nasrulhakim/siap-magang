@@ -1,5 +1,5 @@
 <?php 
-    function bageStatusApplication($s)
+    function badgeStatusApplication($s)
     {
         switch ($s) {
             case 'pending':
@@ -13,6 +13,27 @@
                 break;
             case 'selesai':
                 return '<span class="badge badge-info">Selesai</span>';
+                break;
+            default:
+                return '<span class="badge badge-secondary">Unknown</span>';
+                break;
+        }
+    }
+
+    function badgeKehadiran($k)
+    {
+        switch ($k) {
+            case 'hadir':
+                return '<span class="badge badge-success">Hadir</span>';
+                break;
+            case 'izin':
+                return '<span class="badge badge-warning">Izin</span>';
+                break;
+            case 'sakit':
+                return '<span class="badge badge-info">Sakit</span>';
+                break;
+            case 'alfa':
+                return '<span class="badge badge-danger">Alfa</span>';
                 break;
             default:
                 return '<span class="badge badge-secondary">Unknown</span>';
@@ -46,7 +67,13 @@
     function getInstansiByPembimbingId($id_pembimbing)
     {
         $ins = new \App\Models\TempatModel();
-        $data = $ins->where(['pid' => $id_pembimbing, 'status' => 'buka'])->findAll();
+        $data = $ins->select('tempat_magang.*',)
+            ->select('lamaran.id_tempat', 'lamaran.id_siswa', 'lamaran.status as status_lamaran')
+            ->join('lamaran', 'lamaran.id_tempat = tempat_magang.id')
+            ->where(['tempat_magang.pid' => $id_pembimbing, 'tempat_magang.status' => 'buka'])
+            ->where('lamaran.status', 'accepted')
+            ->groupBy('tempat_magang.id')
+            ->findAll();
         return $data;
     }
 

@@ -35,7 +35,7 @@
                                 <?php $instansi = $application->id_tempat == null ? $application->custom_tempat : getInstansi($application->id_tempat) ?>
                                 <tr>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $no++ ?></td>
-                                    <td class="ps-3 text-xs font-weight-bold"><?= bageStatusApplication($application->status) ?></td>
+                                    <td class="ps-3 text-xs font-weight-bold"><?= badgeStatusApplication($application->status) ?></td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <div class="badge badge-secondary"><?= $application->nis ?></div>
                                     </td>
@@ -72,7 +72,7 @@
                                     <div class="text-xs"><?= $app->alamat ?></div>
                                 </div>
                                 <div style="text-align: end !important;">
-                                    <div class="mb-2"><?= bageStatusApplication($app->status) ?></div>
+                                    <div class="mb-2"><?= badgeStatusApplication($app->status) ?></div>
                                     <div class="text-xs"><?= $app->updated_at ?></div>
                                 </div>
                             </div>
