@@ -8,14 +8,10 @@
                     <h5>Form Absensi</h5>
                 </div>
                 <form class="form-absen" method="post">
+                    <input type="hidden" name="uid" value="<?= user_id() ?>">
                     <div class="mb-3">
                         <div class="input-group input-group-outline">
                             <input readonly type="datetime-local" class="form-control bg-gray-300" name="tanggal" id="tanggal" value="<?= date('Y-m-d\TH:i'); ?>" required>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="input-group input-group-outline">
-                            <input readonly type="text" class="form-control bg-gray-300" value="<?= user_id() ?>" name="nis" id="nis" required>
                         </div>
                     </div>
                     <div class="mb-3">

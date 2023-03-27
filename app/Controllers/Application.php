@@ -13,6 +13,28 @@ class Application extends BaseController
         $this->app = new \App\Models\ApplicationModel();
     }
 
+    public function daftar()
+    {
+        $data = [
+            'id_siswa' => $this->request->getPost('uid'),
+            'id_tempat' => $this->request->getPost('tid')
+        ];
+
+        if ($this->app->insert($data)) {
+            return $this->response->setJSON([
+                'status'    => 200,
+                'success'   => true,
+                'message'   => 'Permintaan magang berhasil diajukan'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => $this->app->errors()
+            ]);
+        }        
+    }
+
     public function destroy($id)
     {
         if ($this->app->delete($id)) {

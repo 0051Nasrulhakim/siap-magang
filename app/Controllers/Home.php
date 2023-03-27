@@ -13,7 +13,8 @@ class Home extends BaseController
     protected $application;
     protected $pembimbing;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->angkatan     = new \App\Models\AngkatanModel();
         $this->jurusan      = new \App\Models\JurusanModel();
         $this->user         = new \App\Models\UserModel();
@@ -27,9 +28,13 @@ class Home extends BaseController
     {
         return view('admin/dashboard', [
             "title"         => "Magang | Dashboard",
-            "page_title"    => "Dashboard",
+            "page_title"    => in_groups('admin') ? (in_groups('pembimbing') ? 'Dashboard Pembimbing' : 'Dashboard Admin') : 'Dashboard Siswa',
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Dashboard']
+            "breadcrumb"    => in_groups('admin') ? (in_groups('pembimbing') ? ['Dashboard', 'Pembimbing'] : ['Dashboard', 'Admin']) : ['Dashboard', 'Siswa'],
+            "siswa"         => $this->siswa->findAll(),
+            "tempat"        => $this->tempat->findAll(),
+            "tempat_buka"   => $this->tempat->where("status", 'buka')->countAllResults(),
+            "tempat_tutup"  => $this->tempat->where("status", 'tutup')->countAllResults(),
         ]);
     }
 
@@ -63,15 +68,24 @@ class Home extends BaseController
             "breadcrumb"    => ['Daftar Hadir']
         ]);
     }
-    
+
     public function application()
     {
-        $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
-            ->join('siswa', 'siswa.id = lamaran.id_siswa')
-            ->join('angkatan', 'angkatan.id = siswa.angkatan')
-            ->orderBy('lamaran.created_at', "DESC")
-            ->findAll();
-        // dd($dapp);
+        if (in_groups('admin') || in_groups('pembimbing')) {
+            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+                ->join('siswa', 'siswa.id = lamaran.id_siswa')
+                ->join('angkatan', 'angkatan.id = siswa.angkatan')
+                ->orderBy('lamaran.created_at', "DESC")
+                ->findAll();
+        } else {
+            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, angkatan.tahun, tempat_magang.nama as instansi, tempat_magang.alamat')
+                ->join('siswa', 'siswa.id = lamaran.id_siswa')
+                ->join('angkatan', 'angkatan.id = siswa.angkatan')
+                ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')
+                ->where('lamaran.id_siswa', getSid(user_id()))
+                ->orderBy('lamaran.created_at', "DESC")
+                ->findAll();
+        }
 
         return view('admin/application', [
             "title"         => "Magang | Application Siswa",
@@ -79,6 +93,17 @@ class Home extends BaseController
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Application'],
             "applications"  => $dapp
+        ]);
+    }
+
+    public function bimbingan()
+    {
+        return view('bimbingan', [
+            "title"         => "Magang | Bimbingan Siswa",
+            "page_title"    => "Bimbingan Siswa Magang",
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => ['Bimbingan', user()->username],
+            "tempat_magang" => $this->tempat->where("pid", user()->id)->findAll()
         ]);
     }
 
@@ -156,7 +181,7 @@ class Home extends BaseController
             "title"         => "Magang | Edit Data siswa",
             "page_title"    => "Edit Data Siswa $nis",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Siswa','Edit', $nis],
+            "breadcrumb"    => ['Siswa', 'Edit', $nis],
             "siswa"         => $dsiswa,
             "angkatan"      => $this->angkatan->findAll(),
             "jurusan"       => $this->jurusan->findAll()

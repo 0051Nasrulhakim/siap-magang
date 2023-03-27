@@ -40,8 +40,12 @@ $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
 $routes->get('/nilai', 'Home::nilai');
 $routes->get('/daftar-hadir', 'Home::daftarHadir');
-$routes->get('/tempat', 'Home::tempat');
+
+$routes->get('/tempat', 'Home::tempat', ['filter' => 'role:siswa']);
+$routes->post('/tempat/daftar', 'Application::daftar', ['filter' => 'role:siswa']);
+
 $routes->get('/application', 'Home::application');
+$routes->get('/bimbingan', 'Home::bimbingan', ['filter' => 'role:pembimbing']);
 
 $routes->get('/man/tempat', 'Home::man_tempat', ['filter' => 'role:admin']);
 $routes->get('/man/user', 'Home::man_user', ['filter' => 'role:admin']);

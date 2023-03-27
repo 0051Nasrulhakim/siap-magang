@@ -126,27 +126,27 @@ class InitialSeed extends Seeder
                 'email'         => $fake->companyEmail(),
                 'alamat'        => $fake->address(),
                 'deskripsi'     => $fake->paragraph(2),
-                'foto'          => 'https://source.unsplash.com/random/800x600?sig=' . $fake->randomNumber(5, true),
+                'foto'          => 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png',
             ]);
             $idTempat[] = $tempat->getInsertID();
         }
 
 
         // Application
-        $application = new \App\Models\ApplicationModel();
-        for ($i = 0; $i <= count($idSiswa); $i++) {
-            $ids = $fake->randomElement($idSiswa);
-            $idSiswa = array_diff($idSiswa, [$ids]);
+        // $application = new \App\Models\ApplicationModel();
+        // for ($i = 0; $i <= count($idSiswa); $i++) {
+        //     $ids = $fake->randomElement($idSiswa);
+        //     $idSiswa = array_diff($idSiswa, [$ids]);
 
-            if (!$application->save([
-                'id_siswa'      => $ids,
-                'id_tempat'     => $fake->randomElement($idTempat),
-                'status'        => $fake->randomElement(['pending', 'accepted', 'rejected', 'selesai']),
-                // 'tanggal_mulai' => $fake->dateTimeBetween('-1 month', '+1 month')->format('Y-m-d'),
-                // 'tanggal_selesai' => $fake->dateTimeBetween('+1 month', '+3 month')->format('Y-m-d'),
-            ])) {
-                echo implode(", ", $application->errors()) . "\n";
-            }
-        }
+        //     if (!$application->save([
+        //         'id_siswa'      => $ids,
+        //         'id_tempat'     => $fake->randomElement($idTempat),
+        //         'status'        => $fake->randomElement(['pending', 'accepted', 'rejected', 'selesai']),
+        //         // 'tanggal_mulai' => $fake->dateTimeBetween('-1 month', '+1 month')->format('Y-m-d'),
+        //         // 'tanggal_selesai' => $fake->dateTimeBetween('+1 month', '+3 month')->format('Y-m-d'),
+        //     ])) {
+        //         echo implode(", ", $application->errors()) . "\n";
+        //     }
+        // }
     }
 }

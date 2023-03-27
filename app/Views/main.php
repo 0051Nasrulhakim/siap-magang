@@ -31,7 +31,7 @@
             </a>
         </div>
         <hr class="horizontal light mt-0 mb-2">
-        <div class="collapse navbar-collapse  w-auto h-auto" id="sidenav-collapse-main">
+        <div class="collapse navbar-collapse overflow-x-hidden h-auto" id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Main</h6>
@@ -72,20 +72,30 @@
                     <li class="nav-item">
                         <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Kegiatanku</h6>
                     </li>
+                    <?php if (!empty(getApplicationSiswa(getSid(user_id())))) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/nilai">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">confirmation_number</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Nilai</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/daftar-hadir">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">format_list_numbered</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Absensi dan Log Book</span>
+                            </a>
+                        </li>
+                    <?php endif ?>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/nilai">
+                        <a class="nav-link text-white" href="/application">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="material-icons opacity-10">confirmation_number</i>
+                                <i class="material-icons opacity-10">fact_check</i>
                             </div>
-                            <span class="nav-link-text ms-1">Nilai</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/daftar-hadir">
-                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="material-icons opacity-10">format_list_numbered</i>
-                            </div>
-                            <span class="nav-link-text ms-1">Daftar Hadir</span>
+                            <span class="nav-link-text ms-1">Status Pengajuan</span>
                         </a>
                     </li>
                 <?php endif ?>
@@ -93,23 +103,15 @@
                 <hr class="horizontal light">
                 <li class="nav-item">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
-                        <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
+                        <?php if (in_groups('admin')) : ?>
                             Data Manajemen
-                        <?php else : ?>
-                            Pengguna
+                        <?php elseif (in_groups('pembimbing')) : ?>
+                            Bimbingan Siswa
                         <?php endif ?>
                     </h6>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/profil">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">person</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Profil</span>
-                    </a>
-                </li>
 
-                <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
+                <?php if (in_groups('admin')) : ?>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/man/tempat">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -142,6 +144,20 @@
                             <span class="nav-link-text ms-1">Pengaturan</span>
                         </a>
                     </li>
+                <?php endif ?>
+
+                <?php if (in_groups('pembimbing')) : ?>
+                    <?php $i = 1 ?>
+                    <?php foreach (getInstansiByPembimbingId(user_id()) as $ins) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/bimbingan/<?= $ins->id ?>">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">business</i>
+                                </div>
+                                <span class="nav-link-text text-wrap ms-1"><?= $ins->nama ?></span>
+                            </a>
+                        </li>
+                    <?php endforeach ?>
                 <?php endif ?>
             </ul>
         </div>

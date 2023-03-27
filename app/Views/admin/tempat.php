@@ -49,13 +49,13 @@
             <div class="card mt-4" data-animation="true">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <a class="d-block blur-shadow-image">
-                        <img src="<?= $foto ?>" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
+                        <img src="<?= $foto ?>" alt="img-blur-shadow" height="200px" class="img-fluid shadow border-radius-lg">
                     </a>
                     <div class="colored-shadow" style="background-image: url(&quot;<?= $foto ?>&quot;);"></div>
                 </div>
                 <div class="card-body text-center">
                     <div class="mt-n6 mx-auto">
-                        <button class="btn bg-gradient-primary btn-sm mb-0 me-2" type="button" name="button" <?= $t->status == 'tutup' ? 'disabled' : '' ?>>Daftar</button>
+                        <button class="btn bg-gradient-primary btn-sm mb-0 me-2 btn-daftar" data-instansi="<?= $t->nama ?>" data-uid="<?= getSid(user_id()) ?>" data-tid="<?= $t->id ?>" type="button" <?= $t->status == 'tutup' ? 'disabled' : '' ?>>Daftar</button>
                     </div>
                     <h6 class="font-weight-normal mt-4"><?= $t->nama ?></h6>
                     <p class="mb-0"><?= $t->deskripsi ?></p>
@@ -64,7 +64,7 @@
                 <div class="card-footer d-flex">
                     <p class="text-sm font-weight-normal my-auto" title="Kuota"><i class="fa fa-id-badge pe-1"></i> <?= $t->kuota ?></p>
                     <p class="text-sm ms-auto my-auto">
-                        <div class="badge badge-sm <?= $t->status == 'buka' ? 'badge-success' : 'badge-danger' ?>"><?= $t->status ?></div>
+                    <div class="badge badge-sm <?= $t->status == 'buka' ? 'badge-success' : 'badge-danger' ?>"><?= $t->status ?></div>
                     </p>
                 </div>
             </div>
@@ -75,6 +75,7 @@
 
 <?= $this->section('bottomsc'); ?>
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" async></script>
+<script src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -112,6 +113,56 @@
                 percentPosition: true
             });
         }
+
+        // btn-daftar onClick
+        $('.btn-daftar').on('click', function() {
+            var instansi = $(this).data('instansi');
+            var uid = $(this).data('uid');
+            var tid = $(this).data('tid');
+
+            Swal.fire({
+                title: 'Daftar Magang',
+                text: "Apakah anda yakin ingin mendaftar magang di " + $(this).data('instansi') + "?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Daftar',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/tempat/daftar',
+                        type: 'post',
+                        data: {
+                            uid: uid,
+                            tid: tid
+                        },
+                        success: function(data) {
+                            data.success ? Swal.fire({
+                                title: 'Berhasil',
+                                text: "Anda berhasil mendaftar magang di " + instansi,
+                                icon: 'success',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/application';
+                                }
+                            }) : Swal.fire({
+                                title: 'Gagal',
+                                text: "Anda gagal mendaftar magang di " + instansi,
+                                icon: 'error',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            })
+                        }
+                    })
+                }
+            })
+        })
     })
 </script>
 <?= $this->endSection(); ?>

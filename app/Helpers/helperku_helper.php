@@ -34,3 +34,25 @@
             return '<i class="far text-success me-2 fa-check-circle" title="Tempat sudah terverifikasi sekolah" style="cursor:help;"></i>';
         }
     }
+
+    // getSiswaIdByUserId
+    function getSid($uid)
+    {
+        $siswa = new \App\Models\SiswaModel();
+        $data = $siswa->where('user_id', $uid)->first();
+        return $data->id;
+    }
+
+    function getInstansiByPembimbingId($id_pembimbing)
+    {
+        $ins = new \App\Models\TempatModel();
+        $data = $ins->where(['pid' => $id_pembimbing, 'status' => 'buka'])->findAll();
+        return $data;
+    }
+
+    function getApplicationSiswa($uid)
+    {
+        $app = new \App\Models\ApplicationModel();
+        $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted'])->orderBy('created_at', 'DESC')->findAll();
+        return $data;
+    }
