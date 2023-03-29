@@ -79,7 +79,14 @@
                                     <td class="text-xs ps-4 font-weight-bold"><?= $i++ ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $log->tanggal ?></td>
                                     <td class="text-xs ps-4 font-weight-bold"><?= $log->keterangan ?></td>
-                                    <td class="text-xs ps-4 font-weight-bold"><?= badgeStatusApplication($log->status) ?></td>
+                                    <td class="text-xs ps-4 font-weight-bold">
+                                        <div class="d-flex flex-column gap-1">
+                                            <?= badgeStatusApplication($log->status) ?>
+                                            <?php if ($log->telat) : ?>
+                                                <span class="badge badge-danger border border-danger">Telat diisi</span>
+                                            <?php endif ?>
+                                        </div>
+                                    </td>
                                     <td class="text-xs ps-4 font-weight-bold">
                                         <?php if ($log->status == 'rejected') : ?>
                                             <a href="/kehadiran/<?= $log->id ?>" class="badge border border-1 border-dark text-dark btn-edit" title="Edit Data"><i class="fas fa-edit"></i></a>

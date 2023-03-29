@@ -1,4 +1,5 @@
 Todo : 
     - [] form tambah informasi (pembimbing dan admin)
-    - [] kondisi ketika status pendaftaran accepted (tidak bisa klik tombol daftar di halaman /tempat)
+    - [x] kondisi ketika status pendaftaran accepted (tidak bisa klik tombol daftar di halaman /tempat)
     - [] kondisi ketika sudah pernah melakukan magang (tidak bisa mendaftar magang lagi)
+    - [] filter logbook (pembimbing)

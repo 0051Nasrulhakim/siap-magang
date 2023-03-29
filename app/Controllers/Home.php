@@ -75,7 +75,7 @@ class Home extends BaseController
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Daftar Hadir', user()->username],
             "tempat"        => $tempat,
-            "logbooks"      => $this->logbooks->where('id_siswa', getSid(user_id()))->findAll()
+            "logbooks"      => $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSid(user_id()))->findAll()
         ]);
     }
 
