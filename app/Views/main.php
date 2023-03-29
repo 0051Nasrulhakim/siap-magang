@@ -248,6 +248,15 @@
                                     </i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="accountMenu">
+                                    <li>
+                                        <div class="dropdown-header text-sm text-muted mb-0">
+                                            <div class="text-capitalize fw-bold">Hello, <?= user()->username ?></div>
+                                            <?php if (in_groups('siswa')) : ?>
+                                                <div class="text-xs">NIS : <?= getNisByUid() ?></div>
+                                            <?php endif ?>
+                                        </div>
+                                    </li>
+                                    <hr class="horizontal dark">
                                     <li class="">
                                         <a class="dropdown-item border-radius-md" href="/profile">
                                             <div class="d-flex align-items-center py-1">

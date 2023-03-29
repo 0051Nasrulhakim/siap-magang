@@ -59,7 +59,6 @@
         }
     }
 
-    // getSiswaIdByUserId
     function getSid($uid)
     {
         $siswa = new \App\Models\SiswaModel();
@@ -85,4 +84,10 @@
         $app = new \App\Models\ApplicationModel();
         $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted'])->orderBy('created_at', 'DESC')->findAll();
         return $data;
+    }
+
+    function getNisByUid()
+    {
+        $siswa = new \App\Models\SiswaModel();
+        return $siswa->where('user_id', user_id())->first()->nis;
     }
