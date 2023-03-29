@@ -9,7 +9,8 @@ class Application extends BaseController
 
     protected $app;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->app = new \App\Models\ApplicationModel();
     }
 
@@ -20,19 +21,27 @@ class Application extends BaseController
             'id_tempat' => $this->request->getPost('tid')
         ];
 
-        if ($this->app->insert($data)) {
-            return $this->response->setJSON([
-                'status'    => 200,
-                'success'   => true,
-                'message'   => 'Permintaan magang berhasil diajukan'
-            ]);
-        } else {
+        if (empty(getApplicationSiswa($data['id_siswa']))) {
+            if ($this->app->insert($data)) {
+                return $this->response->setJSON([
+                    'status'    => 200,
+                    'success'   => true,
+                    'message'   => 'Permintaan magang berhasil diajukan'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status'    => 500,
+                    'success'   => false,
+                    'message'   => $this->app->errors()
+                ]);
+            }
+        } {
             return $this->response->setJSON([
                 'status'    => 500,
                 'success'   => false,
-                'message'   => $this->app->errors()
+                'message'   => 'Anda sudah pernah mengajukan permintaan magang'
             ]);
-        }        
+        }
     }
 
     public function destroy($id)

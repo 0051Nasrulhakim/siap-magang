@@ -46,7 +46,7 @@
         }
         ?>
         <div class="col-12 col-sm-6 col-md-4 col-xxl-3 mb-4 cardInstansi <?= $t->status ?>">
-            <div class="card mt-4" data-animation="true">
+            <div class="card mt-4" data-animation="<?= empty(getApplicationSiswa(getSid(user_id()))) ? 'true' : 'false' ?>">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <a class="d-block blur-shadow-image">
                         <img src="<?= $foto ?>" alt="img-blur-shadow" height="200px" class="img-fluid shadow border-radius-lg">
@@ -54,8 +54,10 @@
                     <div class="colored-shadow" style="background-image: url(&quot;<?= $foto ?>&quot;);"></div>
                 </div>
                 <div class="card-body text-center">
-                    <div class="mt-n6 mx-auto">
-                        <button class="btn bg-gradient-primary btn-sm mb-0 me-2 btn-daftar" data-instansi="<?= $t->nama ?>" data-uid="<?= getSid(user_id()) ?>" data-tid="<?= $t->id ?>" type="button" <?= $t->status == 'tutup' ? 'disabled' : '' ?>>Daftar</button>
+                    <div class="<?= empty(getApplicationSiswa(getSid(user_id()))) ? 'mt-n6' : 'mt-n4' ?> mx-auto">
+                        <?php if (empty(getApplicationSiswa(getSid(user_id())))) : ?>
+                            <button class="btn bg-gradient-primary btn-sm mb-0 me-2 btn-daftar" data-instansi="<?= $t->nama ?>" data-uid="<?= getSid(user_id()) ?>" data-tid="<?= $t->id ?>" type="button" <?= $t->status == 'tutup' ? 'disabled' : '' ?>>Daftar</button>
+                        <?php endif ?>
                     </div>
                     <h6 class="font-weight-normal mt-4"><?= $t->nama ?></h6>
                     <p class="mb-0"><?= $t->deskripsi ?></p>
