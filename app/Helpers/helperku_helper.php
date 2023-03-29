@@ -3,19 +3,22 @@
     {
         switch ($s) {
             case 'pending':
-                return '<span class="badge badge-warning">Pending</span>';
+                return '<span class="badge badge-warning border border-warning">Pending</span>';
                 break;
             case 'accepted':
-                return '<span class="badge badge-success">Accepted</span>';
+                return '<span class="badge badge-success border border-success">Accepted</span>';
+                break;
+            case 'approved':
+                return '<span class="badge badge-success border border-success">Approved</span>';
                 break;
             case 'rejected':
-                return '<span class="badge badge-danger">Rejected</span>';
+                return '<span class="badge badge-danger border border-danger">Rejected</span>';
                 break;
             case 'selesai':
-                return '<span class="badge badge-info">Selesai</span>';
+                return '<span class="badge badge-info border border-info">Selesai</span>';
                 break;
             default:
-                return '<span class="badge badge-secondary">Unknown</span>';
+                return '<span class="badge badge-secondary border border-secondary">Unknown</span>';
                 break;
         }
     }
@@ -24,16 +27,16 @@
     {
         switch ($k) {
             case 'hadir':
-                return '<span class="badge badge-success">Hadir</span>';
+                return '<span class="badge badge-success border border-success">Hadir</span>';
                 break;
             case 'izin':
-                return '<span class="badge badge-warning">Izin</span>';
+                return '<span class="badge badge-warning border border-warning">Izin</span>';
                 break;
             case 'sakit':
-                return '<span class="badge badge-info">Sakit</span>';
+                return '<span class="badge badge-info border border-info">Sakit</span>';
                 break;
             case 'alfa':
-                return '<span class="badge badge-danger">Alfa</span>';
+                return '<span class="badge badge-danger border border-danger">Alfa</span>';
                 break;
             default:
                 return '<span class="badge badge-secondary">Unknown</span>';
