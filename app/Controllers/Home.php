@@ -81,13 +81,13 @@ class Home extends BaseController
 
     public function application()
     {
-        if (in_groups('admin') || in_groups('pembimbing')) {
+        if (in_groups('admin')) {
             $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
-        } else {
+        } elseif(in_groups('siswa')) {
             $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, angkatan.tahun, tempat_magang.nama as instansi, tempat_magang.alamat')
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
@@ -95,6 +95,9 @@ class Home extends BaseController
                 ->where('lamaran.id_siswa', getSid(user_id()))
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
+        } else {
+            // return note enaugth permission
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         return view('admin/application', [
@@ -106,7 +109,7 @@ class Home extends BaseController
         ]);
     }
 
-    public function bimbingan($idt)
+    public function logbooks($idt)
     {
         $tempat = $this->tempat->find($idt);
         $siswa = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
@@ -116,17 +119,17 @@ class Home extends BaseController
             ->where('lamaran.status', 'accepted')
             ->findAll();
 
-        return view('bimbingan', [
-            "title"         => "Magang | Bimbingan Siswa",
-            "page_title"    => "Bimbingan Siswa Magang",
+        return view('logbook', [
+            "title"         => "Magang | logbook Siswa",
+            "page_title"    => "logbook Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Bimbingan', user()->username, $tempat->nama],
+            "breadcrumb"    => ['logbook', user()->username, $tempat->nama],
             "siswa"         => $siswa,
             "idt"           => $idt,
         ]);
     }
 
-    public function bimbingan_siswa($idt, $nis)
+    public function logbook_siswa($idt, $nis)
     {
         $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
         $tempat = $this->tempat->find($idt);
@@ -136,16 +139,18 @@ class Home extends BaseController
             ->where('lamaran.id_tempat', $idt)
             ->where('lamaran.status', 'accepted')
             ->findAll();
+        
+        $log = $this->logbooks->select("*")->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where(['id_siswa' => $this->siswa->where('nis', $nis)->first()->id, 'id_pembimbing' => user_id()])->findAll();
 
-        return view('bimbingan_siswa', [
-            "title"         => "Magang | Bimbingan Siswa",
-            "page_title"    => "Bimbingan Siswa Magang",
+        return view('logbook_siswa', [
+            "title"         => "Magang | logbook Siswa",
+            "page_title"    => "logbook Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Bimbingan', user()->username, $tempat->nama, $nis],
+            "breadcrumb"    => ['logbook', user()->username, $tempat->nama, $nis],
             "selected"      => $this->siswa->where('nis', $nis)->first(),
             "siswa"         => $siswa,
             "idt"           => $idt,
-            "logbooks"      => $this->logbooks->where(['id_siswa' => $this->siswa->where('nis', $nis)->first()->id, 'id_pembimbing' => user_id()])->findAll()
+            "logbooks"      => $log
         ]);
     }
 

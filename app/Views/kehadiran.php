@@ -17,6 +17,18 @@
                             <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= date('Y-m-d'); ?>" max="<?= date('Y-m-d'); ?>" required>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label mb-1" for="keterangan">Keterangan</label>
+                        <div class="input-group input-group-outline mb-3 is-filled">
+                            <select name="keterangan" id="keterangan" class="form-control">
+                                <option value="">-- Pilih Keterangan --</option>
+                                <option value="hadir">Hadir</option>
+                                <option value="izin">izin</option>
+                                <option value="sakit">sakit</option>
+                                <option value="alfa">alfa</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="mb-3 row">
                         <div class="col">
                             <label class="form-label mb-1" for="jam_masuk">Jam Masuk</label>
@@ -29,18 +41,6 @@
                             <div class="input-group input-group-outline">
                                 <input type="time" class="form-control" name="jam_keluar" id="jam_keluar" max="<?= date('H:i'); ?>" required>
                             </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label mb-1" for="keterangan">Keterangan</label>
-                        <div class="input-group input-group-outline mb-3 is-filled">
-                            <select name="keterangan" id="keterangan" class="form-control">
-                                <option value="">-- Pilih Keterangan --</option>
-                                <option value="hadir">Hadir</option>
-                                <option value="izin">izin</option>
-                                <option value="sakit">sakit</option>
-                                <option value="alfa">alfa</option>
-                            </select>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -105,6 +105,18 @@
         const dataTableBasic = new simpleDatatables.DataTable("#tableLogBook", {
             searchable: false,
             fixedHeight: true
+        });
+
+        $('#keterangan').change(function() {
+            if ($(this).val() != 'hadir') {
+                $('#jam_keluar').attr('disabled', true);
+                $('#kegiatan').attr('disabled', true);
+                $('#jam_masuk').attr('disabled', true);
+            } else {
+                $('#jam_keluar').attr('disabled', false);
+                $('#kegiatan').attr('disabled', false);
+                $('#jam_masuk').attr('disabled', false);
+            }
         });
 
         $('.form-absen').submit(function(e) {

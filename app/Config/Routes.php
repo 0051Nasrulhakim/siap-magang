@@ -40,7 +40,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
 $routes->get('/nilai', 'Home::nilai');
 
-$routes->get('/application', 'Home::application');
+$routes->get('/application', 'Home::application', ['filter' => 'role:siswa,admin']);
 
 $routes->get('/kehadiran', 'Home::daftarHadir', ['filter' => 'role:siswa']);
 $routes->post('/kehadiran/store', 'LogBook::store', ['filter' => 'role:siswa']);
@@ -48,8 +48,9 @@ $routes->post('/kehadiran/store', 'LogBook::store', ['filter' => 'role:siswa']);
 $routes->get('/tempat', 'Home::tempat', ['filter' => 'role:siswa']);
 $routes->post('/tempat/daftar', 'Application::daftar', ['filter' => 'role:siswa']);
 
-$routes->get('/bimbingan/(:num)', 'Home::bimbingan/$1', ['filter' => 'role:pembimbing']);
-$routes->get('/bimbingan/(:num)/(:nis)', 'Home::bimbingan_siswa/$1/$2', ['filter' => 'role:pembimbing']);
+$routes->get('/logbook/(:num)', 'Home::logbooks/$1', ['filter' => 'role:pembimbing']);
+$routes->get('/logbook/(:num)/(:nis)', 'Home::logbook_siswa/$1/$2', ['filter' => 'role:pembimbing']);
+$routes->post('/logbook/status/update', 'LogBook::status_update', ['filter' => 'role:pembimbing']);
 
 $routes->get('/man/tempat', 'Home::man_tempat', ['filter' => 'role:admin']);
 $routes->get('/man/user', 'Home::man_user', ['filter' => 'role:admin']);
@@ -89,10 +90,12 @@ $routes->group('tempat', function ($t) {
     $t->delete('destroy/(:num)', 'TempatMagang::destroy/$1');
 });
 
-$routes->group('application', function ($app) {
+$routes->group('application', ['filter' => 'role:admin'], function ($app) {
     $app->delete('destroy/(:num)', 'Application::destroy/$1');
     $app->post('status/update', 'Application::update');
 });
+
+// routes group for 
 
 
 /*

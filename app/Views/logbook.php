@@ -7,7 +7,7 @@
 
             <div class="mt-3">
                 <?php foreach ($siswa as $s) : ?>
-                    <a href="/bimbingan/<?= $idt ?>/<?= str_replace('.', '', $s->nis) ?>">
+                    <a href="/logbook/<?= $idt ?>/<?= str_replace('.', '', $s->nis) ?>">
                         <div class="card card-body p-2 bg-gray-200 rounded px-4 mb-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="">
