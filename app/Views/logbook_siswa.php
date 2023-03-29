@@ -74,7 +74,7 @@
 </div>
 <?= $this->endSection(); ?>
 
-<?= $this->section('bottomsc') ;?>
+<?= $this->section('bottomsc'); ?>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <script>
@@ -87,38 +87,37 @@
                 text: "Apakah anda yakin ingin menyetujui log book ini?",
                 icon: "warning",
                 buttons: true,
+                showCancelButton: true,
                 dangerMode: true,
-            }).then((willApprove) => {
-                if (willApprove) {
-                    $.ajax({
-                        url: '/logbook/status/update',
-                        type: 'POST',
-                        data: {
-                            id: id,
-                            status: stts
-                        },
-                        success: function(res) {
-                            if (res.success) {
-                                Swal.fire({
-                                    title: "Berhasil!",
-                                    text: "Log Book berhasil disetujui",
-                                    icon: "success",
-                                    timer: 2000,
-                                    buttons: false,
-                                    showConfirmButton: false,
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire("Gagal!", "Log Book gagal disetujui", "error");
-                            }
-                        },
-                        error: function(err) {
-                            console.log(err);
+            }).then(e => {
+                e.isConfirmed ? $.ajax({
+                    url: '/logbook/status/update',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        status: stts
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: "Log Book berhasil disetujui",
+                                icon: "success",
+                                timer: 2000,
+                                buttons: false,
+                                showConfirmButton: false,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
                             Swal.fire("Gagal!", "Log Book gagal disetujui", "error");
                         }
-                    });
-                }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        Swal.fire("Gagal!", "Log Book gagal disetujui", "error");
+                    }
+                }) : '';
             });
         });
 
@@ -129,41 +128,40 @@
                 title: "Reject Log Book",
                 text: "Apakah anda yakin ingin menolak log book ini?",
                 icon: "warning",
-                buttons: true,
                 dangerMode: true,
-            }).then((willReject) => {
-                if (willReject) {
-                    $.ajax({
-                        url: '/logbook/status/update',
-                        type: 'POST',
-                        data: {
-                            id: id,
-                            status: stts
-                        },
-                        success: function(res) {
-                            if (res.success) {
-                                Swal.fire({
-                                    title: "Berhasil!",
-                                    text: "Log Book berhasil ditolak",
-                                    icon: "success",
-                                    timer: 2000,
-                                    buttons: false,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire("Gagal!", "Log Book gagal ditolak", "error");
-                            }
-                        },
-                        error: function(err) {
-                            console.log(err);
+                showCancelButton: true,
+                showConfirmButton: true,
+            }).then(e => {
+                e.isConfirmed ? $.ajax({
+                    url: '/logbook/status/update',
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        status: stts
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: "Log Book berhasil ditolak",
+                                icon: "success",
+                                timer: 2000,
+                                buttons: false,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
                             Swal.fire("Gagal!", "Log Book gagal ditolak", "error");
                         }
-                    });
-                }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        Swal.fire("Gagal!", "Log Book gagal ditolak", "error");
+                    }
+                }) : '';
             });
         });
     });
 </script>
-<?= $this->endSection() ;?>
+<?= $this->endSection(); ?>
