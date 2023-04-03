@@ -64,9 +64,9 @@
                 </div>
                 <hr class="dark horizontal my-0">
                 <div class="card-footer d-flex justify-content-between align-items-center">
-                    <div class="text-sm font-weight-normal my-auto" title="Kuota"><i class="fa fa-id-badge pe-1"></i> <?= $t->kuota ?></div>
+                    <div class="text-sm font-weight-normal my-auto" title="Kuota"><i class="fa fa-id-badge pe-1"></i> <?= getSlotAvailable($t->id) ?></div>
                     <div class="text-sm my-auto"><?= $t->pembimbing ?></div>
-                    <div class="badge badge-sm <?= $t->status == 'buka' ? 'badge-success' : 'badge-danger' ?>"><?= $t->status ?></div>
+                    <div class="badge badge-sm <?= getSlotAvailable($t->id) == 0 ? 'badge-warning' : ($t->status == 'buka' ? 'badge-success' : 'badge-danger') ?>"><?= getSlotAvailable($t->id) == 0 ? 'FULL' : $t->status ?></div>
                 </div>
             </div>
         </div>
