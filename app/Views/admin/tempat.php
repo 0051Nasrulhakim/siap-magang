@@ -63,11 +63,10 @@
                     <p class="mb-0"><?= $t->deskripsi ?></p>
                 </div>
                 <hr class="dark horizontal my-0">
-                <div class="card-footer d-flex">
-                    <p class="text-sm font-weight-normal my-auto" title="Kuota"><i class="fa fa-id-badge pe-1"></i> <?= $t->kuota ?></p>
-                    <p class="text-sm ms-auto my-auto">
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <div class="text-sm font-weight-normal my-auto" title="Kuota"><i class="fa fa-id-badge pe-1"></i> <?= $t->kuota ?></div>
+                    <div class="text-sm my-auto"><?= $t->pembimbing ?></div>
                     <div class="badge badge-sm <?= $t->status == 'buka' ? 'badge-success' : 'badge-danger' ?>"><?= $t->status ?></div>
-                    </p>
                 </div>
             </div>
         </div>

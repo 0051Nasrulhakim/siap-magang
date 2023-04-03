@@ -18,9 +18,10 @@
                         <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Instansi</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kontak</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kuota</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kontak</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pembimbing</th>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                         </tr>
                     </thead>
@@ -30,11 +31,15 @@
                             <tr>
                                 <td class="text-xs ps-4 font-weight-bold"><?= $i++ ?></td>
                                 <td class="text-xs ps-4 font-weight-bold"><?= $t->nama ?></td>
-                                <td class="text-xs ps-4 font-weight-bold capitalize">
+                                <td class="text-xs ps-4 font-weight-bold">
+                                    <a href="mailto:<?= $t->email ?>" class="opacity-7 bg-gray-300 px-3 py-1 rounded-pill">Mail<i class="far fa-envelope ms-1"></i></a>
+                                    <a href="telp:<?= $t->hp ?>" class="opacity-7 bg-gray-300 px-3 py-1 rounded-pill">phone<i class="fas fa-phone ms-1"></i></a>
+                                </td>
+                                <td class="text-xs ps-4 font-weight-bold capitalize text-center">
                                     <div class="badge badge-<?= $t->status == 'buka' ? 'success' : 'secondary' ?>"><?= strtoupper($t->status) ?></div>
                                 </td>
-                                <td class="text-xs ps-4 font-weight-bold"><?= $t->kuota ?></td>
-                                <td class="text-xs ps-4 font-weight-bold"><a href="mailto:<?= $t->email ?>" class="opacity-7"><?= $t->email ?> <i class="far fa-envelope ms-1"></i></a></td>
+                                <td class="text-xs ps-4 font-weight-bold text-center"><?= $t->kuota ?></td>
+                                <td class="text-xs ps-4 font-weight-bold"><?= $t->pembimbing ?></td>
                                 <td class="text-xs ps-4 font-weight-bold">
                                     <button class="badge border border-1 border-danger text-danger btn-destroy" title="Hapus data" data-item="<?= $t->id; ?>"><i class="fas fa-trash"></i></button>
                                     <button class="badge border border-1 border-warning text-warning btn-edit-status" title="Update Status" data-stts="<?= $t->status == 'buka' ? 'tutup' : 'buka' ?>" data-item="<?= $t->id; ?>"><i class="fas fa-tag"></i></button>

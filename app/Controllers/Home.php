@@ -42,12 +42,17 @@ class Home extends BaseController
 
     public function tempat()
     {
+        $tempat = $this->tempat->select('tempat_magang.*, pembimbing.nama as pembimbing')
+            ->join('pembimbing', 'pembimbing.id = tempat_magang.pid')
+            ->orderBy('tempat_magang.status', "ASC")
+            ->findAll();
+
         return view('admin/tempat', [
             "title"         => "Magang | Tempat Magang",
             "page_title"    => "Daftar Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Tempat Magang'],
-            "tempat"        => $this->tempat->orderBy("status", "ASC")->findAll()
+            "tempat"        => $tempat
         ]);
     }
 
@@ -156,12 +161,17 @@ class Home extends BaseController
 
     public function man_tempat()
     {
+        $tempat = $this->tempat->select('tempat_magang.*, pembimbing.nama as pembimbing')
+            ->join('pembimbing', 'pembimbing.id = tempat_magang.pid')
+            ->findAll();
+
+        
         return view('admin/man_tempat', [
             "title"         => "Magang | Manajemen Tempat",
             "page_title"    => "Manejemen Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Manajemen', 'Tempat'],
-            "tempat"        => $this->tempat->findAll(),
+            "tempat"        => $tempat,
             "pembimbing"    => $this->pembimbing->findAll()
         ]);
     }
