@@ -56,7 +56,7 @@
                 <div class="card-body text-center">
                     <div class="<?= empty(getApplicationSiswa(getSid(user_id()))) ? 'mt-n6' : 'mt-n4' ?> mx-auto">
                         <?php if (empty(getApplicationSiswa(getSid(user_id())))) : ?>
-                            <button class="btn bg-gradient-primary btn-sm mb-0 me-2 btn-daftar" data-instansi="<?= $t->nama ?>" data-uid="<?= getSid(user_id()) ?>" data-tid="<?= $t->id ?>" type="button" <?= $t->status == 'tutup' ? 'disabled' : '' ?>>Daftar</button>
+                            <button type="button" class="btn bg-gradient-primary btn-sm mb-0 me-2 btn-daftar" data-instansi="<?= $t->nama ?>" data-uid="<?= getSid(user_id()) ?>" data-tid="<?= $t->id ?>" <?= $t->status == 'tutup' || getSlotAvailable($t->id) == 0 ? 'disabled' : '' ?>>Daftar</button>
                         <?php endif ?>
                     </div>
                     <h6 class="font-weight-normal mt-4"><?= $t->nama ?></h6>

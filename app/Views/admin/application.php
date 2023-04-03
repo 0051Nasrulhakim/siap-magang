@@ -45,7 +45,7 @@
                                     <td class="ps-3 text-xs font-weight-bold"><?= genIconInstansi($application->id_tempat) ?><span class="iname"><?= $instansi ?></span></td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <button <?= $application->status != 'pending' ? 'disabled style="opacity: 0.6;"' : '' ?> class="badge border border-1 border-danger text-danger btn-destroy" title="Hapus data" data-item="<?= $application->id; ?>"><i class="fas fa-trash"></i></button>
-                                        <button class="badge border border-1 border-warning text-warning btn-edit-status" title="Update Status" data-stts="<?= $application->status ?>" data-item="<?= $application->id; ?>"><i class="fas fa-tag"></i></button>
+                                        <button <?= $application->status == 'reject by system' ? 'disabled style="opacity: 0.6;"' : '' ?> class="badge border border-1 border-warning text-warning btn-edit-status" title="Update Status" data-stts="<?= $application->status ?>" data-item="<?= $application->id; ?>"><i class="fas fa-tag"></i></button>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
@@ -135,7 +135,7 @@
                 const t = $(this).data('item');
                 const nama = $(this).parent().parent().find('td:eq(4)').text();
                 const instansi = $(this).parent().parent().find('td:eq(6) .iname').text();
-                console.log(instansi);
+                
                 Swal.fire({
                     icon: "warning",
                     title: "Hapus Data",

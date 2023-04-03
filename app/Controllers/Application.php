@@ -67,8 +67,29 @@ class Application extends BaseController
         $id = $data['item'];
         unset($data['item']);
 
+        $id_siswa = $this->app->select('id_siswa')->where('id', $id)->first()->id_siswa;
+        $id_tempat = $this->app->select('id_tempat')->where('id', $id)->first()->id_tempat;
+
+        $accepted = $this->app->where('id_tempat', $id_tempat)->where('status', 'accepted')->findAll();
 
         if ($this->app->update($id, $data)) {
+            
+            if ($data['status'] == 'accepted') {
+                $this->app->where('id_siswa', $id_siswa)->where('id !=', $id)->set(['status' => 'reject by system'])->update();
+
+                $tempat = new \App\Models\TempatModel();
+                $tempat = $tempat->find($id_tempat);
+
+                if (count($accepted) >= $tempat->kuota) {
+                    // $tempat->set(['status' => 'tutup'])->update(); /** status tempat jadi tutup */
+
+                    $lam = $this->app->where('id_tempat', $id_tempat)->where('status', 'pending')->findAll();
+                    foreach ($lam as $a) {
+                        $this->app->update($a->id, ['status' => 'reject by system']);
+                    }
+                }
+            }
+            
             return $this->response->setJSON([
                 'status'    => 200,
                 'success'   => true,

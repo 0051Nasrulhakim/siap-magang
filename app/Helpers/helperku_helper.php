@@ -17,6 +17,9 @@
             case 'selesai':
                 return '<span class="badge badge-info border border-info">Selesai</span>';
                 break;
+            case 'reject by system':
+                return '<span class="badge badge-danger border border-danger">reject by system</span>';
+                break;
             default:
                 return '<span class="badge badge-secondary border border-secondary">Unknown</span>';
                 break;
@@ -90,4 +93,15 @@
     {
         $siswa = new \App\Models\SiswaModel();
         return $siswa->where('user_id', user_id())->first()->nis;
+    }
+
+    function getSlotAvailable($tid)
+    {
+        $app = new \App\Models\ApplicationModel();
+        $tempat = new \App\Models\TempatModel();
+
+        $data = $app->where(['id_tempat' => $tid, 'status' => 'accepted'])->findAll();
+        $tempat = $tempat->find($tid);
+        
+        return $tempat->kuota - count($data);
     }
