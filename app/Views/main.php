@@ -147,17 +147,25 @@
                 <?php endif ?>
 
                 <?php if (in_groups('pembimbing')) : ?>
-                    <?php $i = 1 ?>
-                    <?php foreach (getInstansiByPembimbingId(user_id()) as $ins) : ?>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="/logbook/<?= $ins->id ?>">
-                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                    <i class="material-icons opacity-10">business</i>
-                                </div>
-                                <span class="nav-link-text text-wrap ms-1"><?= $ins->nama ?></span>
-                            </a>
-                        </li>
-                    <?php endforeach ?>
+                    <?php if (empty(getInstansiByPembimbingId(user_id()))) : ?>
+                        <div class="card card-body mx-4 mt-2">
+                            <div class="text-center text-sm">
+                                Siswa belum terdaftar
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <?php $i = 1 ?>
+                        <?php foreach (getInstansiByPembimbingId(user_id()) as $ins) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="/logbook/<?= $ins->id ?>">
+                                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                        <i class="material-icons opacity-10">business</i>
+                                    </div>
+                                    <span class="nav-link-text text-wrap ms-1"><?= $ins->nama ?></span>
+                                </a>
+                            </li>
+                        <?php endforeach ?>
+                    <?php endif ?>
                 <?php endif ?>
             </ul>
         </div>
