@@ -30,9 +30,9 @@ class Home extends BaseController
     {
         return view('admin/dashboard', [
             "title"         => "Magang | Dashboard",
-            "page_title"    => in_groups('admin') ? (in_groups('pembimbing') ? 'Dashboard Pembimbing' : 'Dashboard Admin') : 'Dashboard Siswa',
+            "page_title"    => in_groups('admin') ? 'Dashboard Admin' : (in_groups('pembimbing') ? 'Dashboard Pembimbing' : 'Dashboard Siswa'),
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => in_groups('admin') ? (in_groups('pembimbing') ? ['Dashboard', 'Pembimbing'] : ['Dashboard', 'Admin']) : ['Dashboard', 'Siswa'],
+            "breadcrumb"    => in_groups('admin') ? ['Dashboard', 'Admin'] : (in_groups('pembimbing') ? ['Dashboard', 'Pembimbing'] : ['Dashboard', user()->username]),
             "siswa"         => $this->siswa->findAll(),
             "tempat"        => $this->tempat->findAll(),
             "tempat_buka"   => $this->tempat->where("status", 'buka')->countAllResults(),
