@@ -11,8 +11,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
-        "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.1"
+        "mikey179/vfsstream": "^1.6"
     },
     "config": {
         "optimize-autoloader": true,
@@ -30,7 +29,12 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "post-install-cmd": [
+            "CodeIgniter\\Commands\\Generators\\Generators::postInstall"
+        ],
+        "post-update-cmd": [
+            "CodeIgniter\\Commands\\Generators\\Generators::postUpdate"
+        ]
     },
     "support": {
         "forum": "https://forum.codeigniter.com/",
