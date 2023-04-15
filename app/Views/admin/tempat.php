@@ -46,7 +46,7 @@
         }
         ?>
         <div class="col-12 col-sm-6 col-md-4 col-xxl-3 mb-4 cardInstansi <?= $t->status ?>">
-            <div class="card mt-4" data-animation="<?= empty(getApplicationSiswa(getSid(user_id()))) ? 'true' : 'false' ?>">
+            <div class="card mt-4" data-animation="<?= !empty(getApplicationSiswa(getSid(user_id()))) || !getSlotAvailable($t->id) == 0 ? 'true' : 'false' ?>">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <a class="d-block blur-shadow-image">
                         <img src="<?= $foto ?>" alt="img-blur-shadow" height="200px" class="img-fluid shadow border-radius-lg">
@@ -54,8 +54,8 @@
                     <div class="colored-shadow" style="background-image: url(&quot;<?= $foto ?>&quot;);"></div>
                 </div>
                 <div class="card-body text-center">
-                    <div class="<?= empty(getApplicationSiswa(getSid(user_id()))) ? 'mt-n6' : 'mt-n4' ?> mx-auto">
-                        <?php if (empty(getApplicationSiswa(getSid(user_id())))) : ?>
+                    <div class="<?= !empty(getApplicationSiswa(getSid(user_id()))) || !getSlotAvailable($t->id) == 0 ? 'mt-n6' : 'mt-n4' ?> mx-auto">
+                        <?php if (!empty(getApplicationSiswa(getSid(user_id()))) || !getSlotAvailable($t->id) == 0) : ?>
                             <button type="button" class="btn bg-gradient-primary btn-sm mb-0 me-2 btn-daftar" data-instansi="<?= $t->nama ?>" data-uid="<?= getSid(user_id()) ?>" data-tid="<?= $t->id ?>" <?= $t->status == 'tutup' || getSlotAvailable($t->id) == 0 ? 'disabled' : '' ?>>Daftar</button>
                         <?php endif ?>
                     </div>
@@ -64,8 +64,8 @@
                 </div>
                 <hr class="dark horizontal my-0">
                 <div class="card-footer d-flex justify-content-between align-items-center">
-                    <div class="text-sm font-weight-normal my-auto" title="Kuota"><i class="fa fa-id-badge pe-1"></i> <?= getSlotAvailable($t->id) ?></div>
-                    <div class="text-sm my-auto"><?= $t->pembimbing ?></div>
+                    <div class="text-sm font-weight-normal my-auto" title="kuota siswa magang" data-bs-toggle="tooltip"><i class="fa fa-id-badge pe-1"></i> <?= getSlotAvailable($t->id) ?></div>
+                    <div class="text-sm my-auto" title="pembimbing magang" data-bs-toggle="tooltip"><?= $t->pembimbing ?></div>
                     <div class="badge badge-sm <?= getSlotAvailable($t->id) == 0 ? 'badge-warning' : ($t->status == 'buka' ? 'badge-success' : 'badge-danger') ?>"><?= getSlotAvailable($t->id) == 0 ? 'FULL' : $t->status ?></div>
                 </div>
             </div>
