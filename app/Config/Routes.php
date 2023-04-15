@@ -43,6 +43,7 @@ $routes->get('/nilai', 'Home::nilai');
 $routes->get('/application', 'Home::application', ['filter' => 'role:siswa,admin']);
 
 $routes->get('/kehadiran', 'Home::daftarHadir', ['filter' => 'role:siswa']);
+$routes->get('/kehadiran/(:num)', 'Home::daftarHadir/$1', ['filter' => 'role:siswa']);
 $routes->post('/kehadiran/store', 'LogBook::store', ['filter' => 'role:siswa']);
 
 $routes->get('/tempat', 'Home::tempat', ['filter' => 'role:siswa']);

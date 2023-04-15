@@ -66,7 +66,7 @@ class Home extends BaseController
         ]);
     }
 
-    public function daftarHadir()
+    public function daftarHadir($id = null)
     {
         $tempat = $this->application->select('lamaran.id_siswa as sid, tempat_magang.nama as instansi, tempat_magang.id as tid, tempat_magang.pid, tempat_magang.alamat, tempat_magang.hp, tempat_magang.email')
             ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')
@@ -74,14 +74,26 @@ class Home extends BaseController
             ->orderBy('lamaran.created_at', "DESC")
             ->first();
 
-        return view('kehadiran', [
+        $data = [
             "title"         => "Magang | Daftar Hadir Siswa",
             "page_title"    => "Daftar Hadir Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Daftar Hadir', user()->username],
             "tempat"        => $tempat,
             "logbooks"      => $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSid(user_id()))->findAll()
-        ]);
+        ];
+
+        if ($id && is_numeric($id)) {
+            $edit_logbook = $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSid(user_id()))->where('id', $id)->first();
+
+            if ($edit_logbook->status !== 'rejected') {
+                return redirect()->to('/kehadiran');
+            }
+
+            $data['edit_logbook'] = $edit_logbook;
+        }
+
+        return view('kehadiran', $data);
     }
 
     public function application()
@@ -92,7 +104,7 @@ class Home extends BaseController
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
-        } elseif(in_groups('siswa')) {
+        } elseif (in_groups('siswa')) {
             $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, angkatan.tahun, tempat_magang.nama as instansi, tempat_magang.alamat')
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
@@ -144,7 +156,7 @@ class Home extends BaseController
             ->where('lamaran.id_tempat', $idt)
             ->where('lamaran.status', 'accepted')
             ->findAll();
-        
+
         $log = $this->logbooks->select("*")->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where(['id_siswa' => $this->siswa->where('nis', $nis)->first()->id, 'id_pembimbing' => user_id()])->findAll();
 
         return view('logbook_siswa', [
@@ -165,7 +177,7 @@ class Home extends BaseController
             ->join('pembimbing', 'pembimbing.id = tempat_magang.pid')
             ->findAll();
 
-        
+
         return view('admin/man_tempat', [
             "title"         => "Magang | Manajemen Tempat",
             "page_title"    => "Manejemen Tempat Magang",

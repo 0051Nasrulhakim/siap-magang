@@ -30,8 +30,13 @@ class LogBook extends BaseController
             $data['kegiatan']   = $this->request->getPost('kegiatan');
         }
 
+        if ($this->request->getPost('lid') !== null) {
+            $data['id'] = $this->request->getPost('lid');
+            $data['status'] = 'pending';
+        }
+
         // insert data and return json
-        if ($this->logbooks->insert($data)) {
+        if ($this->logbooks->save($data)) {
             $response = [
                 'success'   => true,
                 'status'    => 200,
