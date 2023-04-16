@@ -38,7 +38,7 @@ $routes->addPlaceholder('dotnis', '[0-9]{2}\.[0-9]{6}');
 // Routes
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
-$routes->get('/nilai', 'Home::nilai');
+$routes->get('/nilai', 'Home::nilai', ['filter' => 'role:siswa']);
 
 $routes->get('/application', 'Home::application', ['filter' => 'role:siswa,admin']);
 
