@@ -104,7 +104,7 @@
                 <li class="nav-item">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                         <?php if (in_groups('admin')) : ?>
-                            Data Manajemen
+                            Manajemen Data
                         <?php elseif (in_groups('pembimbing')) : ?>
                             Bimbingan Siswa
                         <?php endif ?>
@@ -135,6 +135,11 @@
                             </div>
                             <span class="nav-link-text ms-1">Manjemen Siswa</span>
                         </a>
+                    </li>
+
+                    <hr class="horizontal light">
+                    <li class="nav-item">
+                        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Pengaturan</h6>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/settings">

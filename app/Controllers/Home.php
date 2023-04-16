@@ -28,7 +28,7 @@ class Home extends BaseController
 
     public function index()
     {
-        return view('admin/dashboard', [
+        return view('dashboard', [
             "title"         => "Magang | Dashboard",
             "page_title"    => in_groups('admin') ? 'Dashboard Admin' : (in_groups('pembimbing') ? 'Dashboard Pembimbing' : 'Dashboard Siswa'),
             "segment"       => $this->request->getUri()->getSegments(),
@@ -47,7 +47,7 @@ class Home extends BaseController
             ->orderBy('tempat_magang.status', "ASC")
             ->findAll();
 
-        return view('admin/tempat', [
+        return view('tempat', [
             "title"         => "Magang | Tempat Magang",
             "page_title"    => "Daftar Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
@@ -117,7 +117,7 @@ class Home extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        return view('admin/application', [
+        return view('application', [
             "title"         => "Magang | Application Siswa",
             "page_title"    => "Lamaran Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
@@ -178,7 +178,7 @@ class Home extends BaseController
             ->findAll();
 
 
-        return view('admin/man_tempat', [
+        return view('man_tempat', [
             "title"         => "Magang | Manajemen Tempat",
             "page_title"    => "Manejemen Tempat Magang",
             "segment"       => $this->request->getUri()->getSegments(),
@@ -190,7 +190,7 @@ class Home extends BaseController
 
     public function tempat_edit($id)
     {
-        return view('admin/edit_tempat', [
+        return view('edit_tempat', [
             'title'         => 'Magang | Edit Tempat Magang',
             'page_title'    => 'Edit Tempat Magang',
             'segment'       => $this->request->getUri()->getSegments(),
@@ -208,7 +208,7 @@ class Home extends BaseController
             ->join('pembimbing', 'pembimbing.user_id = users.id')
             ->findAll();
 
-        return view('admin/man_user', [
+        return view('man_user', [
             "title"         => "Magang | Manajemen User",
             "page_title"    => "Manajejemen Data Pengelola dan Guru",
             "segment"       => $this->request->getUri()->getSegments(),
@@ -225,7 +225,7 @@ class Home extends BaseController
             ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->findAll();
 
-        return view('admin/man_siswa', [
+        return view('man_siswa', [
             "title"         => "Magang | Manajemen Siswa",
             "page_title"    => "Manajemen Data Siswa",
             "segment"       => $this->request->getUri()->getSegments(),
@@ -246,7 +246,7 @@ class Home extends BaseController
             ->where('siswa.nis', $nis)
             ->first();
 
-        return view('admin/edit_siswa', [
+        return view('edit_siswa', [
             "title"         => "Magang | Edit Data siswa",
             "page_title"    => "Edit Data Siswa $nis",
             "segment"       => $this->request->getUri()->getSegments(),
@@ -259,7 +259,7 @@ class Home extends BaseController
 
     public function settings()
     {
-        return view('admin/settings', [
+        return view('settings', [
             "title"         => "Magang | Site Settings",
             "page_title"    => "Pengaturan",
             "segment"       => $this->request->getUri()->getSegments(),
