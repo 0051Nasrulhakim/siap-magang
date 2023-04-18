@@ -8,9 +8,17 @@ class InitialSeed extends Seeder
 {
     public function run()
     {
+        /**
+         * =============== FAKE DATA ===============
+         * faker initialize
+         */
         $fake = \Faker\Factory::create('id_ID');
 
-        // group 
+
+        /**
+         * =============== GROUP USER =============== 
+         * input group user
+         */
         $this->db->table('auth_groups')->insertBatch([
             ['name' => 'admin', 'description' => 'Site Administrator'],
             ['name' => 'pembimbing', 'description' => 'Pembimbing magang'],
@@ -18,7 +26,10 @@ class InitialSeed extends Seeder
         ]);
 
 
-        // Jurusan 
+        /**
+         * =============== JURUSAN ===============
+         * input jurusan
+         */
         $jurusan = new \App\Models\JurusanModel();
         $jurusan->insertBatch([
             ['id' => 1, 'nama_jurusan' => 'RPL',],
@@ -27,7 +38,10 @@ class InitialSeed extends Seeder
         ]);
 
 
-        // angkatan
+        /**
+         * =============== ANGKATAN ===============
+         * input angkatan
+         */
         $angkatan = new \App\Models\AngkatanModel();
         $angkatan->insertBatch([
             ['tahun' => 2019],
@@ -36,7 +50,10 @@ class InitialSeed extends Seeder
         ]);
 
 
-        // Pembimbing 
+        /**
+         * =============== PEMBIMBING ===============
+         * input user as pembimbing
+         */
         $pembimbing = new \App\Models\PembimbingModel();
         $user       = new \App\Models\UserModel();
         $idPembimbing = [];
@@ -63,7 +80,10 @@ class InitialSeed extends Seeder
         }
 
 
-        // Admin
+        /**
+         * =============== ADMIN ===============
+         * input user as admin
+         */
         $user->withGroup('admin')->insert(new \App\Entities\User([
             "email"     => 'admin@gmail.com',
             "username"  => 'admin',
@@ -78,14 +98,20 @@ class InitialSeed extends Seeder
         ]);
 
 
-        // id angkatan
+        /**
+         * =============== ID SISWA ===============
+         * get all id siswa
+         */
         $idAngkatan = [];
         foreach ($angkatan->select('id')->findAll() as $key => $value) {
             $idAngkatan[] = $value->id;
         }
 
 
-        // Siswa
+        /**
+         * =============== SISWA ===============
+         * input user as siswa
+         */
         $idSiswa = [];
         $siswa = new \App\Models\SiswaModel();
         for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
@@ -113,7 +139,10 @@ class InitialSeed extends Seeder
         }
 
 
-        // Tempat Magang
+        /**
+         * =============== TEMPAT MAGANG ===============
+         * input tempat magang
+         */
         $idTempat = [];
         $tempat = new \App\Models\TempatModel();
         for ($i = 0; $i < $fake->numberBetween(13, 25); $i++) {
@@ -132,7 +161,25 @@ class InitialSeed extends Seeder
         }
 
 
-        // Application
+        /**
+         * =============== PENGUMUMAN ===============
+         * input pengumuman
+         */
+        $pengumuman = new \App\Models\PengumumanModel();
+        for ($i = 0; $i < $fake->numberBetween(5, 10); $i++) {
+            $pengumuman->save([
+                'judul'        => $fake->sentence(5),
+                'isi'          => $fake->paragraph(4),
+                'oleh'         => $fake->randomElement($idPembimbing),
+                'lampiran'     => 'https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image@2x.png',
+            ]);
+        }
+
+
+        /**
+         * =============== APPLICATION ===============
+         * input application / pendaftaran siswa
+         */
         // $application = new \App\Models\ApplicationModel();
         // for ($i = 0; $i <= count($idSiswa); $i++) {
         //     $ids = $fake->randomElement($idSiswa);

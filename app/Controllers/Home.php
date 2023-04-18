@@ -13,6 +13,7 @@ class Home extends BaseController
     protected $application;
     protected $pembimbing;
     protected $logbooks;
+    protected $pengumuman;
 
     public function __construct()
     {
@@ -24,10 +25,16 @@ class Home extends BaseController
         $this->application  = new \App\Models\ApplicationModel();
         $this->pembimbing   = new \App\Models\PembimbingModel();
         $this->logbooks     = new \App\Models\LogBookModel();
+        $this->pengumuman   = new \App\Models\PengumumanModel();
     }
 
     public function index()
     {
+        $pengumuman = $this->pengumuman->select('pengumuman.*, pembimbing.nama as pembimbing')
+            ->join('pembimbing', 'pembimbing.id = pengumuman.oleh')
+            ->orderBy('pengumuman.created_at', "DESC")
+            ->findAll();
+
         return view('dashboard', [
             "title"         => "Magang | Dashboard",
             "page_title"    => in_groups('admin') ? 'Dashboard Admin' : (in_groups('pembimbing') ? 'Dashboard Pembimbing' : 'Dashboard Siswa'),
@@ -37,6 +44,7 @@ class Home extends BaseController
             "tempat"        => $this->tempat->findAll(),
             "tempat_buka"   => $this->tempat->where("status", 'buka')->countAllResults(),
             "tempat_tutup"  => $this->tempat->where("status", 'tutup')->countAllResults(),
+            "pengumuman"    => $pengumuman
         ]);
     }
 
