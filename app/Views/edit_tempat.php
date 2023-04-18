@@ -87,7 +87,7 @@ if (filter_var($tempat->foto, FILTER_VALIDATE_URL)) {
                 </div>
                 <div class="col-12">
                     <div class="input-group input-group-outline mb-3">
-                        <input type="file" name="foto" id="foto" class="form-control">
+                        <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
                     </div>
                 </div>
             </div>
