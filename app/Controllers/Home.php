@@ -228,7 +228,7 @@ class Home extends BaseController
     public function man_siswa()
     {
         $dsiswa = $this->user
-            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
+            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.nama as angkatan, angkatan.tahun')
             ->join('siswa', 'siswa.user_id = users.id', 'inner')
             ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->findAll();
@@ -248,13 +248,13 @@ class Home extends BaseController
     {
         $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
         $dsiswa = $this->user
-            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
+            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.nama as angkatan, angkatan.tahun, angkatan.id as num')
             ->join('siswa', 'siswa.user_id = users.id', 'inner')
             ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->where('siswa.nis', $nis)
             ->first();
 
-        return view('edit_siswa', [
+        return view('siswa_edit', [
             "title"         => "Magang | Edit Data siswa",
             "page_title"    => "Edit Data Siswa $nis",
             "segment"       => $this->request->getUri()->getSegments(),
