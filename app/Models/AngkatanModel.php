@@ -15,7 +15,7 @@ class AngkatanModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'tahun'
+        'tahun', 'nama', 'tgl_mulai', 'tgl_selesai'
     ];
 
     // Dates

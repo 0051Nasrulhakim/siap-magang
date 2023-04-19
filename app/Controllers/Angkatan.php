@@ -17,7 +17,10 @@ class Angkatan extends BaseController
     public function store()
     {
         if ($this->angkatan->save([
-            'tahun' => $this->request->getPost('angkatan')
+            'tahun' => $this->request->getPost('angkatan'),
+            'nama' => $this->request->getPost('nama'),
+            'tgl_mulai' => $this->request->getPost('mulai'),
+            'tgl_selesai' => $this->request->getPost('selesai'),
         ])) {
             return $this->response->setJSON([
                 'status'    => 200,

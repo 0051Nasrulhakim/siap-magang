@@ -64,7 +64,7 @@
                                 <div class="col-6">
                                     <div class="input-group input-group-outline mb-3" data-bs-toggle="tooltip" title="NIS siswa akan terisi otomatis ketika memilih angkatan" data-container="body" data-animation="true">
                                         <label for="nis" class="form-label">NIS</label>
-                                        <input type="text" name="nis" id="nis" class="form-control bg-gray-300" value="0" readonly>
+                                        <input type="text" name="nis" id="nis" class="form-control" readonly>
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
                                         <label for="email" class="form-label">Email</label>
@@ -94,7 +94,7 @@
                                         <select name="angkatan" id="angkatan" class="form-control">
                                             <option value=""></option>
                                             <?php foreach ($angkatan as $a) : ?>
-                                                <option data-tahun="<?= $a->tahun ?>" value="<?= $a->id ?>"><?= $a->tahun ?></option>
+                                                <option data-tahun="<?= $a->tahun ?>" value="<?= $a->id ?>"><?= $a->nama ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
@@ -135,8 +135,9 @@
                 $('#fasiswa #nis').parent().addClass('is-filled');
                 const year = $(this).find(':selected').data('tahun').toString().substr(2, 2);
                 const random = Math.floor(100000 + Math.random() * 900000);
-                
-                $('#fasiswa #nis').val(year + "." + random);
+                const nis = year + "." + random;
+
+                $('#fasiswa #nis').val(nis);
             } else {
                 $(this).parent().removeClass('is-filled');
                 $('#fasiswa #nis').val('');

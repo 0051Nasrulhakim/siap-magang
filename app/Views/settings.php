@@ -13,7 +13,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark d-flex" data-scroll="" href="#angkatan">
                         <i class="material-icons text-lg me-2">123</i>
-                        <span class="text-sm">Angkatan</span>
+                        <span class="text-sm">Angkatan dan Periode</span>
                     </a>
                 </li>
             </ul>
@@ -22,7 +22,7 @@
     <div class="col-lg-9 mt-lg-0 mt-4">
         <div class="card card-body p-4 mb-4" id="jurusan">
             <div class="row">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-5">
                     <h6>Manajemen Jurusan</h6>
                     <form role="form text-left" id="fajurusan">
                         <div class="">
@@ -36,7 +36,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-12 col-md-8">
+                <div class="col-12 col-md-7">
                     <div class="table-responsive">
                         <table id="tblJurusan" class="table table-hover align-items-center mb-0">
                             <thead>
@@ -67,27 +67,20 @@
 
         <div class="card card-body p-4 mb-4" id="angkatan">
             <div class="row">
-                <div class="col-12 col-md-4">
-                    <h6>Manajemen Angkatan</h6>
-                    <form role="form text-left" id="faangkatan">
-                        <div class="">
-                            <div class="input-group input-group-outline">
-                                <label class="form-label" for="angkatan">Angkatan</label>
-                                <input type="number" min="0" class="form-control" id="angkatan" name="angkatan">
-                            </div>
-                            <div class="text-center pt-2">
-                                <button type="submit" class="btn btn-round bg-dark text-white w-100" required>Tambahkan</button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="d-flex align-items-center justify-content-between w-100 mb-3">
+                    <h6>Manajemen Angkatan dan Periode Magang</h6>
+                    <button class="btn btn-round badge badge-dark border border-dark rounded-pill" data-bs-toggle="modal" data-bs-target="#maangkatan">Tambah</button>
                 </div>
-                <div class="col-12 col-md-8">
+                <div class="col-12 col-md-12">
                     <div class="table-responsive">
                         <table id="tblAngkatan" class="table table-hover align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Gelombang</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">tahun</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mulai</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Selesai</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span class="material-icons d-flex justify-content-end">tag</span></th>
                                 </tr>
                             </thead>
@@ -96,7 +89,10 @@
                                 <?php foreach ($angkatan as $a) : ?>
                                     <tr>
                                         <td class="text-xs ps-4 font-weight-bold"><?= $no++; ?></td>
+                                        <td class="text-xs ps-4 font-weight-bold"><?= $a->nama; ?></td>
                                         <td class="text-xs ps-4 font-weight-bold"><?= $a->tahun; ?></td>
+                                        <td class="text-xs ps-4 font-weight-bold"><?= $a->tgl_mulai; ?></td>
+                                        <td class="text-xs ps-4 font-weight-bold"><?= $a->tgl_selesai; ?></td>
                                         <td class="text-xs ps-4 font-weight-bold gap-1 d-flex justify-content-end">
                                             <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $a->id ?>"><i class="fa fa-trash"></i></button>
                                         </td>
@@ -141,6 +137,49 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Add Angkatan -->
+<div class="modal fade" id="maangkatan" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="maangkatan" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="m-0 p-0">Tambah Angkatan</h5>
+                    <button type="button" class="text-xxs badge badge-secondary border border-secondary rounded-pill" data-bs-dismiss="modal" aria-label="Close">X</button>
+                </div>
+                <form role="form text-left" id="faangkatan">
+                    <div class="">
+                        <div class="input-group input-group-outline mb-3">
+                            <label class="form-label" for="nama">Nama Periode</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        <div class="input-group input-group-outline mb-3">
+                            <label class="form-label" for="angkatan">Angkatan</label>
+                            <input type="number" min="0" class="form-control" id="angkatan" name="angkatan" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="input-group input-group-outline mb-3 is-filled">
+                                    <label class="form-label" for="mulai">Tgl Mulai</label>
+                                    <input type="date" class="form-control" id="mulai" name="mulai" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-outline mb-3 is-filled">
+                                    <label class="form-label" for="selesai">Tgl selesai</label>
+                                    <input type="date" class="form-control" id="selesai" name="selesai" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center pt-2">
+                            <button type="submit" class="btn btn-round bg-dark text-white w-100" required>Tambahkan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomsc'); ?>
@@ -148,6 +187,10 @@
 
 <script>
     $(document).ready(function() {
+        $('#mulai').change(function() {
+            $('#selesai').attr('min', $(this).val());
+        });
+
         $('#fajurusan').submit(function(e) {
             e.preventDefault();
             $.ajax({
@@ -182,7 +225,7 @@
                 }
             });
         });
-        
+
         $('#faangkatan').submit(function(e) {
             e.preventDefault();
             $.ajax({

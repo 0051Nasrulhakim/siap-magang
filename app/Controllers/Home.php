@@ -272,7 +272,7 @@ class Home extends BaseController
             "page_title"    => "Pengaturan",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Settings'],
-            "angkatan"      => $this->angkatan->findAll(),
+            "angkatan"      => $this->angkatan->orderBy('tahun', 'DESC')->findAll(),
             "jurusan"       => $this->jurusan->findAll()
         ]);
     }

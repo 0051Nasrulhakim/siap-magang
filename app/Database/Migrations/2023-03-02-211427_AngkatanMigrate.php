@@ -10,7 +10,10 @@ class AngkatanMigrate extends Migration
     {
         $fields = [
             "id"            => ["type" => "int", "constraint" => 11, 'unsigned' => true, 'auto_increment' => true],
-            "tahun"         => ["type" => "varchar", "constraint" => 255, 'after' => 'id'],
+            "tahun"         => ["type" => "varchar", "constraint" => 255],
+            "nama"          => ["type" => "varchar", "constraint" => 255],
+            "tgl_mulai"     => ["type" => "date"],
+            "tgl_selesai"   => ["type" => "date"],
             'created_at'    => ['type' => 'datetime', 'null' => true],
             'updated_at'    => ['type' => 'datetime', 'null' => true],
             'deleted_at'    => ['type' => 'datetime', 'null' => true],
