@@ -13,6 +13,22 @@ class Pengumuman extends BaseController
         $this->pengumuman = new \App\Models\PengumumanModel();
     }
 
+    public function index()
+    {
+        $pengumuman = $this->pengumuman->select('pengumuman.*, pembimbing.nama as pembimbing')
+            ->join('pembimbing', 'pembimbing.id = pengumuman.oleh')
+            ->orderBy('pengumuman.created_at', "DESC")
+            ->findAll();
+
+        return view('pengumuman', [
+            "title"         => "Magang | Dashboard",
+            "page_title"    => in_groups('admin') ? 'Dashboard Admin' : (in_groups('pembimbing') ? 'Dashboard Pembimbing' : 'Dashboard Siswa'),
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => in_groups('admin') ? ['Dashboard', 'Admin'] : (in_groups('pembimbing') ? ['Dashboard', 'Pembimbing'] : ['Dashboard', user()->username]),
+            "pengumuman"    => $pengumuman
+        ]);
+    }
+
     public function get($id)
     {
         $pengumuman = $this->pengumuman->select('pengumuman.*, pembimbing.nama as pembimbing')

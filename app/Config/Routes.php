@@ -59,6 +59,7 @@ $routes->get('/man/siswa', 'Home::man_siswa', ['filter' => 'role:admin']);
 $routes->get('/settings', 'Home::settings', ['filter' => 'role:admin']);
 
 $routes->group('pengumuman', function($p) {
+    $p->get('/', 'Pengumuman::Index');
     $p->get('get/(:num)', 'Pengumuman::get/$1');
     $p->post('store', 'Pengumuman::store');
     $p->delete('destroy/(:num)', 'Pengumuman::destroy/$1');
