@@ -72,11 +72,13 @@ $routes->group('jurusan', function ($j) {
 });
 
 $routes->group('angkatan', function ($a) {
+    $a->get('getangkatan', 'Angkatan::getAngkatan');
     $a->post('store', 'Angkatan::store');
     $a->delete('destroy/(:num)', 'Angkatan::destroy/$1');
 });
 
 $routes->group('siswa', function ($s) {
+    $s->get('add', 'Siswa::index');
     $s->post('ceknis', 'Siswa::ceknis');
     $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
     $s->post('store', 'Siswa::store');

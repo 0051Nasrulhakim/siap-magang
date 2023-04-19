@@ -9,10 +9,33 @@ class Siswa extends BaseController
 {
     protected $user;
     protected $siswa;
+    protected $angkatan;
+    protected $jurusan;
 
     public function __construct() {
         $this->user = new \App\Models\UserModel();
         $this->siswa = new \App\Models\SiswaModel();
+        $this->angkatan = new \App\Models\AngkatanModel();
+        $this->jurusan = new \App\Models\JurusanModel();
+    }
+
+    public function index()
+    {
+        $dsiswa = $this->user
+            ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun as angkatan')
+            ->join('siswa', 'siswa.user_id = users.id', 'inner')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
+            ->findAll();
+
+        return view('siswa_add', [
+            "title"         => "Magang | Manajemen Siswa",
+            "page_title"    => "Manajemen Data Siswa",
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => ['Manajemen', 'Siswa'],
+            "angkatan"      => $this->angkatan->findAll(),
+            "jurusan"       => $this->jurusan->findAll(),
+            "siswa"         => $dsiswa
+        ]);
     }
 
     public function ceknis()
