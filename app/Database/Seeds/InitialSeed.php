@@ -44,9 +44,8 @@ class InitialSeed extends Seeder
          */
         $angkatan = new \App\Models\AngkatanModel();
         $angkatan->insertBatch([
-            ['tahun' => 2019],
-            ['tahun' => 2021],
-            ['tahun' => 2022],
+            ['tahun' => 2022, 'nama' => '2022 Gelombang 1', 'tgl_mulai' => '2022-03-03', 'tgl_selesai' => '2022-05-03'],
+            ['tahun' => 2022, 'nama' => '2022 Gelombang 2', 'tgl_mulai' => '2022-05-05', 'tgl_selesai' => '2022-07-05'],
         ]);
 
 
@@ -99,8 +98,8 @@ class InitialSeed extends Seeder
 
 
         /**
-         * =============== ID SISWA ===============
-         * get all id siswa
+         * =============== ID ANGKATAN ===============
+         * get all id angkatan
          */
         $idAngkatan = [];
         foreach ($angkatan->select('id')->findAll() as $key => $value) {
@@ -112,31 +111,31 @@ class InitialSeed extends Seeder
          * =============== SISWA ===============
          * input user as siswa
          */
-        $idSiswa = [];
-        $siswa = new \App\Models\SiswaModel();
-        for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
-            $fakeEmail = $fake->freeEmail();
-            if ($user->withGroup('siswa')->save(new \App\Entities\User([
-                "email"     => $fakeEmail,
-                "username"  => 'siswa' . ($i + 1),
-                "password"  => '12345678',
-                "active"    => 1,
-            ]))) {
-                $siswa->save([
-                    "user_id"   => $user->getInsertID(),
-                    "nis"       => $fake->randomElement(['19.', '20.', '21.']) . $fake->randomNumber(6, true),
-                    "nama"      => $fake->firstName() . ' ' . $fake->lastName(),
-                    "kelas"     => $fake->randomElement(['XI TKJ', 'XI RPL', 'XI TKR']),
-                    "angkatan"  => $fake->randomElement($idAngkatan),
-                    "no_hp"     => $fake->e164PhoneNumber(),
-                    "alamat"    => $fake->streetAddress()
-                ]);
-                $idSiswa[] = $siswa->getInsertID();
-            } else {
-                $siswa->delete($user->getInsertID());
-                echo implode(", ", $user->errors()) . "\n";
-            }
-        }
+        // $idSiswa = [];
+        // $siswa = new \App\Models\SiswaModel();
+        // for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
+        //     $fakeEmail = $fake->freeEmail();
+        //     if ($user->withGroup('siswa')->save(new \App\Entities\User([
+        //         "email"     => $fakeEmail,
+        //         "username"  => 'siswa' . ($i + 1),
+        //         "password"  => '12345678',
+        //         "active"    => 1,
+        //     ]))) {
+        //         $siswa->save([
+        //             "user_id"   => $user->getInsertID(),
+        //             "nis"       => $fake->randomElement(['19.', '20.', '21.']) . $fake->randomNumber(6, true),
+        //             "nama"      => $fake->firstName() . ' ' . $fake->lastName(),
+        //             "kelas"     => $fake->randomElement(['XI TKJ', 'XI RPL', 'XI TKR']),
+        //             "angkatan"  => $fake->randomElement($idAngkatan),
+        //             "no_hp"     => $fake->e164PhoneNumber(),
+        //             "alamat"    => $fake->streetAddress()
+        //         ]);
+        //         $idSiswa[] = $siswa->getInsertID();
+        //     } else {
+        //         $siswa->delete($user->getInsertID());
+        //         echo implode(", ", $user->errors()) . "\n";
+        //     }
+        // }
 
 
         /**
