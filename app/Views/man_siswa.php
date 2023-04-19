@@ -129,15 +129,36 @@
             fixedHeight: true,
         });
 
+        function cekNis(nis) {
+            $.ajax({
+                url: "/siswa/ceknis",
+                type: "POST",
+                data: {
+                    nis: nis
+                },
+                dataType: "JSON",
+                success: function(data) {
+                    return data.assigned;
+                }
+            });
+        }
+
         $('#fasiswa #angkatan').on('change', function() {
             if ($(this).val() != "") {
                 $(this).parent().addClass('is-filled');
                 $('#fasiswa #nis').parent().addClass('is-filled');
                 const year = $(this).find(':selected').data('tahun').toString().substr(2, 2);
                 const random = Math.floor(100000 + Math.random() * 900000);
-                const nis = year + "." + random;
+                let nis = year + "." + random;
 
-                $('#fasiswa #nis').val(nis);
+                if (cekNis(nis)) {
+                    while (cekNis(nis)) {
+                        nis = year + "." + random;
+                    }
+                    $('#fasiswa #nis').val(nis);
+                } else {
+                    $('#fasiswa #nis').val(nis);
+                }
             } else {
                 $(this).parent().removeClass('is-filled');
                 $('#fasiswa #nis').val('');
