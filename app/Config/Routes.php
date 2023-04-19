@@ -77,6 +77,7 @@ $routes->group('angkatan', function ($a) {
 });
 
 $routes->group('siswa', function ($s) {
+    $s->post('ceknis', 'Siswa::ceknis');
     $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
     $s->post('store', 'Siswa::store');
     $s->post('update', 'Siswa::update');

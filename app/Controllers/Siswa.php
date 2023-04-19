@@ -15,6 +15,21 @@ class Siswa extends BaseController
         $this->siswa = new \App\Models\SiswaModel();
     }
 
+    public function ceknis()
+    {
+        $nis = str_replace(".", "", $this->request->getPost("nis"));
+        $cek = $this->siswa->where("nis", $nis);
+        if ($cek->countAllResults() > 0) {
+            return $this->response->setJSON([
+                'assigned' => true
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'assigned' => false
+            ]);
+        }
+    }
+
     public function store()
     {
         $nis = str_replace(".", "", $this->request->getPost("nis"));
