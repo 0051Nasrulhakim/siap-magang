@@ -18,6 +18,19 @@
     <link id="pagestyle" href="/assets/css/material-dashboard.css?v=3.0.5" rel="stylesheet" />
 
     <?= $this->renderSection('topsc') ?>
+
+    <style>
+        .dataTables_info {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .page-item .page-link,
+        .page-item span {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show bg-gray-200">

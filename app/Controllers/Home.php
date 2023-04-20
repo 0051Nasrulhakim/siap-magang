@@ -184,15 +184,23 @@ class Home extends BaseController
         $tempat = $this->tempat->select('tempat_magang.*, pembimbing.nama as pembimbing')
             ->join('pembimbing', 'pembimbing.id = tempat_magang.pid')
             ->findAll();
-
+        $pem = $this->pembimbing->findAll();
+        $pem = array_map(function ($p) {
+            return [
+                'value' => $p->nama,
+                'label' => $p->nama,
+                'num'   => $p->id,
+            ];
+        }, $pem);
 
         return view('man_tempat', [
-            "title"         => "Magang | Manajemen Tempat",
-            "page_title"    => "Manejemen Tempat Magang",
-            "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Manajemen', 'Tempat'],
-            "tempat"        => $tempat,
-            "pembimbing"    => $this->pembimbing->findAll()
+            "title"             => "Magang | Manajemen Tempat",
+            "page_title"        => "Manejemen Tempat Magang",
+            "segment"           => $this->request->getUri()->getSegments(),
+            "breadcrumb"        => ['Manajemen', 'Tempat'],
+            "tempat"            => $tempat,
+            "pembimbing"        => $this->pembimbing->findAll(),
+            "pembimbing_json"   => json_encode($pem)
         ]);
     }
 
@@ -232,6 +240,16 @@ class Home extends BaseController
             ->join('siswa', 'siswa.user_id = users.id', 'inner')
             ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->findAll();
+        
+        $angkatan_jeson = $this->angkatan->findAll();
+        $angkatan_jeson = array_map(function ($item) {
+            return [
+                'value' => $item->nama . ' - ' . $item->tahun,
+                'label' => $item->nama . ' - ' . $item->tahun,
+                'no'    => $item->id,
+                'tahun' => $item->tahun,
+            ];
+        }, $angkatan_jeson);
 
         return view('man_siswa', [
             "title"         => "Magang | Manajemen Siswa",
@@ -240,7 +258,8 @@ class Home extends BaseController
             "breadcrumb"    => ['Manajemen', 'Siswa'],
             "angkatan"      => $this->angkatan->findAll(),
             "jurusan"       => $this->jurusan->findAll(),
-            "siswa"         => $dsiswa
+            "siswa"         => $dsiswa,
+            "angkatan_json" => json_encode($angkatan_jeson)
         ]);
     }
 

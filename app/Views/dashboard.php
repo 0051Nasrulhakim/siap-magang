@@ -249,7 +249,7 @@
 <?= $this->section('bottomsc'); ?>
 <script src="/assets/js/plugins/datatables.js"></script>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
-<script src="../../assets/js/plugins/quill.min.js"></script>
+<script src="/assets/js/plugins/quill.min.js"></script>
 
 <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
     <script>

@@ -136,14 +136,10 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <div class="input-group input-group-outline mb-3 is-filled">
+                                            <input type="hidden" name="pembimbing" id="pemval">
+                                            <div class="input-group input-group-outline mb-3">
                                                 <label for="pembimbing" class="form-label">Pembimbing</label>
-                                                <select name="pembimbing" id="pembimbing" class="form-control">
-                                                    <option value=""> -- PILIH PEMBIMBING -- </option>
-                                                    <?php foreach ($pembimbing as $p) : ?>
-                                                        <option value="<?= $p->id ?>"><?= $p->nama ?></option>
-                                                    <?php endforeach ?>
-                                                </select>
+                                                <input type="text" name="autopem" id="autopem" class="form-control" required>
                                             </div>
                                         </div>
                                     </div>
@@ -160,11 +156,19 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-12">
+                                    <div class="mb-3">
+                                        <div class="quildes mb-3"></div>
+                                        <textarea name="deskripsi" id="tadess" class="form-control d-none" style="display: none !important; visibility: hidden !important;"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-12">
                                     <div class="input-group input-group-outline mb-3">
                                         <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control" placeholder="Deskripsi Lengkap (Jobdesk, gaji, dll ...)"></textarea>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-12">
                                     <div class="input-group input-group-outline mb-3">
                                         <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
@@ -184,9 +188,18 @@
 </div>
 <?= $this->endSection(); ?>
 
+
+<?= $this->section('topsc'); ?>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<?= $this->endSection(); ?>
+
+
+
 <?= $this->section('bottomsc'); ?>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="/assets/js/plugins/datatables.js"></script>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
+<script src="/assets/js/plugins/quill.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -195,9 +208,62 @@
             fixedHeight: true
         });
 
+        const pem = <?= $pembimbing_json; ?>; 
+
+        $("#autopem").autocomplete({
+            appendTo: "#mtTempatMagang",
+            source: pem,
+            minLength: 0,
+            select: function(event, ui) {
+                $('#pemval').val(ui.item.num);
+            },
+        });
+
+        var quill = new Quill('.quildes', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                    [{
+                        'script': 'sub'
+                    }, {
+                        'script': 'super'
+                    }],
+                    [{
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
+                    [{
+                        'align': []
+                    }],
+                    ['clean']
+                ]
+            }
+        });
+
         $('#fatempat').on('submit', function(e) {
             e.preventDefault();
+            if (quill.root.innerHTML == '<p><br></p>' || quill.root.innerHTML == '<p></p>') {
+                Swal.fire({
+                    title: "Perhatian",
+                    icon: "warning",
+                    text: "Keterangan tidak boleh kosong",
+                    showConfirmButton: 1,
+                });
+                return false;
+            } else {
+                $("#tadess").val(quill.root.innerHTML);
+            }
+
             var data = new FormData(this);
+
             $.ajax({
                 url: '/tempat/store',
                 method: 'post',
