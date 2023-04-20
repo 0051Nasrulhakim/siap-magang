@@ -13,22 +13,6 @@ class Angkatan extends BaseController
         $this->angkatan = new \App\Models\AngkatanModel();
     }
 
-    public function getAngkatan()
-    {
-        $angkatan = $this->angkatan->findAll();
-        // make json id as value and nama - tahun as text
-        $angkatan = array_map(function($item) {
-            return [
-                'value' => $item->nama . ' - ' . $item->tahun,
-                'label' => $item->nama . ' - ' . $item->tahun,
-                'no'    => $item->id,
-                'tahun' => $item->tahun,
-            ];
-        }, $angkatan);
-
-        return $this->response->setJSON($angkatan);
-    }
-
     public function store()
     {
         if ($this->angkatan->save([

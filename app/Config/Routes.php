@@ -73,7 +73,6 @@ $routes->group('jurusan', function ($j) {
 });
 
 $routes->group('angkatan', function ($a) {
-    $a->get('getangkatan', 'Angkatan::getAngkatan');
     $a->post('store', 'Angkatan::store');
     $a->delete('destroy/(:num)', 'Angkatan::destroy/$1');
 });
