@@ -153,7 +153,7 @@
                                 }
                             }) : Swal.fire({
                                 title: 'Gagal',
-                                text: "Anda gagal mendaftar magang di " + instansi,
+                                text: "Anda gagal mendaftar magang di " + instansi + ', ' + 'hal ini bisa terjadi karena anda sudah mendaftar magang di tempat lain',
                                 icon: 'error',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',

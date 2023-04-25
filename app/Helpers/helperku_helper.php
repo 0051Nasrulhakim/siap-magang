@@ -1,4 +1,40 @@
 <?php 
+    function getSiswaData($id) {
+        $siswa = new \App\Models\SiswaModel();
+        $data = $siswa->where('user_id', $id)->select('siswa.*, users.username, users.email as uemail, users.created_at')
+            ->join('users', 'users.id = siswa.user_id')
+            ->where('siswa.user_id', $id)->first();
+        return $data;
+    }
+
+    function getPembimbingData($id)
+    {
+        $pembimbing = new \App\Models\PembimbingModel();
+        $data = $pembimbing->select('pembimbing.*, users.username, users.email as uemail, users.created_at')
+            ->join('users', 'users.id = pembimbing.user_id')
+            ->where('pembimbing.user_id', $id)->first();
+        return $data;
+    }
+
+    // badge role
+    function badgeRole($r)
+    {
+        switch (strtolower($r)) {
+            case 'admin':
+                return '<span class="badge badge-success border border-success">Admin</span>';
+                break;
+            case 'pembimbing':
+                return '<span class="badge badge-info border border-info">Pembimbing</span>';
+                break;
+            case 'siswa':
+                return '<span class="badge badge-warning border border-warning">Siswa</span>';
+                break;
+            default:
+                return '<span class="badge badge-secondary border border-secondary">Unknown</span>';
+                break;
+        }
+    }
+
     function badgeStatusApplication($s)
     {
         switch ($s) {
@@ -66,6 +102,13 @@
     {
         $siswa = new \App\Models\SiswaModel();
         $data = $siswa->where('user_id', $uid)->first();
+        return $data->id;
+    }
+
+    function getPid($uid)
+    {
+        $pembimbing = new \App\Models\PembimbingModel();
+        $data = $pembimbing->where('user_id', $uid)->first();
         return $data->id;
     }
 

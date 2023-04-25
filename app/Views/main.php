@@ -210,62 +210,6 @@
                 <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-5 right" id="navbar">
                     <div class="ms-auto pe-md-3 d-flex align-items-center">
                         <ul class="navbar-nav  justify-content-end">
-                            <!-- <li class="nav-item mt-1 pe-3 d-none d-sm-block">
-                                <a href="javascript:;" class="nav-link text-body p-0 position-relative">
-                                    <i class="material-icons cursor-pointer">
-                                        info
-                                    </i>
-                                </a>
-                            </li> -->
-                            <li class="nav-item dropdown pe-2 mt-1">
-                                <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="material-icons cursor-pointer">
-                                        notifications
-                                    </i>
-                                    <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
-                                        <span class="small">11</span>
-                                        <span class="visually-hidden">unread notifications</span>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                                    <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="javascript:;">
-                                            <div class="d-flex align-items-center py-1">
-                                                <span class="material-icons">email</span>
-                                                <div class="ms-2">
-                                                    <h6 class="text-sm font-weight-normal my-auto">
-                                                        Check new messages
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="mb-2">
-                                        <a class="dropdown-item border-radius-md" href="javascript:;">
-                                            <div class="d-flex align-items-center py-1">
-                                                <span class="material-icons">podcasts</span>
-                                                <div class="ms-2">
-                                                    <h6 class="text-sm font-weight-normal my-auto">
-                                                        Manage podcast session
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" href="javascript:;">
-                                            <div class="d-flex align-items-center py-1">
-                                                <span class="material-icons">shopping_cart</span>
-                                                <div class="ms-2">
-                                                    <h6 class="text-sm font-weight-normal my-auto">
-                                                        Payment successfully completed
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
                             <li class="nav-item dropdown mt-1 ps-4">
                                 <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="accountMenu" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="material-icons cursor-pointer">
@@ -295,7 +239,7 @@
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a class="dropdown-item border-radius-md" href="/profile">
+                                        <a class="dropdown-item border-radius-md" href="/profile#password">
                                             <div class="d-flex align-items-center py-1">
                                                 <span class="material-icons">key</span>
                                                 <div class="ms-2">

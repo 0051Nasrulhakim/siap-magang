@@ -47,6 +47,18 @@ class Home extends BaseController
             "pengumuman"    => $pengumuman
         ]);
     }
+    
+    public function profile()
+    {
+        return view('profile', [
+            "title"         => "Magang | Profile",
+            "page_title"    => in_groups('admin') ? 'Profile Admin' : (in_groups('pembimbing') ? 'Profile Pembimbing' : 'Profile Siswa'),
+            "segment"       => $this->request->getUri()->getSegments(),
+            "breadcrumb"    => in_groups('admin') ? ['Profile', 'Admin'] : (in_groups('pembimbing') ? ['Profile', 'Pembimbing'] : ['Profile', user()->username]),
+            "jurusan"       => $this->jurusan->findAll(),
+            "angkatan"      => $this->angkatan->findAll(),
+        ]);
+    }
 
     public function tempat()
     {

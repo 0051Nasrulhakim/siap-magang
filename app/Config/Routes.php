@@ -38,6 +38,7 @@ $routes->addPlaceholder('dotnis', '[0-9]{2}\.[0-9]{6}');
 // Routes
 $routes->get('/', 'Home::index');
 $routes->get('/dashboard', 'Home::index');
+$routes->get('/profile', 'Home::profile');
 $routes->get('/nilai', 'Home::nilai', ['filter' => 'role:siswa']);
 
 $routes->get('/application', 'Home::application', ['filter' => 'role:siswa,admin']);
@@ -79,15 +80,18 @@ $routes->group('angkatan', function ($a) {
 
 $routes->group('siswa', function ($s) {
     $s->get('add', 'Siswa::index');
-    $s->post('ceknis', 'Siswa::ceknis');
     $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
+    $s->post('ceknis', 'Siswa::ceknis');
+    $s->post('resetpass', 'Siswa::resetPassword');
     $s->post('store', 'Siswa::store');
     $s->post('update', 'Siswa::update');
+    $s->post('profile/update', 'Siswa::profile_update');
     $s->delete('destroy/(:num)', 'Siswa::destroy/$1');
 });
 
 $routes->group('user', function ($u) {
     $u->post('store', 'User::store');
+    $u->post('profile/update', 'User::profile_update');
     $u->post('update', 'User::update');
     $u->delete('destroy/(:num)', 'User::destroy/$1');
 });

@@ -114,8 +114,43 @@ class User extends BaseController
                 ]);
             }
         }
+    }
 
+    public function profile_update()
+    {
+        $data = $this->request->getPost();
+        $data['id'] = user()->id;
 
+        if (!$this->validate([
+            'nama' => 'required|min_length[3]|alpha_numeric_punct',
+            'no_hp' => 'required|numeric|min_length[10]',
+            'email' => 'required|valid_email',
+        ])) {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => implode(", ", $this->validator->getErrors())
+            ]);
+        }
+
+        $user = new UserEntity($data);
+
+        $data_pembimbing = $data;
+        $data_pembimbing['id'] = getPid(user()->id);
+
+        if ($this->user->save($user) && $this->pembimbing->save($data_pembimbing)) {
+            return $this->response->setJSON([
+                'status'    => 200,
+                'success'   => true,
+                'message'   => 'Profile berhasil diubah',
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => implode(", ", $this->user->errors())
+            ]);
+        }
     }
 
     public function destroy($id)

@@ -12,7 +12,8 @@ class Siswa extends BaseController
     protected $angkatan;
     protected $jurusan;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->user = new \App\Models\UserModel();
         $this->siswa = new \App\Models\SiswaModel();
         $this->angkatan = new \App\Models\AngkatanModel();
@@ -36,6 +37,63 @@ class Siswa extends BaseController
             "jurusan"       => $this->jurusan->findAll(),
             "siswa"         => $dsiswa
         ]);
+    }
+
+    public function resetPassword()
+    {
+        // validation rules
+        $rules = [
+            'email' => [
+                'label' => lang('Auth.emailAddress'),
+                'rules' => 'required|valid_email',
+            ],
+            'password' => [
+                'label' => lang('Auth.password'),
+                'rules' => 'required|strong_password',
+            ],
+            'pass_confirm' => [
+                'label' => lang('Auth.repeatPassword'),
+                'rules' => 'required|matches[password]',
+            ]
+        ];
+
+        // validate post data
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        // get user by email
+        $user = $this->user->where('email', $this->request->getPost('email'))->first();
+
+        if (null === $user) {
+            return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
+        }
+
+        // generae token reset password
+        $user = $user->generateResetHash();
+        $this->user->save($user);
+
+        $user = $this->user->where('email', $this->request->getPost('email'))
+            ->where('reset_hash', $user->reset_hash)
+            ->first();
+
+        if (null === $user) {
+            return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
+        }
+
+        if (! empty($user->reset_expires) && time() > $user->reset_expires->getTimestamp()) {
+            return redirect()->back()->withInput()->with('error', lang('Auth.resetTokenExpired'));
+        }
+
+        // Success! Save the new password, and cleanup the reset hash.
+        $user->password         = $this->request->getPost('password');
+        $user->reset_hash       = null;
+        $user->reset_at         = date('Y-m-d H:i:s');
+        $user->reset_expires    = null;
+        $user->force_pass_reset = false;
+        $this->user->save($user);
+
+        return redirect()->to('/profile#password')->with('success', lang('Auth.resetSuccess'));
     }
 
     public function ceknis()
@@ -63,7 +121,7 @@ class Siswa extends BaseController
             "password" => $nis,
             "active" => 1
         ]);
-        
+
         $siswa_detail = [
             "nis" => $this->request->getPost("nis"),
             "nama" => $this->request->getPost("nama"),
@@ -72,7 +130,7 @@ class Siswa extends BaseController
             "no_hp" => $this->request->getPost("hp"),
             "alamat" => $this->request->getPost("alamat")
         ];
-    
+
         if ($this->user->withGroup('siswa')->save($siswa_user)) {
             $siswa_detail["user_id"] = $this->user->getInsertID();
             $siswa = new UserEntity($siswa_detail);
@@ -105,8 +163,8 @@ class Siswa extends BaseController
         $siswa_user = [];
 
         $nis = str_replace(".", "", $this->request->getPost("nis"));
-        $old_nis = $this->request->getPost("old_nis");  
-        $old_email = $this->request->getPost("old_email");  
+        $old_nis = $this->request->getPost("old_nis");
+        $old_email = $this->request->getPost("old_email");
 
         $siswa_detail = [
             "nis" => $this->request->getPost("nis"),
@@ -127,11 +185,11 @@ class Siswa extends BaseController
         if ($this->request->getPost("email") != $old_email) {
             $siswa_user["email"] = $this->request->getPost("email");
         }
-        
+
         // if siswa_user not empty
         if (!empty($siswa_user)) {
             $siswa_user = new UserEntity($siswa_user);
-            if($this->user->update($this->request->getPost("items"), $siswa_user)) {
+            if ($this->user->update($this->request->getPost("items"), $siswa_user)) {
                 $id = $this->siswa->where("nis", $old_nis)->first()->id;
 
                 if ($this->siswa->update($id, $siswa_detail)) {
@@ -172,6 +230,51 @@ class Siswa extends BaseController
                     'message'   => implode(", ", $this->siswa->errors())
                 ]);
             }
+        }
+    }
+
+    public function profile_update()
+    {
+        $data = $this->request->getPost();
+        $data['id'] = getSid(user()->id);
+
+        // validate
+        if (!$this->validate([
+            'email' => ['rules' => 'required|valid_email'],
+            'nama' => ['rules' => 'required|alpha_numeric_punct'],
+            'kelas' => ['rules' => 'required|alpha_numeric_punct'],
+            'no_hp' => ['rules' => 'required|numeric'],
+            'alamat' => ['rules' => 'required|alpha_numeric_punct'],
+        ])) {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => implode(", ", $this->validator->getErrors())
+            ]);
+        }
+
+        $siswa_data = [
+            'email' => $data['email'],
+            'id' => user()->id,
+        ];
+
+        if (isset($data['username'])) {
+            $siswa_data['username'] = $data['username'];
+        }
+
+        if ($this->siswa->save($data) && $this->user->save($siswa_data)) {
+            return $this->response->setJSON([
+                'status'    => 200,
+                'success'   => true,
+                'message'   => 'Profil berhasil diperbarui',
+                'data'      => $data
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => implode(", ", $this->siswa->errors())
+            ]);
         }
     }
 
