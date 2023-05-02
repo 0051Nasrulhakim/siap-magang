@@ -41,14 +41,14 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="">
                                             <div class="mb-0"><b><?= $log->tanggal ?></b></div>
-                                            <div class="text-xs"><?= badgeKehadiran($log->keterangan) ?></div>
+                                            <div class="text-xs"><?= genBadgeKehadiran($log->keterangan) ?></div>
                                         </div>
                                         <div class="d-flex flex-column align-items-end">
                                             <div class="text-xs mb-1 d-flex gap-2 flex-row">
                                                 <?php if ($log->telat) : ?>
                                                     <span class="badge badge-danger border border-danger">Telat diisi</span>
                                                 <?php endif ?>
-                                                <?= badgeStatusApplication($log->status) ?>
+                                                <?= genBadgeStatusApplication($log->status) ?>
                                             </div>
                                             <div class="text-sm"><?= $log->jam_masuk ?> - <?= $log->jam_keluar ?></div>
                                         </div>

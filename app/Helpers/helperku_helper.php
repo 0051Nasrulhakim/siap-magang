@@ -1,12 +1,75 @@
-<?php 
-    function getSiswaData($id) {
+<?php
+if (!function_exists('initCheck')) {
+    function initCheck($uid, $tid)
+    {
+        $sid = getSidByUid($uid);
+        $ready = null;
+
+        if (
+            empty(getApplicationSiswa($sid)) &&
+            getSlotAvailable($tid) !== 0 &&
+            isSiswaActive($sid)
+        ) {
+            $ready = true;
+        } else {
+            $ready = false;
+        }
+
+        return $ready;
+    }
+}
+
+if (!function_exists('isSiswaActive')) {
+    function isSiswaActive($sid)
+    {
+        $siswa = new \App\Models\SiswaModel();
+        $data = $siswa->select('siswa.*, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_mulai, angkatan.tgl_selesai')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->where('siswa.id', $sid)
+            ->first();
+
+        $now = date('Y-m-d');
+        $tgl_mulai = $data->tgl_mulai;
+        $tgl_selesai = $data->tgl_selesai;
+
+        if ($now >= $tgl_mulai && $now <= $tgl_selesai) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+if (!function_exists("checkNowAndPeroid")) {
+    function checkNowAndPeroid()
+    {
+        $now = date('Y-m-d');
+        $application = new \App\Models\ApplicationModel();
+        $application_data = $application->select('lamaran.*, siswa.angkatan, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_mulai, angkatan.tgl_selesai')
+            ->join('siswa', 'siswa.id = lamaran.id_siswa')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->findAll();
+
+        foreach ($application_data as $ad) {
+            if ($now > $ad->tgl_selesai && $ad->status == 'accepted') {
+                $application->update($ad->id, ['status' => 'selesai']);
+            }
+        }
+    }
+}
+
+if (!function_exists('getSiswaData')) {
+    function getSiswaData($id)
+    {
         $siswa = new \App\Models\SiswaModel();
         $data = $siswa->where('user_id', $id)->select('siswa.*, users.username, users.email as uemail, users.created_at')
             ->join('users', 'users.id = siswa.user_id')
             ->where('siswa.user_id', $id)->first();
         return $data;
     }
+}
 
+if (!function_exists('getPembimbingData')) {
     function getPembimbingData($id)
     {
         $pembimbing = new \App\Models\PembimbingModel();
@@ -15,9 +78,32 @@
             ->where('pembimbing.user_id', $id)->first();
         return $data;
     }
+}
 
-    // badge role
-    function badgeRole($r)
+
+if (!function_exists('getNamaInstansi')) {
+    function getNamaInstansi($id_tempat)
+    {
+        $ins = new \App\Models\TempatModel();
+        $data = $ins->find($id_tempat);
+        return $data->nama;
+    }
+}
+
+if (!function_exists('isVerifiedInstansi')) {
+    function isVerifiedInstansi($id_tempat)
+    {
+        if ($id_tempat == null) {
+            return '<i class="fas text-warning me-2 fa-info-circle" title="Tempat pengajuan sendiri (belum terverifikasi sekolah)" style="cursor:help;"></i>';
+        } else {
+            return '<i class="far text-success me-2 fa-check-circle" title="Tempat sudah terverifikasi sekolah" style="cursor:help;"></i>';
+        }
+    }
+}
+
+
+if (!function_exists('genBadgeRoles')) {
+    function genBadgeRoles($r)
     {
         switch (strtolower($r)) {
             case 'admin':
@@ -34,8 +120,11 @@
                 break;
         }
     }
+}
 
-    function badgeStatusApplication($s)
+
+if (!function_exists('genBadgeStatusApplication')) {
+    function genBadgeStatusApplication($s)
     {
         switch ($s) {
             case 'pending':
@@ -61,8 +150,11 @@
                 break;
         }
     }
+}
 
-    function badgeKehadiran($k)
+
+if (!function_exists('genBadgeKehadiran')) {
+    function genBadgeKehadiran($k)
     {
         switch ($k) {
             case 'hadir':
@@ -82,62 +174,63 @@
                 break;
         }
     }
+}
 
-    function getInstansi($id_tempat)
-    {
-        $ins = new \App\Models\TempatModel();
-        $data = $ins->find($id_tempat);
-        return $data->nama;
-    }
-
-    function genIconInstansi($id_tempat){
-        if ($id_tempat == null) {
-            return '<i class="fas text-warning me-2 fa-info-circle" title="Tempat pengajuan sendiri (belum terverifikasi sekolah)" style="cursor:help;"></i>';
-        } else {
-            return '<i class="far text-success me-2 fa-check-circle" title="Tempat sudah terverifikasi sekolah" style="cursor:help;"></i>';
-        }
-    }
-
-    function getSid($uid)
+if (!function_exists('getSidByUid')) {
+    function getSidByUid($uid)
     {
         $siswa = new \App\Models\SiswaModel();
         $data = $siswa->where('user_id', $uid)->first();
         return $data->id;
     }
+}
 
-    function getPid($uid)
+if (!function_exists('getPidByUid')) {
+    function getPidByUid($uid)
     {
         $pembimbing = new \App\Models\PembimbingModel();
         $data = $pembimbing->where('user_id', $uid)->first();
         return $data->id;
     }
+}
 
-    function getInstansiByPembimbingId($id_pembimbing)
+if (!function_exists('getInstansiByPid')) {
+    function getInstansiByPid($id_pembimbing)
     {
         $ins = new \App\Models\TempatModel();
+        $idp = getPidByUid($id_pembimbing);
+
         $data = $ins->select('tempat_magang.*',)
             ->select('lamaran.id_tempat', 'lamaran.id_siswa', 'lamaran.status as status_lamaran')
             ->join('lamaran', 'lamaran.id_tempat = tempat_magang.id')
-            ->where(['tempat_magang.pid' => $id_pembimbing, 'tempat_magang.status' => 'buka'])
+            ->where(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka'])
             ->where('lamaran.status', 'accepted')
             ->groupBy('tempat_magang.id')
             ->findAll();
+
         return $data;
     }
+}
 
+
+if (!function_exists('getApplicationSiswa')) {
     function getApplicationSiswa($uid)
     {
         $app = new \App\Models\ApplicationModel();
-        $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted'])->orderBy('created_at', 'DESC')->findAll();
+        $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted', 'status' => 'selesai'])->orderBy('created_at', 'DESC')->findAll();
         return $data;
     }
+}
 
+if (!function_exists('getNisByUid')) {
     function getNisByUid()
     {
         $siswa = new \App\Models\SiswaModel();
         return $siswa->where('user_id', user_id())->first()->nis;
     }
+}
 
+if (!function_exists('getSlotAvailable')) {
     function getSlotAvailable($tid)
     {
         $app = new \App\Models\ApplicationModel();
@@ -145,6 +238,7 @@
 
         $data = $app->where(['id_tempat' => $tid, 'status' => 'accepted'])->findAll();
         $tempat = $tempat->find($tid);
-        
+
         return $tempat->kuota - count($data);
     }
+}

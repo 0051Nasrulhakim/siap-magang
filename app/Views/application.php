@@ -32,17 +32,17 @@
                         <tbody>
                             <?php $no = 1 ?>
                             <?php foreach ($applications as $application) : ?>
-                                <?php $instansi = $application->id_tempat == null ? $application->custom_tempat : getInstansi($application->id_tempat) ?>
+                                <?php $instansi = $application->id_tempat == null ? $application->custom_tempat : getNamaInstansi($application->id_tempat) ?>
                                 <tr>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $no++ ?></td>
-                                    <td class="ps-3 text-xs font-weight-bold"><?= badgeStatusApplication($application->status) ?></td>
+                                    <td class="ps-3 text-xs font-weight-bold"><?= genBadgeStatusApplication($application->status) ?></td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <div class="badge badge-secondary"><?= $application->nis ?></div>
                                     </td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->kelas ?></td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->nama ?></td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->tahun ?></td>
-                                    <td class="ps-3 text-xs font-weight-bold"><?= genIconInstansi($application->id_tempat) ?><span class="iname"><?= $instansi ?></span></td>
+                                    <td class="ps-3 text-xs font-weight-bold"><?= isVerifiedInstansi($application->id_tempat) ?><span class="iname"><?= $instansi ?></span></td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <button <?= $application->status != 'pending' ? 'disabled style="opacity: 0.6;"' : '' ?> class="badge border border-1 border-danger text-danger btn-destroy" title="Hapus data" data-item="<?= $application->id; ?>"><i class="fas fa-trash"></i></button>
                                         <button <?= $application->status == 'reject by system' ? 'disabled style="opacity: 0.6;"' : '' ?> class="badge border border-1 border-warning text-warning btn-edit-status" title="Update Status" data-stts="<?= $application->status ?>" data-item="<?= $application->id; ?>"><i class="fas fa-tag"></i></button>
@@ -72,7 +72,7 @@
                                     <div class="text-xs"><?= $app->alamat ?></div>
                                 </div>
                                 <div style="text-align: end !important;">
-                                    <div class="mb-2"><?= badgeStatusApplication($app->status) ?></div>
+                                    <div class="mb-2"><?= genBadgeStatusApplication($app->status) ?></div>
                                     <div class="text-xs"><?= $app->updated_at ?></div>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@
                                 t.isConfirmed && location.reload()
                             })
                         }
-                    }) : location.reload()
+                    }) : null
                 })
             })
         });

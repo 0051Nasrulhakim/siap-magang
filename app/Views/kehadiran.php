@@ -16,7 +16,7 @@
                         <input type="hidden" name="pid" value="<?= $tempat->pid ?>">
                         <input type="hidden" name="tid" value="<?= $tempat->tid ?>">
                     <?php endif ?>
-                    <input type="hidden" name="sid" value="<?= getSid(user_id()) ?>">
+                    <input type="hidden" name="sid" value="<?= getSidByUid(user_id()) ?>">
                     <div class="mb-3">
                         <label class="form-label mb-1" for="tanggal">Tanggal Kegiatan</label>
                         <div class="input-group input-group-outline">
@@ -91,7 +91,7 @@
                                         <td class="text-xs ps-4 font-weight-bold"><?= $log->keterangan ?></td>
                                         <td class="text-xs ps-4 font-weight-bold">
                                             <div class="d-flex flex-column gap-1">
-                                                <?= badgeStatusApplication($log->status) ?>
+                                                <?= genBadgeStatusApplication($log->status) ?>
                                                 <?php if ($log->telat) : ?>
                                                     <span class="badge badge-danger border border-danger">Telat diisi</span>
                                                 <?php endif ?>

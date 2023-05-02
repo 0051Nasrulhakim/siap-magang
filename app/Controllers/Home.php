@@ -90,7 +90,7 @@ class Home extends BaseController
     {
         $tempat = $this->application->select('lamaran.id_siswa as sid, tempat_magang.nama as instansi, tempat_magang.id as tid, tempat_magang.pid, tempat_magang.alamat, tempat_magang.hp, tempat_magang.email')
             ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')
-            ->where('lamaran.id_siswa', getSid(user_id()))
+            ->where('lamaran.id_siswa', getSidByUid(user_id()))
             ->orderBy('lamaran.created_at', "DESC")
             ->first();
 
@@ -100,11 +100,11 @@ class Home extends BaseController
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Daftar Hadir', user()->username],
             "tempat"        => $tempat,
-            "logbooks"      => $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSid(user_id()))->findAll()
+            "logbooks"      => $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSidByUid(user_id()))->findAll()
         ];
 
         if ($id && is_numeric($id)) {
-            $edit_logbook = $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSid(user_id()))->where('id', $id)->first();
+            $edit_logbook = $this->logbooks->select('*')->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where('id_siswa', getSidByUid(user_id()))->where('id', $id)->first();
 
             if ($edit_logbook->status !== 'rejected') {
                 return redirect()->to('/kehadiran');
@@ -129,7 +129,7 @@ class Home extends BaseController
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
                 ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')
-                ->where('lamaran.id_siswa', getSid(user_id()))
+                ->where('lamaran.id_siswa', getSidByUid(user_id()))
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
         } else {

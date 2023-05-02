@@ -236,7 +236,7 @@ class Siswa extends BaseController
     public function profile_update()
     {
         $data = $this->request->getPost();
-        $data['id'] = getSid(user()->id);
+        $data['id'] = getSidByUid(user()->id);
 
         // validate
         if (!$this->validate([

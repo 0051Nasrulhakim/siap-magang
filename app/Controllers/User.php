@@ -136,7 +136,7 @@ class User extends BaseController
         $user = new UserEntity($data);
 
         $data_pembimbing = $data;
-        $data_pembimbing['id'] = getPid(user()->id);
+        $data_pembimbing['id'] = getPidByUid(user()->id);
 
         if ($this->user->save($user) && $this->pembimbing->save($data_pembimbing)) {
             return $this->response->setJSON([
