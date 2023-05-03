@@ -14,6 +14,7 @@ class Home extends BaseController
     protected $pembimbing;
     protected $logbooks;
     protected $pengumuman;
+    protected $nilai;
 
     public function __construct()
     {
@@ -26,6 +27,7 @@ class Home extends BaseController
         $this->pembimbing   = new \App\Models\PembimbingModel();
         $this->logbooks     = new \App\Models\LogBookModel();
         $this->pengumuman   = new \App\Models\PengumumanModel();
+        $this->nilai        = new \App\Models\NilaiModel();
     }
 
     public function index()
@@ -82,7 +84,8 @@ class Home extends BaseController
             "title"         => "Magang | Nilai Siswa",
             "page_title"    => "Nilai Magang Siswa",
             "segment"       => $this->request->getUri()->getSegments(),
-            "breadcrumb"    => ['Nilai']
+            "breadcrumb"    => ['Nilai'],
+            "nilai"         => $this->nilai->where('ids', getSidByUid(user_id()))->first()
         ]);
     }
 
@@ -133,7 +136,6 @@ class Home extends BaseController
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
         } else {
-            // return note enaugth permission
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -149,11 +151,12 @@ class Home extends BaseController
     public function logbooks($idt)
     {
         $tempat = $this->tempat->find($idt);
-        $siswa = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+        $siswas = $this->application->select('lamaran.*, siswa.id as sid, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
             ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
-            ->where('lamaran.id_tempat', $idt)
-            ->where('lamaran.status', 'accepted')
+            ->where(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'accepted'])
+            ->orWhere(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'selesai'])
+            ->orderBy('lamaran.created_at', "DESC")
             ->findAll();
 
         return view('logbook', [
@@ -161,7 +164,7 @@ class Home extends BaseController
             "page_title"    => "logbook Siswa Magang",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['logbook', user()->username, $tempat->nama],
-            "siswa"         => $siswa,
+            "siswas"         => $siswas,
             "idt"           => $idt,
         ]);
     }
@@ -170,12 +173,15 @@ class Home extends BaseController
     {
         $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
         $tempat = $this->tempat->find($idt);
-        $siswa = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+        $siswas = $this->application->select('lamaran.*, siswa.id as sid, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
             ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
-            ->where('lamaran.id_tempat', $idt)
-            ->where('lamaran.status', 'accepted')
+            ->where(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'accepted'])
+            ->orWhere(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'selesai'])
+            ->orderBy('lamaran.created_at', "DESC")
             ->findAll();
+
+        $siswa = $this->siswa->where('nis', $nis)->first();
 
         $log = $this->logbooks->select("*")->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where(['id_siswa' => $this->siswa->where('nis', $nis)->first()->id, 'id_pembimbing' => user_id()])->findAll();
 
@@ -185,6 +191,7 @@ class Home extends BaseController
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['logbook', user()->username, $tempat->nama, $nis],
             "selected"      => $this->siswa->where('nis', $nis)->first(),
+            "siswas"        => $siswas,
             "siswa"         => $siswa,
             "idt"           => $idt,
             "logbooks"      => $log

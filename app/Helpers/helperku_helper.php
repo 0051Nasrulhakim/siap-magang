@@ -195,19 +195,19 @@ if (!function_exists('getPidByUid')) {
 }
 
 if (!function_exists('getInstansiByPid')) {
-    function getInstansiByPid($id_pembimbing)
+    function getInstansiByPid($uid)
     {
         $ins = new \App\Models\TempatModel();
-        $idp = getPidByUid($id_pembimbing);
+        $idp = getPidByUid($uid);
 
         $data = $ins->select('tempat_magang.*',)
             ->select('lamaran.id_tempat', 'lamaran.id_siswa', 'lamaran.status as status_lamaran')
             ->join('lamaran', 'lamaran.id_tempat = tempat_magang.id')
-            ->where(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka'])
-            ->where('lamaran.status', 'accepted')
+            ->where(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka', 'lamaran.status' => 'accepted'])
+            ->orWhere(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka', 'lamaran.status' => 'selesai'])
             ->groupBy('tempat_magang.id')
             ->findAll();
-
+            
         return $data;
     }
 }
@@ -217,7 +217,10 @@ if (!function_exists('getApplicationSiswa')) {
     function getApplicationSiswa($uid)
     {
         $app = new \App\Models\ApplicationModel();
-        $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted', 'status' => 'selesai'])->orderBy('created_at', 'DESC')->findAll();
+        $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted'])
+            ->orWhere(['id_siswa' => $uid, 'status' => 'selesai'])
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
         return $data;
     }
 }
@@ -240,5 +243,37 @@ if (!function_exists('getSlotAvailable')) {
         $tempat = $tempat->find($tid);
 
         return $tempat->kuota - count($data);
+    }
+}
+
+if(!function_exists('getStatusSiswa')) {
+    function getStatusSiswa($sid)
+    {
+        $app = new \App\Models\ApplicationModel();
+        $data = $app->where(['id_siswa' => $sid])->first();
+        return $data->status;
+    }
+}
+
+if(!function_exists('nilaiAvailable')){
+    function nilaiAvailable($sid)
+    {
+        $nilai = new \App\Models\NilaiModel();
+        $data = $nilai->where(['ids' => $sid])->first();
+        
+        if($data == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+}
+
+if(!function_exists('getNilaiSiswa')){
+    function getNilaiSiswa($sid)
+    {
+        $nilai = new \App\Models\NilaiModel();
+        $data = $nilai->where(['ids' => $sid])->first();
+        return $data;
     }
 }
