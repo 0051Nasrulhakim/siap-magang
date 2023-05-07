@@ -84,7 +84,7 @@
                     <li class="nav-item">
                         <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Kegiatanku</h6>
                     </li>
-                    <?php if (!empty(getApplicationSiswa(getSidByUid(user_id())))) : ?>
+                    <?php if (!empty(isAccepted(getSidByUid(user_id())))) : ?>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/nilai">
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -330,9 +330,9 @@
     <script src="/assets/js/jquery-3.6.3.min.js"></script>
     <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
-    <script src="/assets/js/material-dashboard.min.js?v=3.0.5"></script>
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="/assets/js/material-dashboard.min.js?v=3.0.5"></script>
 
     <?= $this->renderSection('bottomsc'); ?>
 </body>

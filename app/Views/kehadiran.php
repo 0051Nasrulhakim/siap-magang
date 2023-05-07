@@ -56,6 +56,12 @@
                                 <textarea name="kegiatan" id="kegiatan" rows="4" class="form-control" placeholder="kegiatan hari ini"><?= isset($edit_logbook) ? $edit_logbook->kegiatan : ''  ?></textarea>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label mb-1" for="bukti">Bukti Kegiatan</label>
+                            <div class="input-group input-group-outline">
+                                <input type="file" class="form-control" name="bukti" id="bukti" required>
+                            </div>
+                        </div>
                         <!-- button with background gradient-dark -->
                         <button type="submit" class="btn bg-gradient-dark btn-block"><?= isset($edit_logbook) ? 'Perbarui' : '' ?> Absen</button>
                         <?php if (isset($edit_logbook)) : ?>
@@ -131,11 +137,38 @@
             $('.btn-back').on('click', function() {
                 return window.history.back();
             });
+
+            $('.form-absen').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/kehadiran/store',
+                type: 'post',
+                data: $(this).serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data);
+                    data.success ? Swal.fire({
+                        title: 'Berhasil!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/kehadiran'
+                        }
+                    }) : Swal.fire({
+                        title: 'Gagal!',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                }
+            });
+        });
         });
     </script>
-<?php endif ?>
-
-<script>
+<?php else: ?>
+    <script>
     $(document).ready(function() {
         const dataTableBasic = new simpleDatatables.DataTable("#tableLogBook", {
             searchable: false,
@@ -143,9 +176,12 @@
         });
 
         $('#keterangan').change(function() {
-            if ($(this).val() != 'hadir') {
+            if ($(this).val() == 'alfa') {
                 $('#jam_keluar').attr('disabled', true);
+                $('#jam_masuk').attr('disabled', true);
                 $('#kegiatan').attr('disabled', true);
+            } else if ($(this).val() == 'sakit' || $(this).val() == 'izin') {
+                $('#jam_keluar').attr('disabled', true);
                 $('#jam_masuk').attr('disabled', true);
             } else {
                 $('#jam_keluar').attr('disabled', false);
@@ -171,7 +207,6 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.href = '/kehadiran'
-                            // window.location.reload();
                         }
                     }) : Swal.fire({
                         title: 'Gagal!',
@@ -184,4 +219,5 @@
         });
     });
 </script>
+<?php endif ?>
 <?= $this->endSection(); ?>

@@ -212,6 +212,16 @@ if (!function_exists('getInstansiByPid')) {
     }
 }
 
+if (!function_exists('isAccepted')) {
+    function isAccepted($sid) {
+        $app = new \App\Models\ApplicationModel();
+        $data = $app->where(['id_siswa' => $sid, 'status' => 'accepted'])
+            ->orderBy('created_at', 'DESC')
+            ->findAll();
+        return $data;
+    }
+
+}
 
 if (!function_exists('getApplicationSiswa')) {
     function getApplicationSiswa($uid)
