@@ -15,7 +15,7 @@ class LogBookModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_siswa', 'id_tempat', 'id_pembimbing', 'tanggal', 'jam_masuk', 'jam_keluar', 'keterangan', 'kegiatan', 'status' 
+        'id_siswa', 'id_tempat', 'id_pembimbing', 'tanggal', 'jam_masuk', 'jam_keluar', 'keterangan', 'kegiatan', 'status', 'bukti'
     ];
 
     // Dates

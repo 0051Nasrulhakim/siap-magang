@@ -8,7 +8,7 @@
                     <div class="mb-4">
                         <h5>Form <?= isset($edit_logbook) ? 'Edit ' : ''  ?>Kehadiran dan Log Book</h5>
                     </div>
-                    <form class="form-absen" method="post">
+                    <form class="form-absen" method="post" enctype="multipart/form-data">
                         <?php if (isset($edit_logbook)) : ?>
                             <input type="hidden" name="lid" id="lid" value="<?= $edit_logbook->id ?>">
                             <input type="hidden" name="pid" value="<?= $edit_logbook->id_pembimbing ?>">
@@ -59,7 +59,7 @@
                         <div class="mb-3">
                             <label class="form-label mb-1" for="bukti">Bukti Kegiatan</label>
                             <div class="input-group input-group-outline">
-                                <input type="file" class="form-control" name="bukti" id="bukti" required>
+                                <input type="file" class="form-control" name="bukti" id="bukti" required accept="image/*" >
                             </div>
                         </div>
                         <!-- button with background gradient-dark -->
@@ -95,7 +95,7 @@
                                 <?php foreach ($logbooks as $log) : ?>
                                     <tr>
                                         <td class="text-xs ps-4 font-weight-bold"><?= $i++ ?></td>
-                                        <td class="text-xs ps-4 font-weight-bold"><?= $log->tanggal ?></td>
+                                        <td class="text-xs ps-4 font-weight-bold d-flex align-items-center justify-content-start"><?= $log->tanggal ?> <a target="_blank" class="ms-3"  title="lihat bukti kegiatan" href="/assets/img/logbook/<?= $log->bukti ?>"><i class="fa fa-search"></i></a></td>
                                         <td class="text-xs ps-4 font-weight-bold"><?= $log->keterangan ?></td>
                                         <td class="text-xs ps-4 font-weight-bold">
                                             <div class="d-flex flex-column gap-1">
@@ -139,85 +139,92 @@
             });
 
             $('.form-absen').submit(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: '/kehadiran/store',
-                type: 'post',
-                data: $(this).serialize(),
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
-                    data.success ? Swal.fire({
-                        title: 'Berhasil!',
-                        text: data.message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/kehadiran'
-                        }
-                    }) : Swal.fire({
-                        title: 'Gagal!',
-                        text: data.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    })
-                }
+                e.preventDefault();
+                var data = new FormData(this);
+                $.ajax({
+                    url: '/kehadiran/store',
+                    type: 'post',
+                    data: data,
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        console.log(data);
+                        data.success ? Swal.fire({
+                            title: 'Berhasil!',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/kehadiran'
+                            }
+                        }) : Swal.fire({
+                            title: 'Gagal!',
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                });
             });
-        });
         });
     </script>
-<?php else: ?>
+<?php else : ?>
     <script>
-    $(document).ready(function() {
-        const dataTableBasic = new simpleDatatables.DataTable("#tableLogBook", {
-            searchable: false,
-            fixedHeight: true
-        });
+        $(document).ready(function() {
+            const dataTableBasic = new simpleDatatables.DataTable("#tableLogBook", {
+                searchable: false,
+                fixedHeight: true
+            });
 
-        $('#keterangan').change(function() {
-            if ($(this).val() == 'alfa') {
-                $('#jam_keluar').attr('disabled', true);
-                $('#jam_masuk').attr('disabled', true);
-                $('#kegiatan').attr('disabled', true);
-            } else if ($(this).val() == 'sakit' || $(this).val() == 'izin') {
-                $('#jam_keluar').attr('disabled', true);
-                $('#jam_masuk').attr('disabled', true);
-            } else {
-                $('#jam_keluar').attr('disabled', false);
-                $('#kegiatan').attr('disabled', false);
-                $('#jam_masuk').attr('disabled', false);
-            }
-        });
-
-        $('.form-absen').submit(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: '/kehadiran/store',
-                type: 'post',
-                data: $(this).serialize(),
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
-                    data.success ? Swal.fire({
-                        title: 'Berhasil!',
-                        text: data.message,
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/kehadiran'
-                        }
-                    }) : Swal.fire({
-                        title: 'Gagal!',
-                        text: data.message,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    })
+            $('#keterangan').change(function() {
+                if ($(this).val() == 'alfa') {
+                    $('#jam_keluar').attr('disabled', true);
+                    $('#jam_masuk').attr('disabled', true);
+                    $('#kegiatan').attr('disabled', true);
+                } else if ($(this).val() == 'sakit' || $(this).val() == 'izin') {
+                    $('#jam_keluar').attr('disabled', true);
+                    $('#jam_masuk').attr('disabled', true);
+                } else {
+                    $('#jam_keluar').attr('disabled', false);
+                    $('#kegiatan').attr('disabled', false);
+                    $('#jam_masuk').attr('disabled', false);
                 }
             });
+
+            $('.form-absen').submit(function(e) {
+                e.preventDefault();
+                // post with file
+                var data = new FormData(this);
+                $.ajax({
+                    url: '/kehadiran/store',
+                    type: 'post',
+                    data: data,
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        console.log(data);
+                        data.success ? Swal.fire({
+                            title: 'Berhasil!',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/kehadiran'
+                            }
+                        }) : Swal.fire({
+                            title: 'Gagal!',
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
 <?php endif ?>
 <?= $this->endSection(); ?>

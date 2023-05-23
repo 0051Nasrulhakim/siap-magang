@@ -19,6 +19,7 @@ class LogBook extends Migration
             'jam_masuk'     => ['type' => 'TIME', 'null' => true],
             'jam_keluar'    => ['type' => 'TIME', 'null' => true],
             'kegiatan'      => ['type' => 'TEXT', 'null' => true],
+            'bukti'         => ['type' => 'VARCHAR', 'constraint' => '255', 'null' => true],
             'created_at'    => ['type' => 'DATETIME', 'null' => true,],
             'updated_at'    => ['type' => 'DATETIME', 'null' => true,],
             'deleted_at'    => ['type' => 'DATETIME', 'null' => true,],

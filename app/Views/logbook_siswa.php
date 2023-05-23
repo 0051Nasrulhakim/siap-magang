@@ -278,6 +278,12 @@
                                     <div class="d-flex justify-content-end align-items-center mt-3 gap-1">
                                         <button class="badge badge-danger border border-danger btn-reject" data-stts="rejected" title="Reject Log Book"><i class="fa fa-times m-0 p-0"></i></button>
                                         <button class="badge badge-success border border-success text-success btn-approve" data-stts="approved" title="Approve Log Book"><i class="fa fa-check m-0 p-0"></i></button>
+                                    <div class="d-flex justify-content-between align-items-center mt-3 gap-1">
+                                        <a target="_blank" href="/assets/img/logbook/<?= $log->bukti ?>" class="badge badge-info border border-info" title="Lihat bukti kegiatan"><i class="fa fa-search m-0 p-0"></i></a>
+                                        <div>
+                                            <button class="badge badge-danger border border-danger btn-reject" data-stts="rejected" title="Reject Log Book"><i class="fa fa-times m-0 p-0"></i></button>
+                                            <button <?= $log->status == "approved" ? 'disabled style="cursor: not-allowed; pointer-events: all !important;"' : '' ?> class="badge badge-success border border-success text-success btn-approve <?= $log->status == "approved" ? 'opacity-5' : '' ?>" data-stts="approved" title="Approve Log Book"><i class="fa fa-check m-0 p-0"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
