@@ -144,6 +144,7 @@ class AuthController extends Controller
         }
 
         $users = model(UserModel::class);
+        $siswa = new \App\Models\SiswaModel();
 
         // Validate basics first since some password rules rely on these fields
         $rules = config('Validation')->registrationRules ?? [
@@ -180,6 +181,15 @@ class AuthController extends Controller
             return redirect()->back()->withInput()->with('errors', $users->errors());
         }
 
+        // nis 7 digit random
+        $nis = rand(1000000, 9999999);
+        if (!$siswa->insert([
+            'nis' => $nis,
+            'user_id' => $users->getInsertID()
+        ])) {
+            return redirect()->back()->withInput()->with('errors', $siswa->errors());
+        }
+        
         if ($this->config->requireActivation !== null) {
             $activator = service('activator');
             $sent      = $activator->send($user);
