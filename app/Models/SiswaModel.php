@@ -15,7 +15,7 @@ class SiswaModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id', 'user_id', 'nis', 'nama', 'kelas', 'angkatan', 'no_hp', 'alamat'
+        'id', 'user_id', 'nis', 'nama', 'kelas', 'angkatan', 'no_hp', 'alamat', 'laporan'
     ];
 
     // Dates

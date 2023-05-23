@@ -81,6 +81,19 @@ if (!function_exists('getPembimbingData')) {
 }
 
 
+if (!function_exists('isLaporanUploaded')) {
+    function isLaporanUploaded($sid)
+    {
+        $siswa = new \App\Models\SiswaModel();
+        $data = $siswa->where('id', $sid)->first();
+        if ($data->laporan == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
 if (!function_exists('getNamaInstansi')) {
     function getNamaInstansi($id_tempat)
     {
