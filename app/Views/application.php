@@ -76,6 +76,21 @@
                                     <div class="text-xs"><?= $app->updated_at ?></div>
                                 </div>
                             </div>
+
+                            <table class="mt-2 table-compact table-bordered">
+                                <tr>
+                                    <th class="p-2 text-sm" style="width:20%;">Nama Pembimbing</th>
+                                    <td class="p-2 text-sm"><a href="#"><?= $app->nama_pembimbing ?></a></td>
+                                </tr>
+                                <tr>
+                                    <th class="p-2 text-sm" style="width:20%;">No Pembimbing</th>
+                                    <td class="p-2 text-sm"><a href="tel:+<?= $app->hp_pembimbing ?>"><?= $app->hp_pembimbing ?></a></td>
+                                </tr>
+                                <tr>
+                                    <th class="p-2 text-sm" style="width:20%;">Email Pembimbing</th>
+                                    <td class="p-2 text-sm"><a href="mailto:<?= $app->email_pembimbing ?>"><?= $app->email_pembimbing ?></a></td>
+                                </tr>
+                            </table>
                         </div>
                     <?php endforeach ?>
                 </div>

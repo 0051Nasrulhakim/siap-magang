@@ -46,7 +46,7 @@
         }
         ?>
         <div class="col-12 col-sm-6 col-md-4 col-xxl-3 mb-4 cardInstansi <?= $t->status ?>">
-            <div class="card mt-4" data-animation="<?= initCheck(user_id(), $t->id) ? 'true' : 'false' ?>">
+            <div class="card mt-4" data-animation="<?= initCheck(user_id(), $t->id) && $t->status == 'buka'  ? 'true' : 'false' ?>">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <a class="d-block blur-shadow-image">
                         <img src="<?= $foto ?>" alt="img-blur-shadow" height="200px" class="img-fluid shadow border-radius-lg">

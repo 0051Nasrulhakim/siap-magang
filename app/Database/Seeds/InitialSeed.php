@@ -44,8 +44,8 @@ class InitialSeed extends Seeder
          */
         $angkatan = new \App\Models\AngkatanModel();
         $angkatan->insertBatch([
-            ['tahun' => 2022, 'nama' => '2022 Gelombang 1', 'tgl_mulai' => '2022-03-03', 'tgl_selesai' => '2022-05-03'],
-            ['tahun' => 2022, 'nama' => '2022 Gelombang 2', 'tgl_mulai' => '2022-05-05', 'tgl_selesai' => '2022-07-05'],
+            ['tahun' => 2023, 'nama' => '2023 Gelombang 1', 'tgl_mulai' => '2023-03-03', 'tgl_selesai' => '2023-05-03'],
+            ['tahun' => 2023, 'nama' => '2023 Gelombang 2', 'tgl_mulai' => '2023-05-05', 'tgl_selesai' => '2023-07-05'],
         ]);
 
 
@@ -123,7 +123,7 @@ class InitialSeed extends Seeder
         //     ]))) {
         //         $siswa->save([
         //             "user_id"   => $user->getInsertID(),
-        //             "nis"       => $fake->randomElement(['19.', '20.', '21.']) . $fake->randomNumber(6, true),
+        //             "nis"       => $fake->randomNumber(7, true),
         //             "nama"      => $fake->firstName() . ' ' . $fake->lastName(),
         //             "kelas"     => $fake->randomElement(['XI TKJ', 'XI RPL', 'XI TKR']),
         //             "angkatan"  => $fake->randomElement($idAngkatan),

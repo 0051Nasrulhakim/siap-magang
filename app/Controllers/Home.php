@@ -49,7 +49,7 @@ class Home extends BaseController
             "pengumuman"    => $pengumuman
         ]);
     }
-    
+
     public function profile()
     {
         return view('profile', [
@@ -85,7 +85,8 @@ class Home extends BaseController
             "page_title"    => "Nilai Magang Siswa",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Nilai'],
-            "nilai"         => $this->nilai->where('ids', getSidByUid(user_id()))->first()
+            "nilai"         => $this->nilai->where('ids', getSidByUid(user_id()))->first(),
+            "siswa"         => $this->siswa->where('id', getSidByUid(user_id()))->first()
         ]);
     }
 
@@ -128,10 +129,11 @@ class Home extends BaseController
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
         } elseif (in_groups('siswa')) {
-            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, angkatan.tahun, tempat_magang.nama as instansi, tempat_magang.alamat')
+            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, angkatan.tahun, tempat_magang.nama as instansi, tempat_magang.alamat, pembimbing.nama as nama_pembimbing, pembimbing.no_hp as hp_pembimbing, pembimbing.email as email_pembimbing')
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
                 ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')
+                ->join('pembimbing', 'pembimbing.id = tempat_magang.pid')
                 ->where('lamaran.id_siswa', getSidByUid(user_id()))
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
@@ -154,8 +156,8 @@ class Home extends BaseController
         $siswas = $this->application->select('lamaran.*, siswa.id as sid, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
             ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
-            ->where(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'accepted'])
-            ->orWhere(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'selesai'])
+            ->where(['lamaran.id_tempat' => $idt])
+            ->whereIn('lamaran.status', ['accepted', 'selesai'])
             ->orderBy('lamaran.created_at', "DESC")
             ->findAll();
 
@@ -171,13 +173,12 @@ class Home extends BaseController
 
     public function logbook_siswa($idt, $nis)
     {
-        $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
         $tempat = $this->tempat->find($idt);
         $siswas = $this->application->select('lamaran.*, siswa.id as sid, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
             ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
-            ->where(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'accepted'])
-            ->orWhere(['lamaran.id_tempat' => $idt, 'lamaran.status' => 'selesai'])
+            ->where(['lamaran.id_tempat' => $idt])
+            ->whereIn('lamaran.status', ['accepted', 'selesai'])
             ->orderBy('lamaran.created_at', "DESC")
             ->findAll();
 
@@ -259,7 +260,7 @@ class Home extends BaseController
             ->join('siswa', 'siswa.user_id = users.id', 'inner')
             ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->findAll();
-        
+
         $angkatan_jeson = $this->angkatan->findAll();
         $angkatan_jeson = array_map(function ($item) {
             return [
@@ -284,13 +285,22 @@ class Home extends BaseController
 
     public function siswa_edit($nis)
     {
-        $nis = substr($nis, 0, 2) . '.' . substr($nis, 2);
         $dsiswa = $this->user
             ->select('users.id, users.username, users.email, siswa.nis, siswa.nama, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.nama as angkatan, angkatan.tahun, angkatan.id as num')
             ->join('siswa', 'siswa.user_id = users.id', 'inner')
             ->join('angkatan', 'angkatan.id = siswa.angkatan', "inner")
             ->where('siswa.nis', $nis)
             ->first();
+
+        $angkatan_jeson = $this->angkatan->findAll();
+        $angkatan_jeson = array_map(function ($item) {
+            return [
+                'value' => $item->nama . ' - ' . $item->tahun,
+                'label' => $item->nama . ' - ' . $item->tahun,
+                'no'    => $item->id,
+                'tahun' => $item->tahun,
+            ];
+        }, $angkatan_jeson);
 
         return view('siswa_edit', [
             "title"         => "Magang | Edit Data siswa",
@@ -299,7 +309,8 @@ class Home extends BaseController
             "breadcrumb"    => ['Siswa', 'Edit', $nis],
             "siswa"         => $dsiswa,
             "angkatan"      => $this->angkatan->findAll(),
-            "jurusan"       => $this->jurusan->findAll()
+            "jurusan"       => $this->jurusan->findAll(),
+            "angkatan_json" => json_encode($angkatan_jeson)
         ]);
     }
 

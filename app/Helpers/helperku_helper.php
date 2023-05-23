@@ -3,6 +3,7 @@ if (!function_exists('initCheck')) {
     function initCheck($uid, $tid)
     {
         $sid = getSidByUid($uid);
+        $app = new \App\Models\ApplicationModel();
         $ready = null;
 
         if (
@@ -16,6 +17,21 @@ if (!function_exists('initCheck')) {
         }
 
         return $ready;
+    }
+}
+
+if (!function_exists('isEventFinished')) {
+    function isEventFinished($uid)
+    {
+        $sid = getSidByUid($uid);
+        $app = new \App\Models\ApplicationModel();
+        $data = $app->where(['id_siswa' => $sid, 'status' => 'selesai'])->first();
+
+        if ($data == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
@@ -216,32 +232,32 @@ if (!function_exists('getInstansiByPid')) {
         $data = $ins->select('tempat_magang.*',)
             ->select('lamaran.id_tempat', 'lamaran.id_siswa', 'lamaran.status as status_lamaran')
             ->join('lamaran', 'lamaran.id_tempat = tempat_magang.id')
-            ->where(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka', 'lamaran.status' => 'accepted'])
-            ->orWhere(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka', 'lamaran.status' => 'selesai'])
+            ->where(['tempat_magang.pid' => $idp, 'tempat_magang.status' => 'buka'])
+            ->whereIn('lamaran.status', ['accepted', 'selesai'])
             ->groupBy('tempat_magang.id')
             ->findAll();
-            
+
         return $data;
     }
 }
 
 if (!function_exists('isAccepted')) {
-    function isAccepted($sid) {
+    function isAccepted($sid)
+    {
         $app = new \App\Models\ApplicationModel();
         $data = $app->where(['id_siswa' => $sid, 'status' => 'accepted'])
             ->orderBy('created_at', 'DESC')
             ->findAll();
         return $data;
     }
-
 }
 
 if (!function_exists('getApplicationSiswa')) {
     function getApplicationSiswa($uid)
     {
         $app = new \App\Models\ApplicationModel();
-        $data = $app->where(['id_siswa' => $uid, 'status' => 'accepted'])
-            ->orWhere(['id_siswa' => $uid, 'status' => 'selesai'])
+        $data = $app->where('id_siswa', $uid)
+            ->whereIn('status', ['accepted', 'selesai'])
             ->orderBy('created_at', 'DESC')
             ->findAll();
         return $data;
@@ -269,7 +285,7 @@ if (!function_exists('getSlotAvailable')) {
     }
 }
 
-if(!function_exists('getStatusSiswa')) {
+if (!function_exists('getStatusSiswa')) {
     function getStatusSiswa($sid)
     {
         $app = new \App\Models\ApplicationModel();
@@ -278,21 +294,21 @@ if(!function_exists('getStatusSiswa')) {
     }
 }
 
-if(!function_exists('nilaiAvailable')){
+if (!function_exists('nilaiAvailable')) {
     function nilaiAvailable($sid)
     {
         $nilai = new \App\Models\NilaiModel();
         $data = $nilai->where(['ids' => $sid])->first();
-        
-        if($data == null){
+
+        if ($data == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 }
 
-if(!function_exists('getNilaiSiswa')){
+if (!function_exists('getNilaiSiswa')) {
     function getNilaiSiswa($sid)
     {
         $nilai = new \App\Models\NilaiModel();
