@@ -64,7 +64,12 @@ class LogBook extends BaseController
             $data['id'] = $this->request->getPost('lid');
             $data['status'] = 'pending';
         } else {
-            if ($this->logbooks->where('tanggal', $data['tanggal'])->first() !== null) {
+            if ($this->logbooks->where([
+                'tanggal'       => $data['tanggal'],
+                'id_siswa'      => $data['id_siswa'],
+                'id_tempat'     => $data['id_tempat'],
+                'id_pembimbing' => $data['id_pembimbing'],
+            ])->first() !== null) {
                 return $this->response->setJSON([
                     'success'   => false,
                     'status'    => 500,
