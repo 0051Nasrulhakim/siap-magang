@@ -93,12 +93,18 @@
                 </div>
             <?php endif ?>
 
-            <form method="post">
+            <?php if (session('message')) : ?>
+                <div class="alert alert-success">
+                    <?= session('message') ?>
+                </div>
+            <?php endif ?>
+
+            <form method="post" action="/user/reset_pass" id="fpass">
                 <div class="row">
                     <div class="col-12 mb-3">
                         <div class="input-group input-group-outline">
                             <label for="email" class="form-label"><?= lang('Auth.email') ?></label>
-                            <input type="text" id="email" readonly class="form-control" name="email" value="<?= user()->email ?>">
+                            <input type="email" id="email" readonly class="form-control" name="email" value="<?= user()->email ?>">
                         </div>
                     </div>
                     <div class="col-12 col-md-6 mb-3">
@@ -110,7 +116,7 @@
                     <div class="col-12 col-md-6 mb-3">
                         <div class="input-group input-group-outline">
                             <label for="password_confirm" class="form-label"><?= lang('Auth.repeatPassword') ?></label>
-                            <input type="password" class="form-control" id="password_confirm" name="pass_confirm">
+                            <input type="password" class="form-control" id="pass_confirm" name="pass_confirm">
                         </div>
                     </div>
                 </div>
@@ -218,7 +224,6 @@
 
 <script>
     $(document).ready(function() {
-        // fedetail
         $("#fedetail").submit(function(e) {
             e.preventDefault();
             $.ajax({

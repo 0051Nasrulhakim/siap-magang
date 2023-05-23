@@ -128,6 +128,7 @@ $routes->group('user', function ($u) {
     $u->post('store', 'User::store');
     $u->post('profile/update', 'User::profile_update');
     $u->post('update', 'User::update');
+    $u->post('reset_pass', 'User::reset_pass');
     $u->delete('destroy/(:num)', 'User::destroy/$1');
 });
 
