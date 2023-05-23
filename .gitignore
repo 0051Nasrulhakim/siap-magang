@@ -125,3 +125,6 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 
+/public/assets/img/logbook/*
+/public/assets/laporan/*
+/public/assets/img/tempat_magang/*

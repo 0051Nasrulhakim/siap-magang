@@ -87,6 +87,7 @@ $routes->group('nilai', function ($n) {
 $routes->group('siswa', function ($s) {
     $s->get('add', 'Siswa::index');
     $s->get('edit/(:nis)', 'Home::siswa_edit/$1');
+    $s->post('save/excel', 'Siswa::save_excel');
     $s->post('ceknis', 'Siswa::ceknis');
     $s->post('resetpass', 'Siswa::resetPassword');
     $s->post('store', 'Siswa::store');

@@ -158,6 +158,68 @@ class Siswa extends BaseController
         }
     }
 
+    public function save_excel()
+    {
+        $data_excel = $this->request->getFile('excel');
+        $ext = $data_excel->getClientExtension();
+
+        if ($ext == "xlsx") {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } else if ($ext == "xls") {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => 'Format file tidak didukung'
+            ]);
+        }
+
+        $spreadsheet = $reader->load($data_excel);
+        $data = $spreadsheet->getActiveSheet()->toArray();
+
+        foreach ($data as $x => $row) {
+            if ($x == 0) continue;
+            $angkatan = explode("/", $row[4]);
+            $angkatan_fix = $this->angkatan->where("tahun", $angkatan[0])->findAll();
+
+            if (count($angkatan) == 2) {
+                $user_data = new UserEntity([
+                    'email'     => $row[2],
+                    'username'  => $row[0],
+                    'password'  => $row[0],
+                    'active'    => 1
+                ]);
+
+                $this->user->withGroup('siswa')->save($user_data);
+
+                $siswa_data = [
+                    'user_id' => $this->user->getInsertID(),
+                    'nis' => $row[0],
+                    'nama' => $row[1],
+                    'kelas' => $row[3],
+                    'angkatan' => $angkatan_fix[($angkatan[1] - 1)]->id,
+                    'no_hp' => $row[5],
+                    'alamat' => $row[6],
+                ];
+
+                $this->siswa->save($siswa_data);
+            } else {
+                return $this->response->setJSON([
+                    'status'    => 500,
+                    'success'   => false,
+                    'message'   => 'Format tahun angkatan salah'
+                ]);
+            }
+        }
+
+        return $this->response->setJSON([
+            'status'    => 200,
+            'success'   => true,
+            'message'   => 'Siswa berhasil ditambahkan'
+        ]);
+    }
+
     public function update()
     {
         $siswa_user = [];

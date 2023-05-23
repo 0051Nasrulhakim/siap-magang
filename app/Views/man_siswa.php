@@ -12,6 +12,17 @@
                     <i class="fas fa-plus me-1"></i>
                     Siswa
                 </button>
+                <h6>Table Siswa</h6>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-icons py-1 px-3 btn-success" data-bs-toggle="modal" data-bs-target="#addexcel">
+                        <i class="far fa-file-excel me-1"></i>
+                        Siswa
+                    </button>
+                    <button class="btn btn-icons py-1 px-3 btn-dark" data-bs-toggle="modal" data-bs-target="#mtsiswa">
+                        <i class="fas fa-plus me-1"></i>
+                        Siswa
+                    </button>
+                </div>
             </div>
             <!-- option fron $angkatan_json -->
             <div class="row mt-3">
@@ -77,6 +88,40 @@
                         <?php endforeach ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addexcel" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="addexcel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card card-plain">
+                    <div class="card-header pb-0">
+                        <span class="h5">Tambah Siswa Excel</span><br>
+                        Tambah data siswa magang dengan file excel
+                    </div>
+                    <div class="card-body bg-white">
+                        <form method="post" id="formExcel" .on('submit', function() {
+
+                        });enctype="multipart/form-data">
+                            <div class="alert alert-warning text-white">
+                                <span class="text-white"><strong>Perhatian!</strong></span> <br>
+                                <span class="text-sm">Pastikan file excel yang anda upload sesuai dengan format yang telah disediakan. <a href="/assets/excel/siswa.xlsx" class="text-info">Download Format Excel</a></span>
+                            </div>
+
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="file" name="excel" id="excel" class="form-control" accept=".xlsx,.xls" required>
+                            </div>
+
+                            <div class="text-center gap-2 d-flex align-items-center justify-content-end mt-4">
+                                <button type="button" class="btn btn-round btn-sm bg-gradient-secondary shadow" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-round btn-sm bg-gradient-dark" required>Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -236,6 +281,40 @@
             } else {
                 $(this).parent().removeClass('is-filled');
             }
+        });
+
+        $("#formExcel").on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/siswa/save/excel",
+                type: "POST",
+                data: new FormData(this),
+                dataType: "JSON",
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Berhasil",
+                            text: data.message,
+                            showConfirmButton: !1,
+                            timer: 1500
+                        }).then(s => {
+                            $("#addexcel").modal("hide"), $("#formExcel")[0].reset(), location.reload()
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: data.message,
+                            showConfirmButton: !0
+                        }).then(s => {
+                            s.isConfirmed && ($("#addexcel").modal("hide"), $("#formExcel")[0].reset(), location.reload())
+                        });
+                    }
+                }
+            });
         });
 
         // fasiswa submit
