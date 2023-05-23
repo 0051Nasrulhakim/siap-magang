@@ -41,7 +41,6 @@ class Siswa extends BaseController
 
     public function resetPassword()
     {
-        // validation rules
         $rules = [
             'email' => [
                 'label' => lang('Auth.emailAddress'),
@@ -81,7 +80,7 @@ class Siswa extends BaseController
             return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
         }
 
-        if (! empty($user->reset_expires) && time() > $user->reset_expires->getTimestamp()) {
+        if (!empty($user->reset_expires) && time() > $user->reset_expires->getTimestamp()) {
             return redirect()->back()->withInput()->with('error', lang('Auth.resetTokenExpired'));
         }
 
@@ -98,7 +97,7 @@ class Siswa extends BaseController
 
     public function ceknis()
     {
-        $nis = str_replace(".", "", $this->request->getPost("nis"));
+        $nis = $this->request->getPost("nis");
         $cek = $this->siswa->where("nis", $nis);
         if ($cek->countAllResults() > 0) {
             return $this->response->setJSON([
@@ -113,8 +112,7 @@ class Siswa extends BaseController
 
     public function store()
     {
-        $nis = str_replace(".", "", $this->request->getPost("nis"));
-
+        $nis = $this->request->getPost("nis");
         $siswa_user = new UserEntity([
             "email" => $this->request->getPost("email"),
             "username" => $nis,
@@ -223,9 +221,6 @@ class Siswa extends BaseController
     public function update()
     {
         $siswa_user = [];
-
-        $nis = str_replace(".", "", $this->request->getPost("nis"));
-        $old_nis = $this->request->getPost("old_nis");
         $old_email = $this->request->getPost("old_email");
 
         $siswa_detail = [
@@ -237,22 +232,14 @@ class Siswa extends BaseController
             "alamat" => $this->request->getPost("alamat")
         ];
 
-
-        if ($this->request->getPost("nis") != $old_nis) {
-            $siswa_user["username"] = $nis;
-            $siswa_user["password"] = $nis;
-            $siswa_user["active"] = 1;
-        }
-
         if ($this->request->getPost("email") != $old_email) {
             $siswa_user["email"] = $this->request->getPost("email");
         }
 
-        // if siswa_user not empty
         if (!empty($siswa_user)) {
             $siswa_user = new UserEntity($siswa_user);
             if ($this->user->update($this->request->getPost("items"), $siswa_user)) {
-                $id = $this->siswa->where("nis", $old_nis)->first()->id;
+                $id = $this->siswa->where("nis", $this->request->getPost("nis"))->first()->id;
 
                 if ($this->siswa->update($id, $siswa_detail)) {
                     return $this->response->setJSON([
@@ -276,8 +263,8 @@ class Siswa extends BaseController
                 ]);
             }
         } else {
-            $id = $this->siswa->where("nis", $old_nis)->first()->id;
-
+            $id = $this->siswa->where("nis", $this->request->getPost("nis"))->first()->id;
+            
             if ($this->siswa->update($id, $siswa_detail)) {
                 return $this->response->setJSON([
                     'status'    => 200,
@@ -353,6 +340,32 @@ class Siswa extends BaseController
                 'status'    => 500,
                 'success'   => false,
                 'message'   => 'Siswa gagal dihapus'
+            ]);
+        }
+    }
+
+    public function upload_laporan()
+    {
+        $file = $this->request->getFile('laporan');
+        $filename = $file->getRandomName();
+
+        $data = [
+            'laporan' => $filename,
+            'id' => getSidByUid(user_id())
+        ];
+
+        if ($this->siswa->save($data)) {
+            $file->move('assets/laporan', $filename);
+            return $this->response->setJSON([
+                'status'    => 200,
+                'success'   => true,
+                'message'   => 'Laporan berhasil diupload'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'status'    => 500,
+                'success'   => false,
+                'message'   => implode(", ", $this->siswa->errors())
             ]);
         }
     }

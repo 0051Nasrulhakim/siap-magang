@@ -10,13 +10,12 @@
             <div class="card-body">
                 <form role="form text-left" id="fesiswa">
                     <input type="hidden" name="items" value="<?= $siswa->id ?>">
-                    <input type="hidden" name="old_nis" value="<?= $siswa->nis ?>">
                     <input type="hidden" name="old_email" value="<?= $siswa->email ?>">
                     <div class="row">
                         <div class="col-6">
-                            <div class="input-group input-group-outline mb-3" data-bs-toggle="tooltip" title="NIS siswa akan terisi otomatis ketika memilih angkatan" data-container="body" data-animation="true">
+                            <div class="input-group input-group-outline mb-3" data-bs-toggle="tooltip" title="NIS Tidak dapat diedit" data-container="body" data-animation="true">
                                 <label for="nis" class="form-label">NIS</label>
-                                <input type="text" name="nis" id="nis" class="form-control" value="<?= $siswa->nis ?>" readonly required>
+                                <input type="text" readonly name="nis" id="nis" class="form-control" value="<?= $siswa->nis ?>" readonly required>
                             </div>
                             <div class="input-group input-group-outline mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -79,9 +78,8 @@
 
 <script>
     $(document).ready(function() {
-        const nis_lama = $('#fesiswa input[name="old_nis"]').val();
-        const year = nis_lama.substr(0, 2);
         const BASE_URL = "<?= base_url() ?>";
+        const angkatan_json = JSON.parse('<?= $angkatan_json ?>');
 
         $('#fesiswa #kelas').on('change', function() {
             if ($(this).val() != "") {
@@ -91,65 +89,14 @@
             }
         });
 
-        function cekNis(nis) {
-            $.ajax({
-                url: "/siswa/ceknis",
-                type: "POST",
-                data: {
-                    nis: nis
-                },
-                dataType: "JSON",
-                success: function(data) {
-                    return data.assigned;
-                }
-            });
-        }
-
         $("#angkatan").autocomplete({
-            source: `${BASE_URL}/angkatan/getangkatan`,
+            source: angkatan_json,
             autoFocus: true,
             select: function(event, ui) {
                 $('#fesiswa #angval').val(ui.item.no);
-                if (ui.item.tahun.substr(2, 2) == year) {
-                    $('#fesiswa #nis').val(nis_lama);
-                } else {
-                    let nis = ui.item.tahun.substr(2, 2) + "." + Math.floor(100000 + Math.random() * 900000);
-                    if (cekNis(nis)) {
-                        while (cekNis(nis)) {
-                            nis = ui.item.tahun.substr(2, 2) + "." + Math.floor(100000 + Math.random() * 900000);
-                        }
-                        $('#fesiswa #nis').val(nis);
-                        $('#fesiswa #nis').parent().addClass('is-filled');
-                    } else {
-                        $('#fesiswa #nis').val(nis);
-                        $('#fesiswa #nis').parent().addClass('is-filled');
-                    }
-                }
+
             },
         });
-
-        // const nis = $('#fesiswa #nis').val();
-        // const year = $('#fesiswa #angkatan').find(':selected').data('tahun');
-
-        // $('#fesiswa #angkatan').on('change', function() {
-        //     if ($(this).val() != "") {
-        //         $(this).parent().addClass('is-filled');
-        //         $('#fesiswa #nis').parent().addClass('is-filled');
-        //         const thnBaru = $(this).find(':selected').data('tahun');
-
-        //         if (thnBaru == year) {
-        //             $('#fesiswa #nis').val(nis);
-        //         } else {
-        //             const thnBaru = $(this).find(':selected').data('tahun').toString().substr(2, 2);
-        //             const random = Math.floor(100000 + Math.random() * 900000);
-        //             $('#fesiswa #nis').val(thnBaru + "." + random);
-        //         }
-        //     } else {
-        //         $(this).parent().removeClass('is-filled');
-        //         $('#fesiswa #nis').val('');
-        //         $('#fesiswa #nis').parent().removeClass('is-filled');
-        //     }
-        // });
 
         $("#fesiswa").on('submit', function(s) {
             s.preventDefault(), 

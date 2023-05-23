@@ -10,7 +10,7 @@
 
             <div class="mt-3">
                 <?php foreach ($siswas as $s) : ?>
-                    <a href="/logbook/<?= $idt ?>/<?= str_replace('.', '', $s->nis) ?>" <?= getStatusSiswa($s->sid) == 'selesai' ? 'data-bs-toggle="tooltip" title="selesai"' : '' ?>>
+                    <a href="/logbook/<?= $idt ?>/<?= $s->nis ?>" <?= getStatusSiswa($s->sid) == 'selesai' ? 'data-bs-toggle="tooltip" title="selesai"' : '' ?>>
                         <div class="card card-body p-2 bg-gray-200 shadow-none rounded px-4 mb-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="">
@@ -275,9 +275,6 @@
                                 <?php $i++ ?>
                                 <div class="accordion-body card card-body py-3 bg-gray-200 shadow-none rounded px-3 text-sm opacity-8 <?= $i == $clog ? 'mb-3' : '' ?>">
                                     <?= $log->kegiatan ?>
-                                    <div class="d-flex justify-content-end align-items-center mt-3 gap-1">
-                                        <button class="badge badge-danger border border-danger btn-reject" data-stts="rejected" title="Reject Log Book"><i class="fa fa-times m-0 p-0"></i></button>
-                                        <button class="badge badge-success border border-success text-success btn-approve" data-stts="approved" title="Approve Log Book"><i class="fa fa-check m-0 p-0"></i></button>
                                     <div class="d-flex justify-content-between align-items-center mt-3 gap-1">
                                         <a target="_blank" href="/assets/img/logbook/<?= $log->bukti ?>" class="badge badge-info border border-info" title="Lihat bukti kegiatan"><i class="fa fa-search m-0 p-0"></i></a>
                                         <div>

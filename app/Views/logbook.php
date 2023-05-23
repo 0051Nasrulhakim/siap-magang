@@ -7,7 +7,7 @@
 
             <div class="mt-3">
                 <?php foreach ($siswas as $s) : ?>
-                    <a href="/logbook/<?= $idt ?>/<?= str_replace('.', '', $s->nis) ?>" <?= getStatusSiswa($s->sid) == 'selesai' ? 'data-bs-toggle="tooltip" title="selesai"' : '' ?>>
+                    <a href="/logbook/<?= $idt ?>/<?= $s->nis ?>" <?= getStatusSiswa($s->sid) == 'selesai' ? 'data-bs-toggle="tooltip" title="selesai"' : '' ?>>
                         <div class="card card-body p-2 bg-gray-200 shadow-none rounded px-4 mb-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="">

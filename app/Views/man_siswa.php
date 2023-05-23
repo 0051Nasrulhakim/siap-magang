@@ -4,14 +4,6 @@
     <div class="col-12">
         <div class="card card-body p-3">
             <div class="d-flex justify-content-between align-items-center px-2">
-                <h6>
-                    Table Siswa
-                </h6>
-                <!-- <a href="/siswa/add" class="btn btn-sm btn-dark">SISWA</a> -->
-                <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#mtsiswa">
-                    <i class="fas fa-plus me-1"></i>
-                    Siswa
-                </button>
                 <h6>Table Siswa</h6>
                 <div class="d-flex gap-2">
                     <button class="btn btn-icons py-1 px-3 btn-success" data-bs-toggle="modal" data-bs-target="#addexcel">
@@ -81,7 +73,7 @@
                                     <td class="text-xs ps-4 font-weight-bold"><?= $s->angkatan; ?></td>
                                     <td class="text-xs ps-4 font-weight-bold">
                                         <button class="badge border border-1 border-danger text-danger btn-destroy" data-item="<?= $s->id; ?>"><i class="fas fa-trash"></i></button>
-                                        <a href="/siswa/edit/<?= str_replace(".", "", $s->nis) ?>" class="badge border border-1 border-dark text-dark"><i class="fas fa-edit"></i></a>
+                                        <a href="/siswa/edit/<?= $s->nis ?>" class="badge border border-1 border-dark text-dark"><i class="fas fa-edit"></i></a>
                                     </td>
                                 </tr>
                             <?php endif ?>
@@ -215,7 +207,6 @@
 
         // tbsiswa
         var tbsiswa = $('#tbsiswa').DataTable({
-            // dom brtip
             dom: '<"row"<"col-12"tr>><"row mt-2 px-3"<"col-12 col-md-6"i><"col-12 col-md-6"p>>',
             pageLength: 10,
             language: {
@@ -260,10 +251,10 @@
             minLength: 0,
             select: function(event, ui) {
                 $('#fasiswa #angval').val(ui.item.no);
-                let nis = ui.item.tahun.substr(2, 2) + "." + Math.floor(100000 + Math.random() * 900000);
+                let nis = Math.floor(1000000 + Math.random() * 9999999);
                 if (cekNis(nis)) {
                     while (cekNis(nis)) {
-                        nis = ui.item.tahun.substr(2, 2) + "." + Math.floor(100000 + Math.random() * 900000);
+                        nis = Math.floor(1000000 + Math.random() * 9999999);
                     }
                     $('#fasiswa #nis').val(nis);
                     $('#fasiswa #nis').parent().addClass('is-filled');
