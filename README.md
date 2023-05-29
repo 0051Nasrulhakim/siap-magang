@@ -1,4 +1,11 @@
 # Sistem Informasi Magang
+
+## Demo
+|||
+| :---: | :---: |
+|![Demo 1](./demo/demo-1.png)|![Demo 2](./demo/demo-2.png)|
+|![Demo 3](./demo/demo-3.png)|![Demo 4](./demo/demo-4.png)|
+
 ## Deskripsi
 Sistem Informasi Magang adalah sebuah sistem yang digunakan untuk mengelola data magang. Sistem ini dibuat sebagai project skripsi. Sistem ini dibuat dengan menggunakan bahasa pemrograman PHP dan database MySQL, dengan bantuan framework codeigniter.
 
