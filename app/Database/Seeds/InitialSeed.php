@@ -111,31 +111,31 @@ class InitialSeed extends Seeder
          * =============== SISWA ===============
          * input user as siswa
          */
-        // $idSiswa = [];
-        // $siswa = new \App\Models\SiswaModel();
-        // for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
-        //     $fakeEmail = $fake->freeEmail();
-        //     if ($user->withGroup('siswa')->save(new \App\Entities\User([
-        //         "email"     => $fakeEmail,
-        //         "username"  => 'siswa' . ($i + 1),
-        //         "password"  => '12345678',
-        //         "active"    => 1,
-        //     ]))) {
-        //         $siswa->save([
-        //             "user_id"   => $user->getInsertID(),
-        //             "nis"       => $fake->randomNumber(7, true),
-        //             "nama"      => $fake->firstName() . ' ' . $fake->lastName(),
-        //             "kelas"     => $fake->randomElement(['XI TKJ', 'XI RPL', 'XI TKR']),
-        //             "angkatan"  => $fake->randomElement($idAngkatan),
-        //             "no_hp"     => $fake->e164PhoneNumber(),
-        //             "alamat"    => $fake->streetAddress()
-        //         ]);
-        //         $idSiswa[] = $siswa->getInsertID();
-        //     } else {
-        //         $siswa->delete($user->getInsertID());
-        //         echo implode(", ", $user->errors()) . "\n";
-        //     }
-        // }
+        $idSiswa = [];
+        $siswa = new \App\Models\SiswaModel();
+        for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
+            $fakeEmail = $fake->freeEmail();
+            if ($user->withGroup('siswa')->save(new \App\Entities\User([
+                "email"     => $fakeEmail,
+                "username"  => 'siswa' . ($i + 1),
+                "password"  => '12345678',
+                "active"    => 1,
+            ]))) {
+                $siswa->save([
+                    "user_id"   => $user->getInsertID(),
+                    "nis"       => $fake->randomNumber(7, true),
+                    "nama"      => $fake->firstName() . ' ' . $fake->lastName(),
+                    "kelas"     => $fake->randomElement(['XI TKJ', 'XI RPL', 'XI TKR']),
+                    "angkatan"  => $fake->randomElement($idAngkatan),
+                    "no_hp"     => $fake->e164PhoneNumber(),
+                    "alamat"    => $fake->streetAddress()
+                ]);
+                $idSiswa[] = $siswa->getInsertID();
+            } else {
+                $siswa->delete($user->getInsertID());
+                echo implode(", ", $user->errors()) . "\n";
+            }
+        }
 
 
         /**
