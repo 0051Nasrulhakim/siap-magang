@@ -22,6 +22,7 @@
                                 <th class="ps-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
                                 <th class="ps-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Angkatan</th>
                                 <th class="ps-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Instansi</th>
+                                <th class="ps-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Laporan</th>
                                 <th class="ps-3 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                             </tr>
                         </thead>

@@ -22,19 +22,28 @@ class Application extends BaseController
         ];
 
         if (empty(getApplicationSiswa($data['id_siswa']))) {
-            if ($this->app->insert($data)) {
-                return $this->response->setJSON([
-                    'status'    => 200,
-                    'success'   => true,
-                    'message'   => 'Permintaan magang berhasil diajukan'
-                ]);
-            } else {
+            if (getSlotAvailable($data['id_tempat']) <= 0) {
                 return $this->response->setJSON([
                     'status'    => 500,
                     'success'   => false,
-                    'message'   => $this->app->errors()
+                    'message'   => 'Kuota tempat magang sudah penuh'
                 ]);
+            } else {
+                if ($this->app->insert($data)) {
+                    return $this->response->setJSON([
+                        'status'    => 200,
+                        'success'   => true,
+                        'message'   => 'Permintaan magang berhasil diajukan'
+                    ]);
+                } else {
+                    return $this->response->setJSON([
+                        'status'    => 500,
+                        'success'   => false,
+                        'message'   => $this->app->errors()
+                    ]);
+                }
             }
+
         } {
             return $this->response->setJSON([
                 'status'    => 500,

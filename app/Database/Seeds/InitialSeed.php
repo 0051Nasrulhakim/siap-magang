@@ -115,15 +115,16 @@ class InitialSeed extends Seeder
         $siswa = new \App\Models\SiswaModel();
         for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
             $fakeEmail = $fake->freeEmail();
+            $nis = $fake->randomNumber(7, true);
             if ($user->withGroup('siswa')->save(new \App\Entities\User([
                 "email"     => $fakeEmail,
-                "username"  => 'siswa' . ($i + 1),
-                "password"  => '12345678',
+                "username"  => $nis,
+                "password"  => $nis,
                 "active"    => 1,
             ]))) {
                 $siswa->save([
                     "user_id"   => $user->getInsertID(),
-                    "nis"       => $fake->randomNumber(7, true),
+                    "nis"       => $nis,
                     "nama"      => $fake->firstName() . ' ' . $fake->lastName(),
                     "kelas"     => $fake->randomElement(['XI TKJ', 'XI RPL', 'XI TKR']),
                     "angkatan"  => $fake->randomElement($idAngkatan),
@@ -187,7 +188,7 @@ class InitialSeed extends Seeder
         //     if (!$application->save([
         //         'id_siswa'      => $ids,
         //         'id_tempat'     => $fake->randomElement($idTempat),
-        //         'status'        => $fake->randomElement(['pending', 'accepted', 'rejected', 'selesai']),
+        //         'status'        => $fake->randomElement(['accepted', 'selesai']),
         //         // 'tanggal_mulai' => $fake->dateTimeBetween('-1 month', '+1 month')->format('Y-m-d'),
         //         // 'tanggal_selesai' => $fake->dateTimeBetween('+1 month', '+3 month')->format('Y-m-d'),
         //     ])) {

@@ -280,9 +280,28 @@ if (!function_exists('getSlotAvailable')) {
     {
         $app = new \App\Models\ApplicationModel();
         $tempat = new \App\Models\TempatModel();
+        $angkatan = new \App\Models\AngkatanModel();
+        $siswa = new \App\Models\SiswaModel();
+        $now = date('Y-m-d');
 
-        $data = $app->where(['id_tempat' => $tid, 'status' => 'accepted'])->findAll();
+        // get id angkatan where now between tgl_mulai and tgl_selesai
+        $aid = $angkatan->where('tgl_mulai <=', $now)
+            ->where('tgl_selesai >=', $now)
+            ->first()->id;
+        
+        // get all siswa where angkatan = $aid
+        $siswa = $siswa->select('id')->where('angkatan', $aid)->findAll();
+        $siswa_id = [];
+        foreach ($siswa as $s) {
+            array_push($siswa_id, $s->id);
+        }
+
         $tempat = $tempat->find($tid);
+        // get all application where id_siswa in $data and id_tempat = $tid
+        $data = $app->whereIn('id_siswa', $siswa_id)
+            ->where('id_tempat', $tid)
+            ->where('status', 'accepted')
+            ->findAll();
 
         return $tempat->kuota - count($data);
     }

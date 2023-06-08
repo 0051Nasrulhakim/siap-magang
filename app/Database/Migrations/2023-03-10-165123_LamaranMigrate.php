@@ -12,7 +12,7 @@ class LamaranMigrate extends Migration
             'id'            =>['type'=>'INT','constraint'=>11,'unsigned'=>true,'auto_increment'=>true],
             'id_siswa'      =>['type'=>'INT','constraint'=>11,'unsigned'=>true],
             'id_tempat'     =>['type'=>'INT','constraint'=>11,'unsigned'=>true, 'null'=>true],
-            'status'        =>['type'=>'ENUM','constraint'=>['pending','accepted','rejected','selesai', 'reject by system'],'default'=>'accepted'],
+            'status'        =>['type'=>'ENUM','constraint'=>['pending','accepted','rejected','selesai','unfinish','reject by system'],'default'=>'accepted'],
             'created_at'    =>['type'=>'DATETIME','null'=>true],
             'updated_at'    =>['type'=>'DATETIME','null'=>true],
             'deleted_at'    =>['type'=>'DATETIME','null'=>true]

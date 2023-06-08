@@ -11,6 +11,7 @@ class Siswa extends BaseController
     protected $siswa;
     protected $angkatan;
     protected $jurusan;
+    protected $application;
 
     public function __construct()
     {
@@ -18,6 +19,7 @@ class Siswa extends BaseController
         $this->siswa = new \App\Models\SiswaModel();
         $this->angkatan = new \App\Models\AngkatanModel();
         $this->jurusan = new \App\Models\JurusanModel();
+        $this->application = new \App\Models\ApplicationModel();
     }
 
     public function index()
@@ -348,14 +350,18 @@ class Siswa extends BaseController
     {
         $file = $this->request->getFile('laporan');
         $filename = $file->getRandomName();
-
+        
         $data = [
+            'id' => getSidByUid(user_id()),
             'laporan' => $filename,
-            'id' => getSidByUid(user_id())
         ];
-
+        
+        $application = $this->application->where('id_siswa', getSidByUid(user_id()))->first();
+        
         if ($this->siswa->save($data)) {
             $file->move('assets/laporan', $filename);
+            $this->application->update($application->id, ['status' => 'selesai']);
+
             return $this->response->setJSON([
                 'status'    => 200,
                 'success'   => true,
