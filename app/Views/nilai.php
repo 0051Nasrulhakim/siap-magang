@@ -106,6 +106,11 @@
                         <h6 class="font-weight-normal mb-0 pb-0">Kerjasama</h6>
                         <h6 class="text-success mb-0 pb-0"><?= $nilai->n_kerjasama ?></h6>
                     </div>
+                    <hr class="dark horizontal my-1">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="font-weight-normal mb-0 pb-0">Laporan</h6>
+                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_laporan ?></h6>
+                    </div>
                 <?php else : ?>
                     <div class="badge badge-info border border-info w-100 p-3" style="text-align: left; white-space: normal !important;">
                         <div class="font-weight-normal" style="line-height: 0.48cm; font-size: 14px; text-transform: capitalize;">

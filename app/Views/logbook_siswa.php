@@ -28,14 +28,17 @@
         </div>
     </div>
     <div class="col-12 col-md-8 mb-3">
-        <?php if (getStatusSiswa($siswa->id) == 'selesai') : ?>
+        <?php if (getStatusSiswa($siswa->id) == 'selesai' && $siswa->laporan) : ?>
             <div class="card card-body mb-3 bg-info text-white border-info">
                 Kegiatan magang siswa ini sudah selesai. diharapkan untuk segera memproses nilai.
                 <div class="mt-2 mb-0">
                     <?php if (nilaiAvailable($siswa->id)) : ?>
                         <button class="btn btn-sm bg-gradient-success mb-0" data-bs-toggle="modal" data-bs-target="#mdnilai">DETAIL NILAI</button>
                     <?php else : ?>
-                        <button class="btn btn-sm bg-gradient-info mb-0" data-bs-toggle="modal" data-bs-target="#manilai">INPUT NILAI</button>
+                        <button class="btn btn-sm bg-gradient-info mb-0 me-2" data-bs-toggle="modal" data-bs-target="#manilai">INPUT NILAI</button>
+                        <?php if ($siswa->laporan) : ?>
+                            <a href="/assets/laporan/<?= $siswa->laporan ?>" target="_blank" class="btn btn-sm bg-gradient-success mb-0">LIHAT LAPORAN</a>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
             </div>
@@ -84,6 +87,11 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="font-weight-normal text-sm mb-0 pb-0">Kerjasama</h6>
                                         <h6 class="text-success mb-0 pb-0 text-sm"><?= $nilai->n_kerjasama ?></h6>
+                                    </div>
+                                    <hr class="dark horizontal my-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="font-weight-normal text-sm mb-0 pb-0">Laporan</h6>
+                                        <h6 class="text-success mb-0 pb-0 text-sm"><?= $nilai->n_laporan ?></h6>
                                     </div>
                                     <div class="mt-4 d-flex gap-2 justify-content-between items-center">
                                         <div>
@@ -138,7 +146,7 @@
                                                         <input type="number" class="form-control" name="n_kreatifitas" value="<?= $nilai->n_kreatifitas ?>" id="n_kreatifitas" min="0" max="100">
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-12 col-md-6">
                                                     <div class="input-group input-group-outline mb-3">
                                                         <label for="n_kejujuran" class="form-label">Kejujuran dan Tanggung Jawab</label>
                                                         <input type="number" class="form-control" name="n_kejujuran" value="<?= $nilai->n_kejujuran ?>" id="n_kejujuran" min="0" max="100">
@@ -154,6 +162,12 @@
                                                     <div class="input-group input-group-outline mb-3">
                                                         <label for="n_kerjasama" class="form-label">Kerjasama</label>
                                                         <input type="number" class="form-control" name="n_kerjasama" value="<?= $nilai->n_kerjasama ?>" id="n_kerjasama" min="0" max="100">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group input-group-outline mb-3">
+                                                        <label for="n_laporan" class="form-label">Nilai Laporan</label>
+                                                        <input type="number" class="form-control" name="n_laporan" value="<?= $nilai->n_laporan ?>" id="n_laporan" min="0" max="100">
                                                     </div>
                                                 </div>
                                             </div>
@@ -210,7 +224,7 @@
                                                         <input type="number" class="form-control" name="n_kreatifitas" id="n_kreatifitas" min="0" max="100">
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-12 col-md-6">
                                                     <div class="input-group input-group-outline mb-3">
                                                         <label for="n_kejujuran" class="form-label">Kejujuran dan Tanggung Jawab</label>
                                                         <input type="number" class="form-control" name="n_kejujuran" id="n_kejujuran" min="0" max="100">
@@ -228,6 +242,12 @@
                                                         <input type="number" class="form-control" name="n_kerjasama" id="n_kerjasama" min="0" max="100">
                                                     </div>
                                                 </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group input-group-outline mb-3">
+                                                        <label for="n_laporan" class="form-label">Nilai Laporan</label>
+                                                        <input type="number" class="form-control" name="n_laporan" id="n_laporan" min="0" max="100">
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="mt-3">
@@ -242,6 +262,12 @@
                     </div>
                 </div>
                 <!-- modal tambah nilai end -->
+            <?php endif ?>
+        <?php else : ?>
+            <?php if (date("Y-m-d") > $siswa->tgl_selesai) : ?>
+                <div class="card card-body mb-3 bg-warning text-dark border-warning">
+                    Siswa ini belum mengunggah laporan akhir magang. nilai tidak dapat diinputkan sebelum siswa mengunggah laporan akhir magang.
+                </div>
             <?php endif ?>
         <?php endif ?>
         <div class="card card-body">

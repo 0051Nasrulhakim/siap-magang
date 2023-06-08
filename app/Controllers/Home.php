@@ -180,7 +180,7 @@ class Home extends BaseController
     public function logbook_siswa($idt, $nis)
     {
         $tempat = $this->tempat->find($idt);
-        $siswas = $this->application->select('lamaran.*, siswa.id as sid, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, angkatan.tahun')
+        $siswas = $this->application->select('lamaran.*, siswa.id as sid, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.alamat, siswa.laporan, angkatan.tahun')
             ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
             ->where(['lamaran.id_tempat' => $idt])
@@ -188,7 +188,11 @@ class Home extends BaseController
             ->orderBy('lamaran.created_at', "DESC")
             ->findAll();
 
-        $siswa = $this->siswa->where('nis', $nis)->first();
+        $siswa = $this->siswa
+            ->select('siswa.*, angkatan.nama as angkatan, angkatan.tahun, angkatan.tgl_selesai')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->where('nis', $nis)
+            ->first();
 
         $log = $this->logbooks->select("*")->select("IF(DATE(created_at) > tanggal, true, false) as telat", false)->where(['id_siswa' => $this->siswa->where('nis', $nis)->first()->id, 'id_pembimbing' => user_id()])->findAll();
 
