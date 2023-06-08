@@ -98,7 +98,7 @@
                                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="material-icons opacity-10">format_list_numbered</i>
                                 </div>
-                                <span class="nav-link-text ms-1">Absensi dan Log Book</span>
+                                <span class="nav-link-text ms-1">Daftar Hadir</span>
                             </a>
                         </li>
                     <?php endif ?>
@@ -137,7 +137,7 @@
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="material-icons opacity-10">supervisor_account</i>
                             </div>
-                            <span class="nav-link-text ms-1">Manjemen Pengelola</span>
+                            <span class="nav-link-text ms-1">Manjemen Pembimbing</span>
                         </a>
                     </li>
                     <li class="nav-item">

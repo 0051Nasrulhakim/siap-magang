@@ -9,7 +9,6 @@
                         <span class="text-sm">Anda sudah melakukan upload laporan akhir magang. Silahkan tunggu beberapa hari kedepan untuk melihat capaian hasil kegiatan magang anda.</span>
                     </div>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-sm bg-gradient-dark mb-0 shadow">GANTI</button>
                         <a href="/assets/laporan/<?= $siswa->laporan ?>" target="_blank" class="btn btn-sm bg-gradient-info mb-0 shadow">LIHAT</a>
                     </div>
                 </div>
@@ -17,14 +16,18 @@
         <?php endif; ?>
 
         <?php if (getApplicationSiswa(getSidByUid(user_id())) && !isLaporanUploaded(getSidByUid(user_id()))) : ?>
-            <?php if (isEventFinished(user_id())) : ?> <!-- jika status magang selesai-->
+            <?php if (isEventFinished(user_id()) || date('Y-m-d') > $siswa->tgl_selesai) : ?> <!-- jika status magang selesai-->
                 <div class="card card-body mb-3 bg-warning text-white border-info">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <strong>
-                                Perhatian <i class="fa fa-info-circle ml-2"></i>
+                            <i class="fa fa-info-circle ml-2"></i> Perhatian
                             </strong> <br>
-                            <span class="text-sm">Anda belum melakukan upload laporan akhir magang. Silahkan upload laporan akhir magang anda. <br> Hal ini diperlukan untuk kalkulasi nilai.</span>
+                            <span class="text-sm">
+                                Anda belum melakukan upload laporan akhir magang. Silahkan upload laporan akhir magang anda. 
+                                <br> Hal ini diperlukan untuk kalkulasi nilai.
+                                <br> <b class="text-dark">laporan yang sudah di upload tidak dapat diubah, pastikan laporan yang anda upload sudah benar.</b>
+                        </span>
                         </div>
                         <div class="d-flex mb-0 pb-0 mt-2">
                             <button class="btn btn-sm bg-gradient-dark mb-0" data-bs-toggle="modal" data-bs-target="#malaporan">Upload</button>

@@ -80,13 +80,19 @@ class Home extends BaseController
 
     public function nilai()
     {
+        // siswa and angkatan
+        $dataSiswa = $this->siswa->select('siswa.*, angkatan.nama as angkatan, angkatan.tahun, angkatan.tgl_selesai')
+            ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->where('siswa.id', getSidByUid(user_id()))
+            ->first();
+
         return view('nilai', [
             "title"         => "Magang | Nilai Siswa",
             "page_title"    => "Nilai Magang Siswa",
             "segment"       => $this->request->getUri()->getSegments(),
             "breadcrumb"    => ['Nilai'],
             "nilai"         => $this->nilai->where('ids', getSidByUid(user_id()))->first(),
-            "siswa"         => $this->siswa->where('id', getSidByUid(user_id()))->first()
+            "siswa"         => $dataSiswa
         ]);
     }
 
