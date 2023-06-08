@@ -9,10 +9,6 @@
                         <span class="h5 mb-0 pb-0">Daftar Pendaftaran Siswa</span> <br>
                         Dafatar berikut merupakan Lamaran siswa yang telah mendaftar di tempat magang.
                     </div>
-
-                    <button class="btn btn-sm btn-dark" id="btnAddPengelola" data-bs-toggle="modal" data-bs-target="#mtlamaran">
-                        <i class="fas fa-plus"></i>
-                    </button>
                 </div>
 
                 <div class="table-responsive">
@@ -35,7 +31,13 @@
                                 <?php $instansi = $application->id_tempat == null ? $application->custom_tempat : getNamaInstansi($application->id_tempat) ?>
                                 <tr>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $no++ ?></td>
-                                    <td class="ps-3 text-xs font-weight-bold"><?= genBadgeStatusApplication($application->status) ?></td>
+                                    <td class="ps-3 text-xs font-weight-bold">
+                                        <?php if($application->laporan == null && (date('Y-m-d') > $application->tgl_selesai)) : ?>
+                                            <span class="badge badge-warning border border-warning">unfinish</span>
+                                        <?php else : ?>
+                                            <?= genBadgeStatusApplication($application->status) ?>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <div class="badge badge-secondary"><?= $application->nis ?></div>
                                     </td>
@@ -43,6 +45,11 @@
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->nama ?></td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->tahun ?></td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= isVerifiedInstansi($application->id_tempat) ?><span class="iname"><?= $instansi ?></span></td>
+                                    <td class="ps-3 text-xs font-weight-bold">
+                                        <?php if ($application->laporan) : ?>
+                                            <a href="/assets/laporan/<?= $application->laporan ?>" target="_blank" class="badge badge-info border border-info">LIHAT</a>
+                                        <?php endif ?>
+                                    </td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <button <?= $application->status != 'pending' ? 'disabled style="opacity: 0.6;"' : '' ?> class="badge border border-1 border-danger text-danger btn-destroy" title="Hapus data" data-item="<?= $application->id; ?>"><i class="fas fa-trash"></i></button>
                                         <button <?= $application->status == 'reject by system' ? 'disabled style="opacity: 0.6;"' : '' ?> class="badge border border-1 border-warning text-warning btn-edit-status" title="Update Status" data-stts="<?= $application->status ?>" data-item="<?= $application->id; ?>"><i class="fas fa-tag"></i></button>
@@ -98,39 +105,6 @@
         </div>
     </div>
 </div>
-
-<?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
-    <!-- Modal #mtlamaran -->
-    <div class="modal fade" id="mtlamaran" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="mtlamaran" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    <div class="card card-plain">
-                        <div class="card-header pb-0">
-                            <span class="h5" id="modalTitle">Tambah Data Pendaftaran Magang</span>
-                        </div>
-                        <div class="card-body">
-                            <!-- checkbox -->
-                            <div class="h6">TODOS:</div>
-                            <div class="form-check px-1">
-                                <input class="form-check-input" type="checkbox" id="fcustomCheck1" disabled>
-                                <label class="custom-control-label" for="fcustomCheck1">Tambah pendaftaran siswa magang perlu dibuat</label>
-                            </div>
-                            <div class="form-check px-1">
-                                <input class="form-check-input" type="checkbox" id="fcustomCheck2" disabled>
-                                <label class="custom-control-label" for="fcustomCheck2">Form tambah pendaftaran siswa magang perlu dikaji lebih lanjut</label>
-                            </div>
-                            <div class="form-check px-1">
-                                <input class="form-check-input" type="checkbox" id="fcustomCheck3" disabled>
-                                <label class="custom-control-label" for="fcustomCheck3">Pengkajian ulang perlu atau tidaknya edit data siswa magang</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif ?>
 <?= $this->endSection(); ?>
 
 <?= $this->section('bottomsc'); ?>
@@ -196,10 +170,11 @@
                     inputPlaceholder: 'Pilih Status',
                     inputValue: $(this).data('stts'),
                     inputOptions: {
-                        'pending': 'Pending',
+                        // 'pending': 'Pending',
                         'accepted': 'Accepted',
-                        'rejected': 'Rejected',
+                        // 'rejected': 'Rejected',
                         'selesai': 'Finished',
+                        'unfinish': 'Unfinished',
                     },
                     showCancelButton: !0,
                     confirmButtonText: "Ya, Update"

@@ -145,8 +145,10 @@ $routes->group('application', ['filter' => 'role:admin'], function ($app) {
     $app->post('status/update', 'Application::update');
 });
 
-// routes group for 
-
+$routes->group('laporan', ['filter' => 'role:admin'], function($l) {
+    $l->get('/', 'Home::laporan');
+    $l->post('show', 'Laporan::index');
+});
 
 /*
  * --------------------------------------------------------------------

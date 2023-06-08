@@ -61,14 +61,14 @@ if (!function_exists("checkNowAndPeroid")) {
     {
         $now = date('Y-m-d');
         $application = new \App\Models\ApplicationModel();
-        $application_data = $application->select('lamaran.*, siswa.angkatan, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_mulai, angkatan.tgl_selesai')
+        $application_data = $application->select('lamaran.*, siswa.angkatan, siswa.laporan, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_mulai, angkatan.tgl_selesai')
             ->join('siswa', 'siswa.id = lamaran.id_siswa')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
             ->findAll();
 
         foreach ($application_data as $ad) {
-            if ($now > $ad->tgl_selesai && $ad->status == 'accepted') {
-                $application->update($ad->id, ['status' => 'selesai']);
+            if ($now > $ad->tgl_selesai && $ad->status == 'accepted' && $ad->laporan == null) {
+                $application->update($ad->id, ['status' => 'unfinished']);
             }
         }
     }
@@ -170,6 +170,9 @@ if (!function_exists('genBadgeStatusApplication')) {
                 break;
             case 'selesai':
                 return '<span class="badge badge-info border border-info">Selesai</span>';
+                break;
+            case 'unfinish':
+                return '<span class="badge badge-warning border border-warning">unfinish</span>';
                 break;
             case 'reject by system':
                 return '<span class="badge badge-danger border border-danger">reject by system</span>';

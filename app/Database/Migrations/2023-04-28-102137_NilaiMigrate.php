@@ -19,6 +19,7 @@ class NilaiMigrate extends Migration
             "n_kejujuran"       => ['type' => 'INT', 'constraint' => 3,],
             "n_kesopanan"       => ['type' => 'INT', 'constraint' => 3,],
             "n_kerjasama"       => ['type' => 'INT', 'constraint' => 3,],
+            "n_laporan"         => ['type' => 'INT', 'constraint' => 3,],
             "created_at"        => ['type' => 'DATETIME', 'null' => true,],
             "updated_at"        => ['type' => 'DATETIME', 'null' => true,],
             "deleted_at"        => ['type' => 'DATETIME', 'null' => true,],
