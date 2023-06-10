@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-4">
-                        <h5>Form <?= isset($edit_logbook) ? 'Edit ' : ''  ?>Kehadiran dan Log Book</h5>
+                        <h5>Form <?= isset($edit_logbook) ? 'Edit ' : ''  ?>Kehadiran</h5>
                     </div>
                     <form class="form-absen" method="post" enctype="multipart/form-data">
                         <?php if (isset($edit_logbook)) : ?>
