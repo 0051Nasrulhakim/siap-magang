@@ -100,7 +100,7 @@
                         });enctype="multipart/form-data">
                             <div class="alert alert-warning text-white">
                                 <span class="text-white"><strong>Perhatian!</strong></span> <br>
-                                <span class="text-sm">Pastikan file excel yang anda upload sesuai dengan format yang telah disediakan. <a href="/assets/excel/siswa.xlsx" class="text-info">Download Format Excel</a></span>
+                                <span class="text-sm">Pastikan file excel yang anda upload sesuai dengan format yang telah disediakan. <a href="/assets/excel/dumy_siswa.xlsx" class="text-info">Download Format Excel</a></span>
                             </div>
 
                             <div class="input-group input-group-outline mb-3">
