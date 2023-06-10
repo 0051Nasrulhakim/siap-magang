@@ -129,13 +129,13 @@ class Home extends BaseController
     public function application()
     {
         if (in_groups('admin')) {
-            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.laporan, siswa.alamat, angkatan.tahun, angkatan.tgl_selesai')
+            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.kelas, siswa.no_hp, siswa.laporan, siswa.alamat, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_selesai')
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
                 ->orderBy('lamaran.created_at', "DESC")
                 ->findAll();
         } elseif (in_groups('siswa')) {
-            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.laporan, angkatan.tahun, angkatan.tgl_selesai, tempat_magang.nama as instansi, tempat_magang.alamat, pembimbing.nama as nama_pembimbing, pembimbing.no_hp as hp_pembimbing, pembimbing.email as email_pembimbing')
+            $dapp = $this->application->select('lamaran.*, siswa.nama, siswa.nis, siswa.laporan, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_selesai, tempat_magang.nama as instansi, tempat_magang.alamat, pembimbing.nama as nama_pembimbing, pembimbing.no_hp as hp_pembimbing, pembimbing.email as email_pembimbing')
                 ->join('siswa', 'siswa.id = lamaran.id_siswa')
                 ->join('angkatan', 'angkatan.id = siswa.angkatan')
                 ->join('tempat_magang', 'tempat_magang.id = lamaran.id_tempat')

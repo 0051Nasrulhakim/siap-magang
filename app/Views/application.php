@@ -33,7 +33,7 @@
                                 <tr>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $no++ ?></td>
                                     <td class="ps-3 text-xs font-weight-bold">
-                                        <?php if($application->laporan == null && (date('Y-m-d') > $application->tgl_selesai)) : ?>
+                                        <?php if ($application->laporan == null && (date('Y-m-d') > $application->tgl_selesai)) : ?>
                                             <span class="badge badge-warning border border-warning">unfinish</span>
                                         <?php else : ?>
                                             <?= genBadgeStatusApplication($application->status) ?>
@@ -44,7 +44,7 @@
                                     </td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->kelas ?></td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= $application->nama ?></td>
-                                    <td class="ps-3 text-xs font-weight-bold"><?= $application->tahun ?></td>
+                                    <td class="ps-3 text-xs font-weight-bold"><?= $application->angkatan ?></td>
                                     <td class="ps-3 text-xs font-weight-bold"><?= isVerifiedInstansi($application->id_tempat) ?><span class="iname"><?= $instansi ?></span></td>
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <?php if ($application->laporan) : ?>
@@ -80,7 +80,13 @@
                                     <div class="text-xs"><?= $app->alamat ?></div>
                                 </div>
                                 <div style="text-align: end !important;">
-                                    <div class="mb-2"><?= genBadgeStatusApplication($app->status) ?></div>
+                                    <div class="mb-2">
+                                        <?php if ($app->laporan == null && (date('Y-m-d') > $app->tgl_selesai)) : ?>
+                                            <span class="badge badge-warning border border-warning">unfinish</span>
+                                        <?php else : ?>
+                                            <?= genBadgeStatusApplication($app->status) ?>
+                                        <?php endif; ?>
+                                    </div>
                                     <div class="text-xs"><?= $app->updated_at ?></div>
                                 </div>
                             </div>
@@ -125,7 +131,7 @@
                 const t = $(this).data('item');
                 const nama = $(this).parent().parent().find('td:eq(4)').text();
                 const instansi = $(this).parent().parent().find('td:eq(6) .iname').text();
-                
+
                 Swal.fire({
                     icon: "warning",
                     title: "Hapus Data",
