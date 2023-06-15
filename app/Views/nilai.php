@@ -3,13 +3,13 @@
 <div class="row">
     <div class="col-12">
         <?php if (getApplicationSiswa(getSidByUid(user_id())) && isLaporanUploaded(getSidByUid(user_id()))) : ?>
-            <div class="card card-body mb-3 bg-info text-white border-info">
+            <div class="card card-body mb-3 bg-success text-white border-success">
                 <div class="d-flex justify-content-between align-items-center gap-2">
                     <div>
                         <span class="text-sm">Anda sudah melakukan upload laporan akhir magang. Silahkan tunggu beberapa hari kedepan untuk melihat capaian hasil kegiatan magang anda.</span>
                     </div>
                     <div class="d-flex gap-2">
-                        <a href="/assets/laporan/<?= $siswa->laporan ?>" target="_blank" class="btn btn-sm bg-gradient-info mb-0 shadow">LIHAT</a>
+                        <a href="/assets/laporan/<?= $siswa->laporan ?>" target="_blank" class="btn btn-sm bg-gradient-success mb-0 shadow">LIHAT</a>
                     </div>
                 </div>
             </div>
@@ -74,43 +74,58 @@
                 <?php if ($nilai) : ?>
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Kedisiplinan</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_disiplin ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_disiplin ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Kemauan Kerja / Motivasi</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_motivasi ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_motivasi ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Kehadiran</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_kehadiran ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_kehadiran ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Inisiatif dan kreatifitas</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_kreatifitas ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_kreatifitas ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Kejujuran dan Tanggung Jawab</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_kejujuran ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_kejujuran ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Kesopanan dan Personalia</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_kesopanan ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_kesopanan ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Kerjasama</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_kerjasama ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_kerjasama ?></h6>
                     </div>
                     <hr class="dark horizontal my-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="font-weight-normal mb-0 pb-0">Laporan</h6>
-                        <h6 class="text-success mb-0 pb-0"><?= $nilai->n_laporan ?></h6>
+                        <h6 class="mb-0 pb-0"><?= $nilai->n_laporan ?></h6>
                     </div>
+
+                    <hr class="dark horizontal mt-3 my-1">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="font-weight-bold text-lg mb-0 pb-0">Rata-rata</h6>
+                        <h6 class="mb-0 pb-0 text-lg">
+                            <?php 
+                                // rata-rata nilai
+                                $rata = ($nilai->n_disiplin + $nilai->n_motivasi + $nilai->n_kehadiran + $nilai->n_kreatifitas + $nilai->n_kejujuran + $nilai->n_kesopanan + $nilai->n_kerjasama + $nilai->n_laporan) / 8;
+
+                                // echo nilai
+                                echo round($rata, 2);
+                            ?>
+                        </h6>
+                    </div>
+
                 <?php else : ?>
                     <div class="badge badge-info border border-info w-100 p-3" style="text-align: left; white-space: normal !important;">
                         <div class="font-weight-normal" style="line-height: 0.48cm; font-size: 14px; text-transform: capitalize;">
