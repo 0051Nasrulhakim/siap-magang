@@ -12,6 +12,26 @@
                     Pengelola
                 </button>
             </div>
+
+            <div class="row mt-3">
+                <div class="col-12 col-md-6">
+                    <div class="input-group input-group-outline mb-3">
+                        <label for="filroles" class="form-label">Group</label>
+                        <select name="filroles" id="filroles" class="form-control">
+                            <option value=""></option>
+                            <option value="pembimbing">Pembimbing</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="input-group input-group-outline mb-3">
+                        <label for="filsearch" class="form-label">Cari Data</label>
+                        <input type="text" name="filsearch" id="filsearch" class="form-control">
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover table-stripped" id="tbPengelola">
                     <thead>
@@ -97,18 +117,40 @@
 </div>
 <?= $this->endSection(); ?>
 
+
+<?= $this->section('topsc') ;?>
+<link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
+<?= $this->endSection() ;?>
+
+
+
 <?= $this->section('bottomsc'); ?>
-<script src="/assets/js/plugins/datatables.js"></script>
+<script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script src="/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <script>
     $(document).ready(function() {
-        const dataTableBasic = new simpleDatatables.DataTable("#tbPengelola", {
-            searchable: false,
-            fixedHeight: true
+        var tbPengelola = $("#tbPengelola").DataTable({
+            dom: '<"row"<"col-12"tr>><"row mt-2 px-3"<"col-12 col-md-6"i><"col-12 col-md-6"p>>',
+            pageLength: 10,
+            language: {
+                paginate: {
+                    next: '<i class="fas fa-angle-right"></i>',
+                    previous: '<i class="fas fa-angle-left"></i>'
+                }
+            },
         });
 
-        // btnAddPengelola click edit title and subtitle
+        $('#filroles').on('change', function() {
+            $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+            tbPengelola.columns(5).search($(this).val()).draw();
+        });
+
+        $('#filsearch').on('keyup', function() {
+            tbPengelola.search($(this).val()).draw();
+        });
+
         $("#btnAddPengelola").on('click', function() {
             $("#modalTitle").text("Tambah Pengelola");
             $("#modalSubTitle").text("Tambah data Pengelola magang");
@@ -124,30 +166,30 @@
         // fauser submit
         $("#fauser").on('submit', function(s) {
             s.preventDefault(),
-            $.ajax({
-                url: $(this).data('action') == 'store' ? "/user/store" : $(this).data('action') == 'update' ? "/user/update" : "",
-                type: "post",
-                data: $(this).serialize(),
-                dataType: "json",
-                success: function(s) {
-                    console.log(s);
-                    s.success ? Swal.fire({
-                        icon: "success",
-                        title: "Berhasil",
-                        text: s.message,
-                        showConfirmButton: !1,
-                        timer: 1500
-                    }).then(s => {
-                        location.reload()
-                    }) : Swal.fire({
-                        icon: "error",
-                        title: "Gagal",
-                        text: s.message,
-                        showConfirmButton: !1,
-                        timer: 1500
-                    })
-                }
-            })
+                $.ajax({
+                    url: $(this).data('action') == 'store' ? "/user/store" : $(this).data('action') == 'update' ? "/user/update" : "",
+                    type: "post",
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    success: function(s) {
+                        console.log(s);
+                        s.success ? Swal.fire({
+                            icon: "success",
+                            title: "Berhasil",
+                            text: s.message,
+                            showConfirmButton: !1,
+                            timer: 1500
+                        }).then(s => {
+                            location.reload()
+                        }) : Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: s.message,
+                            showConfirmButton: !1,
+                            timer: 1500
+                        })
+                    }
+                })
         })
 
         $("#tbPengelola tbody").on('click', '.btn-edit', function() {
@@ -163,7 +205,7 @@
             $("#modalTitle").text("Edit Pengelola");
             $("#modalSubTitle").text("Edit data Pengelola magang");
             $("#mtPengelola").modal('show');
-            
+
             // Form
             $("#fauser input[name='nama']").val(nama);
             $("#fauser input[name='nama']").parent().addClass('is-filled');

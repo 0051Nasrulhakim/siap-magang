@@ -190,13 +190,13 @@
 
 <?= $this->section('topsc'); ?>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
 <?= $this->endSection(); ?>
 
 
 <?= $this->section('bottomsc'); ?>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script src="/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
 

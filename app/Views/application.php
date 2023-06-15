@@ -11,6 +11,58 @@
                     </div>
                 </div>
 
+                <div class="row mt-3">
+                    <div class="col-6 col-md-4">
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="filstatus" class="form-label">Status</label>
+                            <select name="filstatus" id="filstatus" class="form-control">
+                                <option value=""></option>
+                                <option value="accepted">Accepted</option>
+                                <option value="selesai">Finished</option>
+                                <option value="unfinish">Unfinish</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="filjurusan" class="form-label">Kelas</label>
+                            <select name="filjurusan" id="filjurusan" class="form-control">
+                                <option value=""></option>
+                                <?php foreach ($kelas as $k) : ?>
+                                    <option value="XI <?= $k->nama_jurusan ?>">XI <?= $k->nama_jurusan ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="filangkatan" class="form-label">Angkatan</label>
+                            <select name="filangkatan" id="filangkatan" class="form-control">
+                                <option value=""></option>
+                                <?php foreach ($angkatan as $a) : ?>
+                                    <option value="<?= $a->nama ?>">XI <?= $a->nama ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="fillaporan" class="form-label">Laporan</label>
+                            <select name="fillaporan" id="fillaporan" class="form-control">
+                                <option value=""></option>
+                                <option value="lihat">Sudah</option>
+                                <option value="belum">Belum</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="input-group input-group-outline mb-3">
+                            <label for="filsearch" class="form-label">Cari Data</label>
+                            <input type="text" name="filsearch" id="filsearch" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-hover table-stripped" id="tbapplications">
                         <thead>
@@ -49,6 +101,8 @@
                                     <td class="ps-3 text-xs font-weight-bold">
                                         <?php if ($application->laporan) : ?>
                                             <a href="/assets/laporan/<?= $application->laporan ?>" target="_blank" class="badge badge-info border border-info">LIHAT</a>
+                                        <?php else : ?>
+                                            <a href="#" class="badge badge-dark border border-dark" style="cursor: not-allowed !important; pointer-events: all !important;">BELUM</a>
                                         <?php endif ?>
                                     </td>
                                     <td class="ps-3 text-xs font-weight-bold">
@@ -114,17 +168,67 @@
 </div>
 <?= $this->endSection(); ?>
 
+
+<?= $this->section('topsc'); ?>
+<link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
+<?= $this->endSection(); ?>
+
+
+
 <?= $this->section('bottomsc'); ?>
-<script src="/assets/js/core/popper.min.js"></script>
-<script src="/assets/js/plugins/datatables.js"></script>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
 
 <?php if (in_groups('admin') || in_groups('pembimbing')) : ?>
+    <script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function() {
-            const dataTableBasic = new simpleDatatables.DataTable("#tbapplications", {
-                searchable: false,
-                fixedHeight: true
+            var tbApplication = $("#tbapplications").DataTable({
+                dom: '<"row"<"col-12"tr>><"row mt-2 px-3"<"col-12 col-md-6"i><"col-12 col-md-6"p>>',
+                pageLength: 10,
+                language: {
+                    paginate: {
+                        next: '<i class="fas fa-angle-right"></i>',
+                        previous: '<i class="fas fa-angle-left"></i>'
+                    }
+                },
+            });
+            
+            // fil status
+            $('#filstatus').on('change', function() {
+                $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+                tbApplication.columns(1).search(this.value).draw();
+            });
+
+            // fil jurusan
+            $('#filjurusan').on('change', function() {
+                $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+                console.log(this.value);
+                tbApplication.columns(3).search(this.value).draw();
+            });
+
+            // fillaporan
+            $('#fillaporan').on('change', function() {
+                $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+                if (this.value == 'lihat') {
+                    tbApplication.columns(7).search('LIHAT').draw();
+                } else if (this.value == 'belum') {
+                    tbApplication.columns(7).search('BELUM').draw();
+                } else {
+                    tbApplication.columns(7).search('').draw();
+                }
+            });
+
+            // fil angkatan
+            $('#filangkatan').on('change', function() {
+                $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+                tbApplication.columns(5).search(this.value).draw();
+            });
+
+            // fil search
+            $('#filsearch').on('keyup', function() {
+                $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+                tbApplication.search(this.value).draw();
             });
 
             $("#tbapplications tbody").on('click', '.btn-destroy', function(s) {

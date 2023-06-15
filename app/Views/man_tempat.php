@@ -12,6 +12,26 @@
                     Tempat Magang
                 </button>
             </div>
+
+            <div class="row mt-3">
+                <div class="col-12 col-md-6">
+                    <div class="input-group input-group-outline mb-3">
+                        <label for="filstatus" class="form-label">Status</label>
+                        <select name="filstatus" id="filstatus" class="form-control">
+                            <option value=""></option>
+                            <option value="buka">Buka</option>
+                            <option value="tutup">Tutup</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="input-group input-group-outline mb-3">
+                        <label for="filsearch" class="form-label">Cari Data</label>
+                        <input type="text" name="filsearch" id="filsearch" class="form-control">
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover table-stripped" id="tbTempatMagang">
                     <thead>
@@ -191,21 +211,38 @@
 
 <?= $this->section('topsc'); ?>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
 <?= $this->endSection(); ?>
 
 
 
 <?= $this->section('bottomsc'); ?>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="/assets/js/plugins/datatables.js"></script>
+<script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script src="/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
 <script src="/assets/js/plugins/sweetalert.min.js"></script>
 <script src="/assets/js/plugins/quill.min.js"></script>
 
 <script>
     $(document).ready(function() {
-        const dataTableBasic = new simpleDatatables.DataTable("#tbTempatMagang", {
-            searchable: false,
-            fixedHeight: true
+        var tgTempat = $("#tbTempatMagang").DataTable({
+            dom: '<"row"<"col-12"tr>><"row mt-2 px-3"<"col-12 col-md-6"i><"col-12 col-md-6"p>>',
+            pageLength: 10,
+            language: {
+                paginate: {
+                    next: '<i class="fas fa-angle-right"></i>',
+                    previous: '<i class="fas fa-angle-left"></i>'
+                }
+            },
+        });
+
+        $('#filstatus').on('change', function() {
+            $(this).val() == "" ? $(this).parent().removeClass('is-filled') : $(this).parent().addClass('is-filled');
+            tgTempat.columns(3).search($(this).val()).draw();
+        });
+
+        $('#filsearch').on('keyup', function() {
+            tgTempat.search($(this).val()).draw();
         });
 
         const pem = <?= $pembimbing_json; ?>; 
