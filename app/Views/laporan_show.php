@@ -27,7 +27,6 @@
         }
 
         .judul_surat {
-            text-decoration: underline;
             text-transform: uppercase;
         }
 
@@ -74,13 +73,11 @@
             </p>
 
             <table class="table table-bordered table-sm table-striped text-center">
-                <thead>
-                    <tr>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #333;">
                         <th style="width:40%;">KELAS</th>
                         <th>JUMLAH SISWA</th>
                     </tr>
-                </thead>
-                <tbody>
                     <?php foreach ($kelas as $k => $v) : ?>
                         <tr>
                             <th><?= $k ?></th>
@@ -95,13 +92,11 @@
             </p>
 
             <table class="table table-bordered table-sm table-striped text-center">
-                <thead>
-                    <tr>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #333;">
                         <th style="width:40%;">STATUS</th>
                         <th>JUMLAH SISWA</th>
                     </tr>
-                </thead>
-                <tbody>
                     <?php foreach ($status as $k => $v) : ?>
                         <tr>
                             <th><?= $k ?></th>
@@ -116,14 +111,28 @@
                 Demikian surat keterangan ini kami buat untuk dapat dipergunakan sebagaimana mestinya.
             </p>
 
-            <div class="ttd d-flex flex-column align-items-end">
-                <div class="text-center">
-                    <p class="mb-0">Pekalongan, <?= date("d F Y") ?></p>
-                    <p>Kepala Sekolah</p>
+
+            <div class="ttd">
+                <p class="text-center mb-3">
+                    Pekalongan, <?= date("d F Y") ?> <br>
+                    <b>Mengetahui :</b>
+                </p>
+                <div class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="text-center">
+                        <p>Ketua Kegiatan Magang</p>
 
 
-                    <!-- Nama Kepala Desa -->
-                    <p style="margin-top: 100px;"><strong>Nur Afni Indasari, S.Pd</strong></p>
+                        <!-- Nama Kepala Desa -->
+                        <p style="margin-top: 100px;"><strong>----------------------</strong></p>
+                    </div>
+
+                    <div class="text-center">
+                        <p>Kepala Sekolah</p>
+
+
+                        <!-- Nama Kepala Desa -->
+                        <p style="margin-top: 100px;"><strong>Nur Afni Indasari, S.Pd</strong></p>
+                    </div>
                 </div>
             </div>
 
@@ -137,9 +146,9 @@
                 <h6 class="mb-3 text-center"><b>Tahun</b> : <?= $tahun_selected ?> | <b>Jurusan</b> : <?= $jurusan_selected == "" ? "Semua" : $jurusan_selected ?></h6>
 
                 <table class="table table-bordered table-sm table-striped">
-                    <thead>
-                        <tr class="text-center">
-                            <th>No</th>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #333;">
+                            <th class="text-center">No</th>
                             <th>NIS</th>
                             <th>Nama</th>
                             <th>Pembimbing</th>
@@ -147,12 +156,10 @@
                             <th>Angkatan</th>
                             <th>Status</th>
                         </tr>
-                    </thead>
-                    <tbody>
                         <?php $no = 1; ?>
                         <?php foreach ($data as $d) : ?>
-                            <tr class="text-center">
-                                <td><?= $no++ ?></td>
+                            <tr>
+                                <td class="text-center"><?= $no++ ?></td>
                                 <td><?= $d->nis ?></td>
                                 <td><?= $d->nama ?></td>
                                 <td><?= $d->nama_pembimbing ?></td>
