@@ -113,7 +113,7 @@ class InitialSeed extends Seeder
          */
         $idSiswa = [];
         $siswa = new \App\Models\SiswaModel();
-        for ($i = 0; $i < $fake->numberBetween(30, 45); $i++) {
+        for ($i = 0; $i < $fake->numberBetween(5, 10); $i++) {
             $fakeEmail = $fake->freeEmail();
             $nis = $fake->randomNumber(7, true);
             if ($user->withGroup('siswa')->save(new \App\Entities\User([

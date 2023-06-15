@@ -264,7 +264,7 @@
                 <!-- modal tambah nilai end -->
             <?php endif ?>
         <?php else : ?>
-            <?php if (date("Y-m-d") > $siswa->tgl_selesai) : ?>
+            <?php if (getStatusSiswa($siswa->id) == 'selesai' || date("Y-m-d") > $siswa->tgl_selesai) : ?>
                 <div class="card card-body mb-3 bg-warning text-dark border-warning">
                     Siswa ini belum mengunggah laporan akhir magang. nilai tidak dapat diinputkan sebelum siswa mengunggah laporan akhir magang.
                 </div>
