@@ -1,8 +1,8 @@
 <?= $this->extend('main'); ?>
 <?= $this->section('content'); ?>
 <div class="row">
-    <div class="col-12 <?= !isSiswaActive(getSidByUid(user_id())) ? 'col-md-12' : (isset($edit_logbook) ? 'col-md-6' : 'col-md-5') ?>">
-        <?php if (isSiswaActive(getSidByUid(user_id()))) : ?>
+    <div class="col-12 <?= !isSiswaActive(getSidByUid(user_id())) || (getStatusSiswa(getSidByUid(user_id())) == 'selesai') ? 'col-md-12' : (isset($edit_logbook) ? 'col-md-6' : 'col-md-5') ?>">
+        <?php if (isSiswaActive(getSidByUid(user_id())) && (getStatusSiswa(getSidByUid(user_id())) !== 'selesai')) : ?>
             <div class="card">
                 <div class="card-body">
                     <div class="mb-4">
@@ -72,7 +72,7 @@
             </div>
         <?php endif ?>
     </div>
-    <div class="col-12 <?= !isSiswaActive(getSidByUid(user_id())) ? 'col-md-12' : (isset($edit_logbook) ? 'col-md-6' : 'col-md-7') ?>">
+    <div class="col-12 <?= !isSiswaActive(getSidByUid(user_id())) || (getStatusSiswa(getSidByUid(user_id())) == 'selesai') ? 'col-md-12' : (isset($edit_logbook) ? 'col-md-6' : 'col-md-7') ?>">
         <?php if (!isset($edit_logbook)) : ?>
             <div class="card">
                 <div class="card-body">

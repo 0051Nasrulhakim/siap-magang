@@ -39,16 +39,18 @@ if (!function_exists('isSiswaActive')) {
     function isSiswaActive($sid)
     {
         $siswa = new \App\Models\SiswaModel();
-        $data = $siswa->select('siswa.*, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_mulai, angkatan.tgl_selesai')
+        $data = $siswa->select('siswa.*, angkatan.tahun, angkatan.nama as angkatan, angkatan.tgl_mulai, angkatan.tgl_selesai, lamaran.status')
             ->join('angkatan', 'angkatan.id = siswa.angkatan')
+            ->join('lamaran', 'lamaran.id_siswa = siswa.id')
             ->where('siswa.id', $sid)
+            ->orWhere('lamaran.status', 'selesai')
             ->first();
 
         $now = date('Y-m-d');
         $tgl_mulai = $data->tgl_mulai;
         $tgl_selesai = $data->tgl_selesai;
 
-        if ($now >= $tgl_mulai && $now <= $tgl_selesai) {
+        if (($now >= $tgl_mulai && $now <= $tgl_selesai)) {
             return true;
         } else {
             return false;
